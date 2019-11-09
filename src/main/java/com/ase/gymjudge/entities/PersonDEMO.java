@@ -1,9 +1,10 @@
-package com.ase.gymjudge.model;
+package com.ase.gymjudge.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class PersonDEMO {
@@ -11,6 +12,7 @@ public class PersonDEMO {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "Name is mandatory")
     private String firstName;
     private String lastName;
 
@@ -23,13 +25,6 @@ public class PersonDEMO {
         this.lastName = lastName;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
     public String getLastName() {
         return lastName;
@@ -37,5 +32,13 @@ public class PersonDEMO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }
