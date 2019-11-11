@@ -4,10 +4,10 @@ jdk:
 # would just use default install/script but the ./mvnw script errors on travis
 # obviously this only works for maven builds right now...
 dist: trusty
-install:
-- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+install: true
+# - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
-- mvn test
+- mvn install
 addons:
   sonarcloud:
     organization: "asews19"
