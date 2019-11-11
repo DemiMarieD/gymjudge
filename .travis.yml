@@ -1,19 +1,20 @@
 language: java
 jdk:
   - oraclejdk8
-# would just use default install/script but the ./mvnw script errors on travis
-# obviously this only works for maven builds right now...
-dist: trusty
-install: true
+  # would just use default install/script but the ./mvnw script errors on travis
+  # obviously this only works for maven builds right now...
+  dist: trusty
+  install: true
 
-addons:
-  sonarcloud:
-    organization: "asews19"
+  addons:
+    sonarcloud:
+      organization: "asews19"
 
-script:
-  - mvn install
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.login=${SONAR_TOKEN}
+  script:
+    - mvn test
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+    - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=DemiMarieD_gymjudge -Dsonar.login=${SONAR_TOKEN}
 
 services:
   - mysql
