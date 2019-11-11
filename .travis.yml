@@ -3,7 +3,6 @@ jdk:
 - oraclejdk8
 # would just use default install/script but the ./mvnw script errors on travis
 # obviously this only works for maven builds right now...
-dist: trusty
 install: true
 
 addons:
@@ -11,21 +10,9 @@ addons:
     organization: "asews19"
 
 script:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn install
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - echo "TRAVIS_SECURE_ENV_VARS=${TRAVIS_SECURE_ENV_VARS}";
-    - >
-    if [ "${TRAVIS_SECURE_ENV_VARS}" == "true" ]; then
-    echo;
-    echo "Running sonar build";
-    mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar;
-    fi;
-    - >
-    if [ "${TRAVIS_SECURE_ENV_VARS}" == "false" ]; then
-    echo;
-    echo "Running pullrequest build";
-    mvn clean install;
-    fi;
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar;
 
 services:
   - mysql
