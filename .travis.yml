@@ -5,20 +5,15 @@ jdk:
 # obviously this only works for maven builds right now...
 dist: trusty
 install: true
-# - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 addons:
   sonarcloud:
     organization: "asews19"
 
 script:
-  - mvn install
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=DemiMarieD_gymjudge
-
-#script:
-#  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-#  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=DemiMarieD_gymjudge
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=DemiMarieD_gymjudge
 
 services:
   - mysql
