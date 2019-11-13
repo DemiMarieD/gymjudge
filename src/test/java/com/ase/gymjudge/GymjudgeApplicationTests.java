@@ -31,8 +31,8 @@ class GymjudgeApplicationTests {
 
         PersonDEMO personFromDB = personRepositoryDEMO.findByFirstName(person.getFirstName());
 
-//        assertThat(personFromDB.getFirstName()).isEqualTo(person.getFirstName());
-        assertThat("test").isEqualTo("test");
+        assertThat(personFromDB.getFirstName()).isEqualTo(person.getFirstName());
+        // assertThat("test").isEqualTo("test");
     }
 
 }
