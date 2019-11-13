@@ -16,21 +16,21 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest
 class GymjudgeApplicationTests {
 
-//    @Autowired
-//    private TestEntityManager entityManager;
-//
-//    @Autowired
-//    private PersonRepositoryDEMO personRepositoryDEMO;
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
+    private PersonRepositoryDEMO personRepositoryDEMO;
 
     @Test
     void contextLoads() {
-//        PersonDEMO person = new PersonDEMO("Frank", "Reich");
-//
-//        entityManager.persist(person);
-//        entityManager.flush();
-//
-//        PersonDEMO personFromDB = personRepositoryDEMO.findByFirstName(person.getFirstName());
-//
+        PersonDEMO person = new PersonDEMO("Frank", "Reich");
+
+        entityManager.persist(person);
+        entityManager.flush();
+
+        PersonDEMO personFromDB = personRepositoryDEMO.findByFirstName(person.getFirstName());
+
 //        assertThat(personFromDB.getFirstName()).isEqualTo(person.getFirstName());
         assertThat("test").isEqualTo("test");
     }
