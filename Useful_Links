@@ -1,0 +1,11 @@
+Working/Setting up MySql and *Hibernate*:
+https://spring.io/guides/gs/accessing-data-mysql/
+
+Basic working with Spring boot and *Thymeleaf* for setting up the html, css and controllers:
+https://o7planning.org/de/11545/anleitung-spring-boot-und-thymeleaf
+
+Add / edit Data in Database *Crud*:
+https://www.baeldung.com/spring-boot-crud-thymeleaf
+
+creating a Login:
+https://hellokoding.com/registration-and-login-example-with-spring-security-spring-boot-spring-data-jpa-hsql-jsp/
