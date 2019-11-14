@@ -1,0 +1,27 @@
+body {
+    font-family: sans-serif;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 10pt;
+    grid-row-gap: 5pt;
+}
+
+.grid-item {
+    border: solid black 1pt;
+    padding: 0pt 10pt 10pt 10pt;
+}
+
+.btn {
+    grid-column: 2;
+}
+
+#judgeArea {
+    background-color: lightgreen;
+}
+
+#adminArea {
+    background-color: orange;
+}

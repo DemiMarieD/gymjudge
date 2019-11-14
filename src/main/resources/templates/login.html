@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GymJudge Login</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styleDEMO.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+<body>
+<h2>
+    Login
+</h2>
+
+<div class="grid-container">
+    <div class="grid-item" id="judgeArea">
+        <h3>
+            Judge Login
+        </h3>
+        <form id="judgeLogin">
+            <div class="grid-container">
+                <label class="col-form-label">User: </label>
+                <input class="form-control" type="text" id="judgeUser">
+                <label class="col-form-label">Password: </label>
+                <input class="form-control" type="password" id="judgePassword">
+                <button class="btn">
+                    <label>Login</label>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="grid-item" id="adminArea">
+        <h3>
+            Administrator Login
+        </h3>
+        <form id="adminLogin">
+            <div class="grid-container">
+                <label class="col-from-label">User: </label>
+                <input class="form-control" type="text" id="adminUser">
+                <label class="col-from-label">Password: </label>
+                <input class="form-control" type="password" id="adminPassword">
+                <button class="btn" id="btn" onclick="location.href='/createCompetition'; return false;">
+                    <label>Login</label>
+                </button>
+                <button class="btn">
+                    <label>Register</label>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
