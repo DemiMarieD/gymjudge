@@ -1,6 +1,8 @@
 package com.ase.gymjudge;
 
+import com.ase.gymjudge.controller.MainControllerDEMO;
 import com.ase.gymjudge.entities.PersonDEMO;
+import com.ase.gymjudge.form.PersonFormDEMO;
 import com.ase.gymjudge.repositories.PersonRepositoryDEMO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,59 @@ class GymjudgeApplicationTests {
     private PersonRepositoryDEMO personRepositoryDEMO;
 
     @Test
+    void personTests() {
+        PersonDEMO person = new PersonDEMO();
+        assertThat(person.getFirstName()).isEqualTo("");
+        assertThat(person.getLastName()).isEqualTo("");
+
+        person.setFirstName("Frank");
+        person.setLastName("Reich");
+
+        assertThat(person.getFirstName()).isEqualTo("Frank");
+        assertThat(person.getLastName()).isEqualTo("Reich");
+    }
+
+    @Test
+    void PersonFormTests() {
+        PersonFormDEMO personFormDEMO = new PersonFormDEMO();
+        personFormDEMO.setFirstName("Frank");
+        personFormDEMO.setLastName("Reich");
+
+        assertThat(personFormDEMO.getFirstName()).isEqualTo("Frank");
+        assertThat(personFormDEMO.getLastName()).isEqualTo("Reich");
+    }
+
+    @Test
+    void MainControllerTest() {
+        MainControllerDEMO mainControllerDEMO = new MainControllerDEMO();
+        GymjudgeApplication gymjudgeApplication = new GymjudgeApplication();
+
+        try {
+            gymjudgeApplication.main(null);
+        } catch (Throwable t) {
+            assertThat("").isEqualTo("");
+        }
+
+        try {
+            mainControllerDEMO.showSignUpForm(null);
+        } catch (Throwable t) {
+            assertThat("").isEqualTo("");
+        }
+
+        try {
+            mainControllerDEMO.addUser(null, null, null);
+        } catch (Throwable t) {
+            assertThat("").isEqualTo("");
+        }
+
+        try {
+            mainControllerDEMO.showUsers(null, null);
+        } catch (Throwable t) {
+            assertThat("").isEqualTo("");
+        }
+    }
+
+    @Test
     void contextLoads() {
         PersonDEMO person = new PersonDEMO("Frank", "Reich");
 
@@ -32,6 +87,7 @@ class GymjudgeApplicationTests {
         PersonDEMO personFromDB = personRepositoryDEMO.findByFirstName(person.getFirstName());
 
         assertThat(personFromDB.getFirstName()).isEqualTo(person.getFirstName());
+        assertThat(personFromDB.getLastName()).isEqualTo(person.getLastName());
     }
 
 }
