@@ -17,7 +17,8 @@ public class PersonDEMO {
     private String lastName;
 
     public PersonDEMO() {
-
+        firstName = "";
+        lastName = "";
     }
 
     public PersonDEMO(String firstName, String lastName) {
