@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Entity // This tells Hibernate to make a table out of this class
-public class PersonDEMO {
+public class Admin {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
@@ -15,27 +15,42 @@ public class PersonDEMO {
     @NotBlank(message = "Name is mandatory")
     private String firstName;
     private String lastName;
+    private String club;
+    private String login;
+    private String password;
 
-    public PersonDEMO() {
-
+    //Setter Methods
+    public Integer getId() {
+        return id;
     }
-
-    public PersonDEMO(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public String getFirstName(){
+        return firstName;
     }
-
-
     public String getLastName() {
         return lastName;
     }
+    public String getClub() {
+        return club;
+    }
+    public String getLogin() {
+        return login;
+    }
+    public String getPassword() {
+        return password;
+    }
 
+    //Getter Methods
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    public String getFirstName() {
-        return firstName;
+    public void setClub(String club) {
+        this.club = club;
+    }
+    public void setLogin(String login) {
+        this.login = login;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFirstName(String firstName) {
