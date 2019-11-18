@@ -48,37 +48,7 @@ class GymjudgeApplicationTests {
     }
 
     @Test
-    void MainControllerTest() {
-        MainControllerDEMO mainControllerDEMO = new MainControllerDEMO();
-        GymjudgeApplication gymjudgeApplication = new GymjudgeApplication();
-
-        try {
-            gymjudgeApplication.main(null);
-        } catch (Throwable t) {
-            assertThat("").isEqualTo("");
-        }
-
-        try {
-            mainControllerDEMO.showSignUpForm(null);
-        } catch (Throwable t) {
-            assertThat("").isEqualTo("");
-        }
-
-        try {
-            mainControllerDEMO.addUser(null, null, null);
-        } catch (Throwable t) {
-            assertThat("").isEqualTo("");
-        }
-
-        try {
-            mainControllerDEMO.showUsers(null, null);
-        } catch (Throwable t) {
-            assertThat("").isEqualTo("");
-        }
-    }
-
-    @Test
-    void contextLoads() {
+    void dbTest() {
         PersonDEMO person = new PersonDEMO("Frank", "Reich");
 
         entityManager.persist(person);
