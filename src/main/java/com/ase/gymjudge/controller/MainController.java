@@ -48,8 +48,7 @@ public class MainController {
 
     @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
     public String showLogin(Model model) {
-        Admin admin = new Admin();
-        model.addAttribute("admin", admin);
+        model.addAttribute("admin", new Admin());
         return "login";
     }
     @PostMapping("/login")
