@@ -23,7 +23,7 @@ public class MainController {
     @Autowired
     private CompetitionRepository compRepository;
 
-    @GetMapping("/")
+    @GetMapping({"/", "/index"})
     public String home(){
         return "index";
     }
