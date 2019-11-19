@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.Random;
+
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
 @Controller
@@ -91,4 +93,9 @@ public class MainController {
         return "showCompetitions";
     }
 
+    @GetMapping("/update-competitions")
+    public String updateComps(Competition comps, Model model) {
+        model.addAttribute("competitions", compRepository.findAll());
+        return "showCompetitions :: #table";
+    }
 }
