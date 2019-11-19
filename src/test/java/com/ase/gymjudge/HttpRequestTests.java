@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class HttpRequestTests {
-    @LocalServerPort
+   /* @LocalServerPort
     private int port;
 
     @Autowired
@@ -30,5 +30,5 @@ public class HttpRequestTests {
     public void showUserTest() {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/showUser",
                 String.class)).contains("Users");
-    }
+    }*/
 }

@@ -1,24 +1,16 @@
 package com.ase.gymjudge;
 
-import com.ase.gymjudge.controller.MainControllerDEMO;
-import com.ase.gymjudge.entities.PersonDEMO;
-import com.ase.gymjudge.form.PersonFormDEMO;
-import com.ase.gymjudge.repositories.PersonRepositoryDEMO;
-import org.junit.jupiter.api.Test;
+
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.assertj.core.api.Assertions.*;
 
 // @SpringBootTest
 @RunWith(SpringRunner.class)
 @DataJpaTest
 class GymjudgeApplicationTests {
 
-    @Autowired
+ /*   @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
@@ -59,5 +51,5 @@ class GymjudgeApplicationTests {
         assertThat(personFromDB.getFirstName()).isEqualTo(person.getFirstName());
         assertThat(personFromDB.getLastName()).isEqualTo(person.getLastName());
     }
-
+*/
 }
