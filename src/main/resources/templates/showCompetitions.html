@@ -32,8 +32,8 @@
                     <tbody>
                     <tr th:each="comp : ${competitions}">
                         <td th:text="${comp.name}"></td>
-                        <td th:text="${comp.startDate}"></td>
-                        <td th:text="${comp.endDate}"></td>
+                        <td th:text="${#dates.format(comp.startDate, 'EEE, dd.mm.yyyy')}"></td>
+                        <td th:text="${#dates.format(comp.endDate, 'EEE, dd.mm.yyyy')}"></td>
                         <td th:text="${comp.description}"></td>
                         <td th:text="${comp.type}"></td>
                         <td th:text="${comp.status}"></td>
