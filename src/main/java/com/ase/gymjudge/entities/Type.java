@@ -1,15 +1,12 @@
 package com.ase.gymjudge.entities;
 
-public enum Status {
-    CREATED("Created"),
-    OPEN("Open"),
-    CLOSED("Closed"),
-    ACTIVE("Active"),
-    FINISHED("Finished");
+public enum Type {
+    TURN10("Turn10"),
+    STUFENWETTKAMPF("Stufenwettkampf");
 
     private final String displayValue;
 
-    private Status(String displayValue) {
+    private Type(String displayValue) {
         this.displayValue = displayValue;
     }
 
