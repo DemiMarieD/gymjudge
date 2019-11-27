@@ -36,13 +36,13 @@
                         <td th:text="${comp.description}"></td>
                         <td th:text="${comp.type}"></td>
                         <td th:text="${comp.status}"></td>
-                        <td><a th:href="@{#}" class="btn btn-primary">Edit</a></td>
-                        <td><a th:href="@{#}" class="btn btn-primary">Delete</a></td>
+                        <td><a th:href="@{/home/competitions/edit/{id}(id=${comp.getId()})}" class="btn btn-primary">Edit</a></td>
+                        <td><a th:href="@{/home/competitions/delete/{id}(id=${comp.getId()})}" class="btn btn-primary">Delete</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="my-5"><a href="addcompetition" class="btn btn-primary">New Competition</a></p>
+            <p class="my-5"><a th:href="@{/home/competitions/new}" class="btn btn-primary">New Competition</a></p>
         </div>
     </div>
 </div>

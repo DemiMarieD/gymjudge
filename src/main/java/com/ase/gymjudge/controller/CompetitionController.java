@@ -24,7 +24,7 @@ public class CompetitionController {
 
     //Todo: impl edit and delete function
 
-    @RequestMapping(value = { "home/addcompetition" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
 
@@ -32,7 +32,7 @@ public class CompetitionController {
         model.setViewName ("home/addcompetition");
         return model;
     }
-    @PostMapping("home/addcompetition")
+    @PostMapping("home/competitions/new")
     public String addCompetition(@Valid Competition competition, BindingResult result, Model model) {
       //todo: check why using ModelAndView is causing errors in the Post Mapping...
         if (result.hasErrors()) {
@@ -61,6 +61,42 @@ public class CompetitionController {
         return model;
     }
 
+    @GetMapping("home/competitions/edit/{id}")
+    public String editCompetitions(@PathVariable("id") int id, Model model) {
+        Competition comp = compRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
+
+        model.addAttribute("competition", comp);
+        return "home/updatecompetition";
+    }
+
+    @PostMapping("home/competitions/update/{id}")
+    public String updateCompetitions(@PathVariable("id") int id, @Valid Competition comp,
+                             BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            comp.setId(id);
+            return "home/updatecompetition";
+        }
+        compRepository.save(comp);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+        model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
+        return "home/competitions";
+    }
+
+    @GetMapping("home/competitions/delete/{id}")
+    public String deleteCompetition(@PathVariable("id") int id, Model model) {
+        Competition comp = compRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
+        compRepository.delete(comp);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+        model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
+        return "home/competitions";
+    }
+
+    //todo: Not sure what this is for
     @GetMapping("/update-competitions")
     public String updateComps(Competition comps, Model model) {
         model.addAttribute("competitions", compRepository.findAll());

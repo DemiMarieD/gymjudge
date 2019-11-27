@@ -1,5 +1,7 @@
 package com.ase.gymjudge.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,9 +22,11 @@ public class Competition {
 
     private String description;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date endDate;
 
@@ -34,7 +38,7 @@ public class Competition {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    //Setter Methods
+
     public Integer getId() {
         return id;
     }
@@ -67,7 +71,11 @@ public class Competition {
         return description;
     }
 
-    //Getter Methods
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setAdminID(Integer adminID) {
         this.adminID = adminID;
     }
