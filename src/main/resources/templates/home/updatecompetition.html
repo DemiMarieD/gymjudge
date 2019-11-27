@@ -24,7 +24,7 @@
                     <div class="form-group col-md-6">
                         <label for="startdate" class="col-form-label">Start</label>
                         <input type="date" th:value="${#dates.format(competition.startDate, 'yyyy-mm-dd')}" th:name="startDate" th:id="startDate" class="form-control" id="startdate" placeholder="Start date">
-                        <!--span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="text-danger"></--span-->
+                        <!--span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="text-danger"></span-->
                     </div>
                     <div class="form-group col-md-6">
                         <label for="enddate" class="col-form-label">End</label>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Add Competition">
+                        <input type="submit" class="btn btn-primary" value="Update Competition">
                     </div>
                 </div>
             </form>
