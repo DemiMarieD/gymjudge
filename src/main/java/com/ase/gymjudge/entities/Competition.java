@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static javax.persistence.TemporalType.DATE;
+
 @Entity // This tells Hibernate to make a table out of this class
 public class Competition {
     @Id
@@ -22,9 +24,11 @@ public class Competition {
 
     private String description;
 
+
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date startDate;
+
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull

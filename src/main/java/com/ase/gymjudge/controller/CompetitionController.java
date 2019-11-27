@@ -73,13 +73,16 @@ public class CompetitionController {
     @PostMapping("home/competitions/update/{id}")
     public String updateCompetitions(@PathVariable("id") int id, @Valid Competition comp,
                              BindingResult result, Model model) {
-        if (result.hasErrors()) {
+      //todo: fix, date in html is making problems..
+          if (result.hasErrors()) {
             comp.setId(id);
             return "home/updatecompetition";
-        }
-        compRepository.save(comp);
+          }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
+        comp.setAdminID(user.getId());
+        compRepository.save(comp);
+
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "home/competitions";
     }
