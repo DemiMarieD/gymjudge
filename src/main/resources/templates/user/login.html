@@ -11,6 +11,7 @@
 </head>
 
 <body>
+<div class="container my-5">
 <div class="container">
     <div class="alert alert-danger" role="alert" th:if="${param.error}">
         The email or password is incorrect!
@@ -29,6 +30,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <div class="margin-top20 text-center"> Don't have an account? <a th:href="@{/signup}">Create an account</a></div>
     </form>
+</div>
 </div>
 </body>
 </html>

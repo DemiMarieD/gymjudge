@@ -23,6 +23,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "club")
+    private String club;
+
     @Column(name = "firstname")
     private String firstname;
 
@@ -53,6 +56,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getClub() {
+        return club;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
     }
 
     public String getFirstname() {

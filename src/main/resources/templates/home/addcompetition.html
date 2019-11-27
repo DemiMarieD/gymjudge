@@ -12,17 +12,12 @@
     <h2 class="mb-5">New Competition</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/addcompetition}" th:object="${competition}" method="post">
+            <form action="#" th:action="@{addcompetition}" th:object="${competition}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="name" class="col-form-label">Competition Name</label>
                         <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Competition Name">
                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="adminid" class="col-form-label">Created by</label>
-                        <input type="text" th:field="*{adminID}" class="form-control" id="adminid" placeholder="Admin ID">
-                        <span th:if="${#fields.hasErrors('adminID')}" th:errors="*{adminID}" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -52,7 +47,7 @@
                             th:value="${typeOpt}" th:text="${typeOpt.displayValue}"></option>
                         </select>
                         <!--input type="text" th:field="*{type}" class="form-control" id="type" placeholder="type"-->
-                        <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></span>
+                       <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="status" class="col-form-label">Status</label>
@@ -61,7 +56,7 @@
                                     th:value="${statusOpt}" th:text="${statusOpt.displayValue}"></option>
                         </select>
                         <!--input type="text" th:field="*{status}" class="form-control" id="status" placeholder="status"-->
-                        <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></span>
+                     <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
