@@ -73,7 +73,7 @@ public class CompetitionController {
     @PostMapping("home/competitions/update/{id}")
     public String updateCompetitions(@PathVariable("id") int id, @Valid Competition comp,
                              BindingResult result, Model model) {
-      //todo: fix, date in html is making problems..
+
           if (result.hasErrors()) {
             comp.setId(id);
             return "home/updatecompetition";

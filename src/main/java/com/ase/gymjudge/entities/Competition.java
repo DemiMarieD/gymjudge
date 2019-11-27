@@ -19,9 +19,7 @@ public class Competition {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
-    //todo: try to get from login token
     private Integer adminID;
-
     private String description;
 
 
