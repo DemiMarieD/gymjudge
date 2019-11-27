@@ -17,6 +17,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //todo take care of logout
+
     @RequestMapping(value= {"/", "/login"}, method=RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView model = new ModelAndView();

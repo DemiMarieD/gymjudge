@@ -22,14 +22,13 @@ public class CompetitionController {
     @Autowired
     private UserService userService;
 
-    //COMPETITIONS
+    //Todo: impl edit and delete function
+
     @RequestMapping(value = { "home/addcompetition" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-      //  User user = userService.findByEmail(auth.getName());
+
         model.addObject("competition", competition);
-       // model.addObject("adminId", user.getId());
         model.setViewName ("home/addcompetition");
         return model;
     }
