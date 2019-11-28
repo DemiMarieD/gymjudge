@@ -23,8 +23,6 @@ public class CompetitionController {
     @Autowired
     private UserService userService;
 
-    //Todo: impl edit and delete function
-
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
@@ -103,7 +101,9 @@ public class CompetitionController {
     // For live updates
     @GetMapping({"home/competitions/update-competitions", "home/update-competitions"})
     public String updateComps(Competition comps, Model model) {
-        model.addAttribute("competitions", compRepository.findAll());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+        model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "home/competitions :: #table";
     }
 
