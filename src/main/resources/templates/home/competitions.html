@@ -5,8 +5,8 @@
     <title>Competitions</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <script type="text/javascript" src="webjars/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/testJS.js" defer></script>
+    <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/testJS.js" defer></script>
 </head>
 <body>
 <div id="table" th:switch="${competitions}" class="container my-5">
@@ -24,9 +24,8 @@
                         <th>Description</th>
                         <th>Type</th>
                         <th>Status</th>
-                        <th>Admin</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,14 +36,13 @@
                         <td th:text="${comp.description}"></td>
                         <td th:text="${comp.type}"></td>
                         <td th:text="${comp.status}"></td>
-                        <td th:text="${comp.adminID}"></td>
-                        <td><a th:href="@{#}" class="btn btn-primary">Edit</a></td>
-                        <td><a th:href="@{#}" class="btn btn-primary">Delete</a></td>
+                        <td><a th:href="@{/home/competitions/edit/{id}(id=${comp.getId()})}" class="btn btn-primary">Edit</a></td>
+                        <td><a th:href="@{/home/competitions/delete/{id}(id=${comp.getId()})}" class="btn btn-primary">Delete</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="my-5"><a href="/addcompetition" class="btn btn-primary">New Competition</a></p>
+            <p class="my-5"><a th:href="@{/home/competitions/new}" class="btn btn-primary">New Competition</a></p>
         </div>
     </div>
 </div>

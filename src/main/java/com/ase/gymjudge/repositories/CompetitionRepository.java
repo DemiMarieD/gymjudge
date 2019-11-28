@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CompetitionRepository extends CrudRepository<Competition, Integer> {
     @Query(value = "select c from Competition c where c.adminID like ?1")
-    List<Competition> getAllByAdminID(Integer userId);
+    List<Competition> getCompetitionsByUserId(Integer userId);
 }
 
