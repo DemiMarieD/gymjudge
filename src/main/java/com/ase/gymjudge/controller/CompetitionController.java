@@ -100,7 +100,7 @@ public class CompetitionController {
         return "redirect:/home/competitions";
     }
 
-    //todo: Not sure what this is for
+    // For live updates
     @GetMapping({"home/competitions/update-competitions", "home/update-competitions"})
     public String updateComps(Competition comps, Model model) {
         model.addAttribute("competitions", compRepository.findAll());
