@@ -1,11 +1,15 @@
 package com.ase.gymjudge.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static javax.persistence.TemporalType.DATE;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Competition {
@@ -15,14 +19,16 @@ public class Competition {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
-    //todo: try to get from login token
     private Integer adminID;
-
     private String description;
 
+
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date startDate;
 
+
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date endDate;
 
@@ -34,7 +40,7 @@ public class Competition {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    //Setter Methods
+
     public Integer getId() {
         return id;
     }
@@ -67,7 +73,11 @@ public class Competition {
         return description;
     }
 
-    //Getter Methods
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setAdminID(Integer adminID) {
         this.adminID = adminID;
     }
