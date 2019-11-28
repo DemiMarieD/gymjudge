@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
@@ -49,7 +50,7 @@ public class CompetitionController {
         //model.setViewName ("home/competitions");
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addAttribute("adminId", user.getId());
-        return "home/competitions";
+        return "redirect:/home/competitions";
     }
 
     @GetMapping("home/competitions")
@@ -84,7 +85,7 @@ public class CompetitionController {
         compRepository.save(comp);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "home/competitions";
+        return "redirect:/home/competitions";
     }
 
     @GetMapping("home/competitions/delete/{id}")
@@ -96,11 +97,11 @@ public class CompetitionController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "home/competitions";
+        return "redirect:/home/competitions";
     }
 
     //todo: Not sure what this is for
-    @GetMapping("/update-competitions")
+    @GetMapping({"home/competitions/update-competitions", "home/update-competitions"})
     public String updateComps(Competition comps, Model model) {
         model.addAttribute("competitions", compRepository.findAll());
         return "home/competitions :: #table";
