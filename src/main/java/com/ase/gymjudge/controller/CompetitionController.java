@@ -40,7 +40,9 @@ public class CompetitionController {
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
+        //todo: check dates
         competition.setAdminID(user.getId());
+        //todo: check type (if-else) and create # judge login
         compRepository.save(competition);
 
        /* model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
