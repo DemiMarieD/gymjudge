@@ -9,20 +9,40 @@
 </head>
 <body>
 <div class="container my-5">
-    <div>
-        <h2 class="mb-5" th:object="${competition}">Some Infos on the Competition <span th:text="*{name}"></span></h2>
-
-        <p>
-            <a th:href="@{/home/competitions/edit/{id}(id=*{id})}" class="btn btn-primary">Edit</a>
-            <a th:href="@{/home/competitions/delete/{id}(id=*{id})}" class="btn btn-primary">Delete</a>
-        </p>
+    <div class="panel panel-default">
+        <h2 class="mb-5" th:object="${competition}">Infos on the Competition <span th:text="*{name}"></span></h2>
+        <div class="card mt-5">
+            <h5 class="card-header">Basic Infos</h5>
+            <div class="card-body">
+                <p>Start Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
+                <p>End Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
+                <p>Description: <span th:text="${competition.description}"></span></p>
+                <p>Type: <span th:text="${competition.type}"></span></p>
+                <p>Status: <span th:text="${competition.status}"></span></p>
+                <div class="ml-2">
+                    <a th:href="@{/home/competitions/edit/{id}(id=*{id})}" class="btn btn-primary">Edit</a>
+                    <a th:href="@{/home/competitions/delete/{id}(id=*{id})}" class="btn btn-primary">Delete</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <h3 class="mb-5" th:object="${competition}">Categories</h3>
-        <p>Participants</p>
+    <div class="card mt-5">
+        <h5 class="card-header">Categories</h5>
+        <div class="card-body">
+            <div class="panel-body">For each Category:
+                <ul>
+                    <li>New</li>
+                    <li>Add Participants</li>
+                    <li>Delete</li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div>
-        <h3 class="mb-5" th:object="${competition}">Judges and their login</h3>
+    <div class="card mt-5">
+        <h5 class="card-header">Judges</h5>
+        <div class="card-body">
+            <div class="panel-body">Their Login (make password hidden - button to show)</div>
+        </div>
     </div>
 </div>
 </body>

@@ -22,7 +22,7 @@ public class UserController {
 
     //todo take care of logout
 
-    @RequestMapping(value= {"/", "/login"}, method=RequestMethod.GET)
+    @RequestMapping(value= {"/login"}, method=RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView model = new ModelAndView();
         model.setViewName("user/login");
@@ -53,7 +53,7 @@ public class UserController {
             userService.save(user);
             model.addObject("msg", "User has been registered successfully!");
             model.addObject("user", new User());
-            model.setViewName("user/signup");
+            model.setViewName("user/login");
         }
 
         return model;
