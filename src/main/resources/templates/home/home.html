@@ -9,8 +9,22 @@
 <body>
 <div class="container my-5">
     <h1>Welcome <span th:utext="${userName}"></span></h1>
-    <a th:href="@{/logout}">Sign out</a>
-    <p><a th:href="@{/home/competitions}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Show Competitions</a></p>
+    <div>
+        <a th:href="@{/logout}">Sign out</a>
+        <!--p><a th:href="@{/home/competitions}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Show Competitions</a></p-->
+    </div>
+    <div>
+        <h3>Here are your competitions:</h3>
+    </div>
+    <div class="list-group" th:switch="${competitions}">
+        <h2 th:case="null">No competition yet!</h2>
+        <div th:case="*">
+            <div th:each="comp : ${competitions}">
+                <a th:text="${comp.name}" th:href="@{/home/competitions/view/{id}(id=${comp.getId()})}" class="list-group-item list-group-item-action"></a>
+            </div>
+        </div>
+    </div>
+    <p class="my-5"><a th:href="@{/home/competitions/new}" class="btn btn-primary">New Competition</a></p>
 </div>
 </body>
 </html>

@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
@@ -28,7 +27,7 @@ public class CompetitionController {
         Competition competition = new Competition();
 
         model.addObject("competition", competition);
-        model.setViewName ("home/addcompetition");
+        model.setViewName ("home/competitions/new");
         return model;
     }
     @PostMapping("home/competitions/new")
@@ -36,7 +35,7 @@ public class CompetitionController {
       //todo: check why using ModelAndView is causing errors in the Post Mapping...
         if (result.hasErrors()) {
            // model.setViewName ("home/addcompetition");
-            return "home/addcompetition";
+            return "home/competitions/new";
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
@@ -50,7 +49,7 @@ public class CompetitionController {
         //model.setViewName ("home/competitions");
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addAttribute("adminId", user.getId());
-        return "redirect:/home/competitions";
+        return "redirect:/home/home";
     }
 
     @GetMapping("home/competitions")
@@ -68,7 +67,16 @@ public class CompetitionController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
 
         model.addAttribute("competition", comp);
-        return "home/updatecompetition";
+        return "home/competitions/edit";
+    }
+
+    @GetMapping("home/competitions/view/{id}")
+    public String viewCompetition(@PathVariable("id") int id, Model model) {
+        Competition comp = compRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
+
+        model.addAttribute("competition", comp);
+        return "home/competitions/overview";
     }
 
     @PostMapping("home/competitions/update/{id}")
@@ -77,7 +85,7 @@ public class CompetitionController {
 
           if (result.hasErrors()) {
             comp.setId(id);
-            return "home/updatecompetition";
+            return "home/competitions/edit";
           }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
@@ -85,7 +93,7 @@ public class CompetitionController {
         compRepository.save(comp);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "redirect:/home/competitions";
+        return "redirect:/home/home";
     }
 
     @GetMapping("home/competitions/delete/{id}")
@@ -97,7 +105,7 @@ public class CompetitionController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "redirect:/home/competitions";
+        return "redirect:/home/home";
     }
 
     // For live updates

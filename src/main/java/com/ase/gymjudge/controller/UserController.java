@@ -2,6 +2,7 @@ package com.ase.gymjudge.controller;
 import javax.validation.Valid;
 
 import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController {
 
+    @Autowired
+    private CompetitionRepository compRepository;
     @Autowired
     private UserService userService;
 
@@ -61,7 +64,7 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
-
+        model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addObject("userName", user.getFirstname() + " " + user.getLastname());
         model.setViewName("home/home");
         return model;
