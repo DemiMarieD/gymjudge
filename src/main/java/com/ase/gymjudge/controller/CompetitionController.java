@@ -39,9 +39,9 @@ public class CompetitionController {
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
-        //todo: check dates
+        //todo: check DATES
         competition.setAdminID(user.getId());
-        //todo: check type (if-else) and create # judge login
+        //todo: check TYPE (if-else) and create # judge login
         compRepository.save(competition);
 
        /* model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
@@ -52,12 +52,13 @@ public class CompetitionController {
         return "redirect:/home/home";
     }
 
+    //should not be needed anymore
     @GetMapping("home/competitions")
     public ModelAndView showCompetitions(Competition competition, ModelAndView model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
         model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        model.setViewName("home/competitions");
+        model.setViewName("home/home");
         return model;
     }
 
