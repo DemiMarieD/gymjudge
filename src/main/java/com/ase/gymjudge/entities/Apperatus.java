@@ -3,7 +3,7 @@ package com.ase.gymjudge.entities;
 public enum Apperatus {
     //todo
     BARREN(""),
-    SCHWEBEBALCKEN("");
+    SCHWEBEBALKEN("");
 
     private final String displayValue;
 
