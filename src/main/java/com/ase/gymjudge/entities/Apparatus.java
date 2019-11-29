@@ -1,13 +1,13 @@
 package com.ase.gymjudge.entities;
 
-public enum Apperatus {
+public enum Apparatus {
     //todo
-    BARREN(""),
-    SCHWEBEBALKEN("");
+    BARREN("Barren"),
+    SCHWEBEBALKEN("Schwebebalken");
 
     private final String displayValue;
 
-    private Apperatus(String displayValue) {
+    private Apparatus(String displayValue) {
         this.displayValue = displayValue;
     }
 

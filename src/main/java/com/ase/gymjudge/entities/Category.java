@@ -16,16 +16,18 @@ public class Category {
     @Column(name = "label")
     private String label;
 
+    private String description;
+
     @ManyToOne(cascade= CascadeType.ALL)
     private Competition competition;
 
     @OneToMany(cascade= CascadeType.ALL)
     private Set<Participants> participants;
 
-    @NotNull
+  //  @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<Apperatus> apperatuses;
+    private Set<Apparatus> apparatuses;
 
     public int getId() {
         return id;
@@ -35,12 +37,20 @@ public class Category {
         return label;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Competition getCompetition() {
         return competition;
     }
 
-    public Set<Apperatus> getApperatuses() {
-        return apperatuses;
+    public Set<Apparatus> getApparatuses() {
+        return apparatuses;
     }
 
     public Set<Participants> getParticipants() {
@@ -59,8 +69,8 @@ public class Category {
         this.competition = competition;
     }
 
-    public void setApperatuses(Set<Apperatus> apperatuses) {
-        this.apperatuses = apperatuses;
+    public void setApparatuses(Set<Apparatus> apparatuses) {
+        this.apparatuses = apparatuses;
     }
 
     public void setParticipants(Set<Participants> participants) {

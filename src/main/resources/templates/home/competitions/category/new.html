@@ -1,15 +1,53 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Your Competition</title>
+    <title>Add Category</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
 </head>
 <body>
 <div class="container my-5">
-   <p>New Cat</p>
+    <h2 class="mb-5">New Category</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="#" th:action="@{/home/competitions/view/category/new/{comp_id}(comp_id=${comp_id})}" th:object="${category}" method="post">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="label" class="col-form-label">Category Label</label>
+                        <input type="text" th:field="*{label}" class="form-control" id="label" placeholder="Category Label">
+                        <span th:if="${#fields.hasErrors('label')}" th:errors="*{label}" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="desc" class="col-form-label">Description</label>
+                        <input type="text" th:field="*{description}" class="form-control" id="desc" placeholder="Category Description">
+                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- todo Apparatus-->
+                    <!--div class="form-group col-md-6">
+                        <label for="apparatus" class="col-form-label">Apparatus</label>
+                        <select id="apparatus" th:field="*{apparatuses}" class="form-control selcls">
+                            <option th:each="ApparatusOpt : ${T(com.ase.gymjudge.entities.Apparatus).values()}"
+                                    th:value="${ApparatusOpt}" th:text="${ApparatusOpt.displayValue}"></option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('apparatuses')}" th:errors="*{apparatuses}" class="text-danger"></span>
+                    </div-->
+                </div>
+                <div class="row">
+                    <!-- todo Participants-->
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-5">
+                        <input type="submit" class="btn btn-primary" value="Add Competition">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
-</html>
