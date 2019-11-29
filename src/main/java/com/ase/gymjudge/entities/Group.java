@@ -6,11 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Judge {
-    //#depending on type of competitions
-    //is connected to competition
+public class Group {
+    //each group has set of participants
+    //order of apperatus
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
 }

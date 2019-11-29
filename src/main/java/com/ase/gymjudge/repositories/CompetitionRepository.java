@@ -1,5 +1,6 @@
 package com.ase.gymjudge.repositories;
 
+import com.ase.gymjudge.entities.Category;
 import com.ase.gymjudge.entities.Competition;
 import com.ase.gymjudge.entities.Status;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +14,8 @@ public interface CompetitionRepository extends CrudRepository<Competition, Integ
 
     @Query(value = "select c from Competition c where c.status like ?1")
     List<Competition> getCompetitionsByStatus(Status status);
+
+    @Query(value = "select c.categories from Competition c where c.status like ?1")
+    List<Category> getCategories(Integer competitionId);
 }
 

@@ -22,6 +22,12 @@ public class CompetitionController {
     @Autowired
     private UserService userService;
 
+    public User getLoggedInUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+        return user;
+    }
+
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
@@ -37,8 +43,7 @@ public class CompetitionController {
            // model.setViewName ("home/addcompetition");
             return "home/competitions/new";
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(auth.getName());
+        User user = getLoggedInUser();
         //todo: check DATES
         competition.setAdminID(user.getId());
         //todo: check TYPE (if-else) and create # judge login
@@ -55,8 +60,7 @@ public class CompetitionController {
     //should not be needed anymore
     @GetMapping("home/competitions")
     public ModelAndView showCompetitions(Competition competition, ModelAndView model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(auth.getName());
+        User user = getLoggedInUser();
         model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.setViewName("home/home");
         return model;
@@ -88,8 +92,7 @@ public class CompetitionController {
             comp.setId(id);
             return "home/competitions/edit";
           }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(auth.getName());
+        User user = getLoggedInUser();
         comp.setAdminID(user.getId());
         compRepository.save(comp);
 
@@ -103,8 +106,7 @@ public class CompetitionController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
         compRepository.delete(comp);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(auth.getName());
+        User user = getLoggedInUser();
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "redirect:/home/home";
     }
@@ -112,8 +114,7 @@ public class CompetitionController {
     // For live updates
     @GetMapping({"home/competitions/update-competitions", "home/update-competitions"})
     public String updateComps(Competition comps, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(auth.getName());
+        User user = getLoggedInUser();
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "home/competitions :: #table";
     }

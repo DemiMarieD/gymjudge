@@ -30,6 +30,16 @@
         <h5 class="card-header">Categories</h5>
         <div class="card-body">
             <div class="panel-body">For each Category:
+                <div class="list-group" th:switch="${competition.getCategories()}">
+                    <h2 th:case="null">No categories yet!</h2>
+                    <div th:case="*">
+                        <div th:each="cat : ${competition.getCategories()}">
+                            <p th:text="${cat.label}" class="list-group-item list-group-item-action"></p>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="my-5"><a th:href="@{/home/competitions/view/newcategory/{id}(id=*{id})}" class="btn btn-primary">New Category</a></p>
                 <ul>
                     <li>New</li>
                     <li>Add Participants</li>

@@ -1,5 +1,13 @@
 package com.ase.gymjudge.entities;
 
-public class Scoring {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class Scoring {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 }

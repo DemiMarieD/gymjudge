@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.TemporalType.DATE;
 
@@ -22,11 +23,9 @@ public class Competition {
     private Integer adminID;
     private String description;
 
-
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date startDate;
-
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
@@ -40,6 +39,8 @@ public class Competition {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @OneToMany
+    private List<Category> categories;
 
     public Integer getId() {
         return id;
@@ -73,6 +74,9 @@ public class Competition {
         return description;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -106,4 +110,7 @@ public class Competition {
         this.type = type;
     }
 
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
 }
