@@ -1,8 +1,13 @@
 package com.ase.gymjudge.repositories;
 
+import com.ase.gymjudge.entities.Bracket;
 import com.ase.gymjudge.entities.Category;
-import com.ase.gymjudge.entities.Group;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface GroupRepository extends CrudRepository<Group, Integer> {
+import java.util.List;
+
+public interface GroupRepository extends CrudRepository<Bracket, Integer> {
+    @Query(value = "select b from Bracket b")
+    List<Bracket> getAllGroups();
 }

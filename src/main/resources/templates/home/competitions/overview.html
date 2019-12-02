@@ -49,6 +49,29 @@
         </div>
     </div>
     <div class="card mt-5">
+        <h5 class="card-header">Groups</h5>
+        <div class="card-body">
+            <div class="panel-body">For each Group:
+                <div class="list-group" th:switch="${competition.getGroups()}">
+                    <h2 th:case="null">No groups yet!</h2>
+                    <div th:case="*">
+                        <div th:each="group : ${competition.getGroups()}">
+                            <p th:text="${group.name}" class="list-group-item list-group-item-action"></p>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="my-5"><a th:href="@{/home/competitions/view/group/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Group</a></p>
+                <ul>
+                    <li>New</li>
+                    <li>Add Participants</li>
+                    <li>Add Apparatus</li>
+                    <li>Delete</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
         <h5 class="card-header">Judges</h5>
         <div class="card-body">
             <div class="panel-body">Their Login (make password hidden - button to show)</div>

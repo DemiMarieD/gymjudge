@@ -31,7 +31,7 @@ public class Participants {
     private Category category;
 
     @ManyToOne
-    private Group group;
+    private Bracket group;
 
 
     public void setId(int id) {
@@ -82,11 +82,11 @@ public class Participants {
         return category;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(Bracket group) {
         this.group = group;
     }
 
-    public Group getGroup() {
+    public Bracket getGroup() {
         return group;
     }
 }

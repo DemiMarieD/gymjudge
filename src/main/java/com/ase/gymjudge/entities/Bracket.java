@@ -5,9 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-public class Group {
-    //each group has set of participants
-    //order of apperatus
+public class Bracket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -19,12 +17,12 @@ public class Group {
     @ManyToOne(cascade = CascadeType.ALL)
     private Competition competition;
 
-    @NotNull
+    // @NotNull
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Apparatus> apparatuses;
 
-    @NotNull
+    // @NotNull
     @ElementCollection
     // @Column(name = "gymnastIDs")
     private List<Integer> GymnastIDs;
