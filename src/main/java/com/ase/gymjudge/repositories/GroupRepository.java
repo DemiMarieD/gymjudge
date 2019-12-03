@@ -1,7 +1,6 @@
 package com.ase.gymjudge.repositories;
 
 import com.ase.gymjudge.entities.Bracket;
-import com.ase.gymjudge.entities.Category;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
