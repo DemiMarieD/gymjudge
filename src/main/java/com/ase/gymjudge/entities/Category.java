@@ -2,6 +2,7 @@ package com.ase.gymjudge.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,7 @@ public class Category {
     private Competition competition;
 
     @OneToMany(cascade= CascadeType.ALL)
-    private Set<Participants> participants;
+    private List<Participants> participants;
 
   //  @NotNull
     @ElementCollection
@@ -53,7 +54,7 @@ public class Category {
         return apparatuses;
     }
 
-    public Set<Participants> getParticipants() {
+    public List<Participants> getParticipants() {
         return participants;
     }
 
@@ -73,7 +74,7 @@ public class Category {
         this.apparatuses = apparatuses;
     }
 
-    public void setParticipants(Set<Participants> participants) {
+    public void setParticipants(List<Participants> participants) {
         this.participants = participants;
     }
 }

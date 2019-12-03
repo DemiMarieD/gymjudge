@@ -26,12 +26,11 @@ public class Participants {
     @NotNull
     private Date birthday;
 
-    @NotNull
     @ManyToOne
     private Category category;
 
     @ManyToOne
-    private Group group;
+    private Grouping grouping;
 
 
     public void setId(int id) {
@@ -82,11 +81,11 @@ public class Participants {
         return category;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGrouping(Grouping grouping) {
+        this.grouping = grouping;
     }
 
-    public Group getGroup() {
-        return group;
+    public Grouping getGrouping() {
+        return grouping;
     }
 }

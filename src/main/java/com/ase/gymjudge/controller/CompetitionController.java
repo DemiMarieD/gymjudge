@@ -105,7 +105,7 @@ public class CompetitionController {
         Competition comp = compRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
         compRepository.delete(comp);
-
+        //todo remove categories and participants
         User user = getLoggedInUser();
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "redirect:/home/home";
