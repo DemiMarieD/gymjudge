@@ -26,10 +26,11 @@ public class Participants {
     @NotNull
     private Date birthday;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Category category;
 
-    @ManyToOne
+    //todo check how to.
+    @ManyToOne (cascade= CascadeType.ALL)
     private Grouping grouping;
 
 

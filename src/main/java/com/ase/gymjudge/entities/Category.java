@@ -19,10 +19,10 @@ public class Category {
 
     private String description;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Competition competition;
 
-    @OneToMany(cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade= CascadeType.ALL)
     private List<Participants> participants;
 
   //  @NotNull

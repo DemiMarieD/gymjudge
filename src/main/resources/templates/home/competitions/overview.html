@@ -34,6 +34,7 @@
                     <h2 th:case="null">No categories yet!</h2>
                     <div th:case="*">
                         <div class="card mt-2" th:each="cat : ${competition.getCategories()}">
+                            <!--Todo: remove/edit option for Category-->
                            <p class="card-header"><span th:text="${cat.label}" ></span>
                                <span>(<span th:text="${cat.getParticipants().size()}"></span> Participants)</span>
                                <!--button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -45,6 +46,7 @@
                                 <div th:switch="${cat.getParticipants()}">
                                     <h5 th:case="null">No participants yet!</h5>
                                     <div th:case="*">
+                                        <!--Todo: remove/edit option for Participants-->
                                         <div th:each="pat : ${cat.getParticipants()}">
                                              <p><span th:text="${pat.firstname}"></span>, <span th:text="${pat.lastname}"></span></p>
                                         </div>
@@ -58,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+
                 <p class="my-5"><a th:href="@{/home/competitions/view/category/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Category</a></p>
             </div>
         </div>
