@@ -26,9 +26,9 @@ public class Category {
     private List<Participants> participants;
 
   //  @NotNull
-    @ElementCollection
+   /* @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<Apparatus> apparatuses;
+    private Set<Apparatus> apparatuses;*/
 
     public int getId() {
         return id;
@@ -50,9 +50,9 @@ public class Category {
         return competition;
     }
 
-    public Set<Apparatus> getApparatuses() {
+  /*  public Set<Apparatus> getApparatuses() {
         return apparatuses;
-    }
+    }*/
 
     public List<Participants> getParticipants() {
         return participants;
@@ -70,9 +70,9 @@ public class Category {
         this.competition = competition;
     }
 
-    public void setApparatuses(Set<Apparatus> apparatuses) {
+ /*  public void setApparatuses(Set<Apparatus> apparatuses) {
         this.apparatuses = apparatuses;
-    }
+    }*/
 
     public void setParticipants(List<Participants> participants) {
         this.participants = participants;

@@ -29,9 +29,12 @@ public class Participants {
     @ManyToOne (fetch = FetchType.LAZY)
     private Category category;
 
+    //todo competition
+
+
     //todo check how to.
     @ManyToOne (cascade= CascadeType.ALL)
-    private Grouping grouping;
+    private Bracket bracket;
 
 
     public void setId(int id) {
@@ -82,11 +85,11 @@ public class Participants {
         return category;
     }
 
-    public void setGrouping(Grouping grouping) {
-        this.grouping = grouping;
+    public void setBracket(Bracket bracket) {
+        this.bracket = bracket;
     }
 
-    public Grouping getGrouping() {
-        return grouping;
+    public Bracket getBracket() {
+        return bracket;
     }
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Grouping {
+public class Bracket {
     //each group has set of participants
     //order of apperatus
     @Id
