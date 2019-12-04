@@ -42,6 +42,9 @@ public class Competition {
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Category> categories;
 
+    @OneToMany
+    private List<Bracket> groups;
+
     public Integer getId() {
         return id;
     }
@@ -112,5 +115,13 @@ public class Competition {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<Bracket> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Bracket> groups) {
+        this.groups = groups;
     }
 }

@@ -1,18 +1,37 @@
 package com.ase.gymjudge.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
 public class Bracket {
-    //each group has set of participants
-    //order of apperatus
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
+    // @Column(name = "name")
+    private String name;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Competition competition;
+  
     @OneToMany(cascade= CascadeType.ALL)
     private List<Participants> participants;
+
+    // @NotNull
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<Apparatus> apparatuses;
+
+    // @NotNull
+    @ElementCollection
+    // @Column(name = "gymnastIDs")
+    private List<Integer> GymnastIDs;
+
+
+    // Getter and Setter
 
     public int getId() {
         return id;
@@ -21,6 +40,37 @@ public class Bracket {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Apparatus> getApparatuses() {
+        return apparatuses;
+    }
+
+    public void setApparatuses(List<Apparatus> apparatuses) {
+        this.apparatuses = apparatuses;
+    }
+
+    public List<Integer> getGymnastIDs() {
+        return GymnastIDs;
+    }
+
+    public void setGymnastIDs(List<Integer> gymnastIDs) {
+        GymnastIDs = gymnastIDs;
+    }
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
 
     public List<Participants> getParticipants() {
         return participants;

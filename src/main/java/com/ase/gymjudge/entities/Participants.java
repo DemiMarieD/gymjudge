@@ -31,7 +31,6 @@ public class Participants {
 
     //todo competition
 
-
     //todo check how to.
     @ManyToOne (cascade= CascadeType.ALL)
     private Bracket bracket;
