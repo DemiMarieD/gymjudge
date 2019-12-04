@@ -1,8 +1,7 @@
 package com.ase.gymjudge.repositories;
 
-import com.ase.gymjudge.entities.Category;
-import com.ase.gymjudge.entities.Group;
+import com.ase.gymjudge.entities.Bracket;
 import org.springframework.data.repository.CrudRepository;
 
-public interface GroupRepository extends CrudRepository<Group, Integer> {
+public interface GroupRepository extends CrudRepository<Bracket, Integer> {
 }
