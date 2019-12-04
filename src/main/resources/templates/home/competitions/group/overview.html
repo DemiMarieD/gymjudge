@@ -36,7 +36,19 @@
     <div class="card mt-5">
         <h5 class="card-header">Starting order</h5>
         <div class="card-body">
-            <div class="panel-body">Edit Apparatuses here here</div>
+            <div>
+                <label for="apparatuses" class="col-form-label">Status</label>
+                <select id="apparatuses" class="form-control selcls">
+                    <option th:each="apparatus : ${T(com.ase.gymjudge.entities.Apparatus).values()}"
+                            th:value="${apparatus}" th:text="${apparatus.displayValue}"></option>
+                </select>
+            </div>
+            <a href="#" class="btn btn-primary">Add Apparatus</a>
+            <ol ondragstart="">
+                <li th:each="apparatus : ${T(com.ase.gymjudge.entities.Apparatus).values()}" draggable="true" data-value="data1">
+                    <span th:text="${apparatus.displayValue}"></span>
+                </li>
+            </ol>
         </div>
     </div>
 </div>
