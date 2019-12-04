@@ -4,7 +4,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Entity
 public class Participants {
@@ -22,19 +25,41 @@ public class Participants {
     @NotNull
     private String club;
 
+    @NotNull
+    private Gender gender;
+
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date birthday;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    private Category category;
+    private Competition competition;
 
-    //todo competition
+    @ManyToOne //todo check what to do when deleting
+    private Category category;
 
     //todo check how to.
     @ManyToOne (cascade= CascadeType.ALL)
     private Bracket bracket;
 
+
+    public String getParticipantsInfo(){
+        String output = "";
+        output += firstname;
+        output += ", ";
+        output += lastname;
+        output += "  ";
+        output += gender.getDisplayValue();
+        output += "  ";
+        output += "(" + getAge() + ")";
+        return output;
+    }
+
+    public int getAge(){
+        Date today = new Date();
+        long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(today.getTime() - birthday.getTime());
+        return (int) differenceInSeconds/31536000;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -90,5 +115,21 @@ public class Participants {
 
     public Bracket getBracket() {
         return bracket;
+    }
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 }

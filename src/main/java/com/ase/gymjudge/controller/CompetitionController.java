@@ -106,7 +106,7 @@ public class CompetitionController {
         compRepository.save(comp);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "redirect:/home/home";
+        return "redirect:/home/competitions/view/" + String.valueOf(id);
     }
 
     @GetMapping("home/competitions/delete/{id}")

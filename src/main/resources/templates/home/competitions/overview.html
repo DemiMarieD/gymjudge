@@ -26,42 +26,56 @@
             </div>
         </div>
     </div>
-    <!-- todo link Gymnasts -->
+    <div class="card mt-5">
+        <h5 class="card-header">Gymnasts (<span th:text="${competition.getParticipants().size()}"></span>)</h5>
+        <div class="card-body">
+            <!-- todo link Gymnasts -->
+            <div th:switch="${competition.getParticipants()}">
+                <h5 th:case="null">No participants yet!</h5>
+                <div th:case="*">
+                    <!--Todo: remove/edit option for Participants-->
+
+                    <div th:each="pat : ${competition.getParticipants()}" list-group-item list-group-item-action>
+                        <div class="row">
+                            <div class="col">
+                                <p th:text="${pat.getParticipantsInfo()}"></p>
+                            </div>
+                            <div class="col-1">
+                                <a th:href="@{/home/competitions/view/participant/delete/{comp_id}/{pat_id}(comp_id=${competition.getId()}, pat_id=${pat.getId()})}"
+                                   class="list-group-item list-group-item-action"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="float:right;">
+                <p class="mr-5"><a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary"><i class="fas fa-user-plus"></i></a></p>
+            </div>
+        </div>
+    </div>
     <div class="card mt-5">
         <h5 class="card-header">Categories</h5>
         <div class="card-body">
-            <div class="panel-body accordion" id="accordionExample">
-                <div  th:switch="${competition.getCategories()}">
+            <div class="panel-body">
+                <div  class="list-group"  th:switch="${competition.getCategories()}">
                     <h2 th:case="null">No categories yet!</h2>
                     <div th:case="*">
-                        <div class="card mt-2" th:each="cat : ${competition.getCategories()}">
-                            <!--Todo: remove/edit option for Category-->
-                           <p class="card-header"><span th:text="${cat.label}" ></span>
-                               <span>(<span th:text="${cat.getParticipants().size()}"></span> Participants)</span>
-                               <!--button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                   <i class="far fa-angle-left"></i></button-->
-                           </p>
-                            <!--Todo: make collapse-->
-                            <!--div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample"-->
-                            <div class="card-body" >
-                                <div th:switch="${cat.getParticipants()}">
-                                    <h5 th:case="null">No participants yet!</h5>
-                                    <div th:case="*">
-                                        <!--Todo: remove/edit option for Participants-->
-                                        <div th:each="pat : ${cat.getParticipants()}">
-                                             <p><span th:text="${pat.firstname}"></span>, <span th:text="${pat.lastname}"></span></p>
-                                        </div>
-                                    </div>
+                        <div th:each="cat : ${competition.getCategories()}">
+                            <!--Todo: link remove/edit option for Category-->
+                            <div class="row">
+                                <div class="col">
+                                   <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                        class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
+                                       <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span></a>
                                 </div>
-                                <!--Todo: make go right-->
-                                <div style="float:right;">
-                                  <p class="mr-5"><a th:href="@{/home/competitions/view/category/participant/{comp_id}/{cat_id}(comp_id=*{id}, cat_id=${cat.getId()})}" class="btn btn-primary"><i class="fas fa-user-plus"></i></a></p>
+                                <div class="col-1">
+                                   <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                      class="list-group-item list-group-item-action"><i class="fas fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <p class="my-5"><a th:href="@{/home/competitions/view/category/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Category</a></p>
             </div>
         </div>

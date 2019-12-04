@@ -27,6 +27,7 @@ public class ParticipantController {
     @Autowired
     private ParticipantsRepository participantsRepository;
 
+/*
     @GetMapping("home/competitions/view/category/participant/{comp_id}/{cat_id}")
     public ModelAndView newParticipants(@PathVariable("comp_id") int comp_id, @PathVariable("cat_id") int cat_id, ModelAndView model) {
         Competition comp = compRepository.findById(comp_id)
@@ -54,7 +55,6 @@ public class ParticipantController {
 
         //add it to category table
         participant.setCategory(cat);
-        //todo: set competition?
         participantsRepository.save(participant);
 
         //add it to competition table
@@ -67,7 +67,7 @@ public class ParticipantController {
 
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
-
+*/
     //alternatively
     @GetMapping("/home/competitions/view/gymnasts/new/{comp_id}")
     public ModelAndView addParticipants(@PathVariable("comp_id") int comp_id, ModelAndView model) {
@@ -76,7 +76,7 @@ public class ParticipantController {
 
         model.addObject("competition", comp);
         model.addObject("participant", new Participants());
-        model.setViewName("home/gymnasts/new");
+        model.setViewName("home/competitions/gymnasts/new");
         return model;
     }
 
@@ -84,24 +84,33 @@ public class ParticipantController {
     public String addNewParticipant(@Valid Participants participant, @PathVariable("comp_id") int comp_id, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("comp_id", comp_id);
-            return "redirect:home/competitions/category/newParticipant";
+            return "redirect:home/competitions/gymnasts/new";
         }
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
 
-        //add it to category table
-        //todo: set competition?
-       // participantsRepository.save(participant);
+        //add participant
+        participant.setCompetition(comp);
+        participantsRepository.save(participant);
 
-        //add it to competition table
-       /* Category cat = participant.getCategory();
-        List<Participants> participants = cat.getParticipants();
+        //add to competition's list
+        List<Participants> participants = comp.getParticipants();
         participants.add(participant);
-        cat.setParticipants(participants);
-        categoryRepository.save(cat);*/
+        comp.setParticipants(participants);
+        compRepository.save(comp);
 
-        //model.addAttribute("competition", comp);
+        model.addAttribute("competition", comp);
+        return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
+    }
 
+    @GetMapping("home/competitions/view/participant/delete/{comp_id}/{pat_id}")
+    public String deleteCompetition(@PathVariable("comp_id") int comp_id, @PathVariable("pat_id") int pat_id, Model model) {
+        Competition comp = compRepository.findById(comp_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
+        Participants pat = participantsRepository.findById(pat_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + pat_id));
+
+        participantsRepository.delete(pat);
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
 
