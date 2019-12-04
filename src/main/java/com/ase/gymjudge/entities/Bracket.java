@@ -71,6 +71,7 @@ public class Bracket {
 
     public void setCompetition(Competition competition) {
         this.competition = competition;
+    }
 
     public List<Participants> getParticipants() {
         return participants;

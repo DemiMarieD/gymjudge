@@ -42,7 +42,7 @@ public class Competition {
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Category> categories;
 
-    @OneToMany
+    @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Bracket> groups;
 
     public Integer getId() {
