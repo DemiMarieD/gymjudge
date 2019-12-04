@@ -55,6 +55,14 @@ public class GroupController {
         competitionRepository.save(competition);
 
         model.addAttribute("competition", competition);
-        return "home/competitions/overview";
+        return "redirect:/home/competitions/view/" + comp_id;
+    }
+    @GetMapping("/home/groups/view/{group_id}")
+    public String viewGroup(@PathVariable("group_id") int group_id, Model model) {
+        Bracket bracket = groupRepository.findById(group_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Group Id: " + group_id));
+
+        model.addAttribute("bracket", bracket);
+        return "home/competitions/group/overview";
     }
 }

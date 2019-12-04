@@ -56,7 +56,7 @@
                     <h2 th:case="null">No groups yet!</h2>
                     <div th:case="*">
                         <div th:each="group : ${competition.getGroups()}">
-                            <p th:text="${group.name}" class="list-group-item list-group-item-action"></p>
+                            <a th:text="${group.name}" th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action"></a>
                             <div></div>
                         </div>
                     </div>
