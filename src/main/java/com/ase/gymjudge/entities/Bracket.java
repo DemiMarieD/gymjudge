@@ -16,6 +16,9 @@ public class Bracket {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Competition competition;
+  
+    @OneToMany(cascade= CascadeType.ALL)
+    private List<Participants> participants;
 
     // @NotNull
     @ElementCollection
@@ -68,5 +71,12 @@ public class Bracket {
 
     public void setCompetition(Competition competition) {
         this.competition = competition;
+
+    public List<Participants> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Participants> participants) {
+        this.participants = participants;
     }
 }

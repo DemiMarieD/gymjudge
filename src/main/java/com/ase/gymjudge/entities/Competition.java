@@ -39,7 +39,7 @@ public class Competition {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany
+    @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Category> categories;
 
     @OneToMany

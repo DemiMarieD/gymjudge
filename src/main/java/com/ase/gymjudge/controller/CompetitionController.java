@@ -1,8 +1,12 @@
 package com.ase.gymjudge.controller;
 //import org.springframework.http.ResponseEntity;
+import com.ase.gymjudge.entities.Category;
 import com.ase.gymjudge.entities.Competition;
+import com.ase.gymjudge.entities.Participants;
 import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
+import com.ase.gymjudge.repositories.ParticipantsRepository;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,11 +18,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class CompetitionController {
     @Autowired
     private CompetitionRepository compRepository;
+    @Autowired
+    private CategoryRepository catRepository;
+    @Autowired
+    private ParticipantsRepository patRepository;
     @Autowired
     private UserService userService;
 
@@ -104,6 +113,8 @@ public class CompetitionController {
     public String deleteCompetition(@PathVariable("id") int id, Model model) {
         Competition comp = compRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
+
+        //removes all categories connected and all participants connected to those!
         compRepository.delete(comp);
 
         User user = getLoggedInUser();

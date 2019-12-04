@@ -26,12 +26,14 @@ public class Participants {
     @NotNull
     private Date birthday;
 
-    @NotNull
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Category category;
 
-    @ManyToOne
-    private Bracket group;
+    //todo competition
+
+    //todo check how to.
+    @ManyToOne (cascade= CascadeType.ALL)
+    private Bracket bracket;
 
 
     public void setId(int id) {
@@ -82,11 +84,11 @@ public class Participants {
         return category;
     }
 
-    public void setGroup(Bracket group) {
-        this.group = group;
+    public void setBracket(Bracket bracket) {
+        this.bracket = bracket;
     }
 
-    public Bracket getGroup() {
-        return group;
+    public Bracket getBracket() {
+        return bracket;
     }
 }

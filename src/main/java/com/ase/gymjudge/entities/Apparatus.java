@@ -1,7 +1,6 @@
 package com.ase.gymjudge.entities;
 
 public enum Apparatus {
-    //todo fill in more later
     BARREN("Barren"),
     SCHWEBEBALKEN("Schwebebalken");
 
