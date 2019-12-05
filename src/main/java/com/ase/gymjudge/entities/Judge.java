@@ -76,6 +76,7 @@ public class Judge {
    public void setCompetition(Competition competition){
        this.competition = competition;
    }
+   //
 
 
 

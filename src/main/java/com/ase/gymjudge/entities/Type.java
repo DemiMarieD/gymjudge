@@ -25,5 +25,5 @@ public enum Type {
     }
   //  public List<Apparatus> getApparatuse(){
         //return apparatuse;
-    //}
+    ////}
 }
