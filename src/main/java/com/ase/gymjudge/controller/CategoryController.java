@@ -1,9 +1,6 @@
 package com.ase.gymjudge.controller;
 
-import com.ase.gymjudge.entities.Category;
-import com.ase.gymjudge.entities.Competition;
-import com.ase.gymjudge.entities.Role;
-import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
@@ -58,12 +55,6 @@ public class CategoryController {
         category.setCompetition(comp);
         categoryRepository.save(category);
 
-        //add it to competition table
-        List<Category> categories = comp.getCategories();
-        categories.add(category);
-        comp.setCategories(categories);
-        compRepository.save(comp);
-
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
 
@@ -99,12 +90,6 @@ public class CategoryController {
         category.setId(cat_id);
         categoryRepository.save(category);
 
-        //add it to competition table
-        List<Category> categories = comp.getCategories();
-        categories.add(category);
-        comp.setCategories(categories);
-        compRepository.save(comp);
-
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
 
@@ -115,7 +100,7 @@ public class CategoryController {
         Category cat = categoryRepository.findById(cat_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
 
-        //removes all categories connected and all participants connected to those!
+        //todo change: removes all categories connected and all participants connected to those!
         categoryRepository.delete(cat);
 
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);

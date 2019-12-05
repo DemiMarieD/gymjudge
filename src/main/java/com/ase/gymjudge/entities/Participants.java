@@ -35,7 +35,7 @@ public class Participants {
     @ManyToOne (fetch = FetchType.LAZY)
     private Competition competition;
 
-    @ManyToOne //todo check what to do when deleting
+    @ManyToOne (fetch = FetchType.LAZY) //todo check what to do when deleting
     private Category category;
 
     //todo check how to.
@@ -49,9 +49,9 @@ public class Participants {
         output += ", ";
         output += lastname;
         output += "  ";
-        output += gender.getDisplayValue();
-        output += "  ";
         output += "(" + getAge() + ")";
+        output += "  ";
+        output += gender.getDisplayValue();
         return output;
     }
 

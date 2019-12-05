@@ -28,14 +28,29 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!-- todo Participants-->
-                </div>
-                <div class="row">
                     <div class="col-md-6 mt-5">
                         <input type="submit" class="btn btn-primary" value="Save Changes">
                     </div>
                 </div>
             </form>
+            <div class="card mt-5">
+                <h5 class="card-header">Gymnasts (<span th:text="${category.getParticipants().size()}"></span>)</h5>
+                <div class="card-body">
+                    <div th:switch="${category.getParticipants()}">
+                        <h5 th:case="null">No participants yet!</h5>
+                        <div th:case="*">
+                            <div th:each="pat : ${category.getParticipants()}" >
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="my-5"><a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${comp_id})}" class="btn btn-primary"><i class="fas fa-user-plus"></i></a></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
