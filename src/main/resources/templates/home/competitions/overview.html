@@ -5,7 +5,7 @@
     <title>Your Competition</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-
+    <script type="text/javascript" src="/static/js/competitionOverview.js"></script>
 </head>
 <body>
 <div class="container my-5">
@@ -26,9 +26,27 @@
             </div>
         </div>
     </div>
+    <script>
+        function displayGymnasts() {
+            document.getElementById("GymnastBody").style.display = "block";
+            document.getElementById("dontShow").style.display = "none";
+            document.getElementById("show").style.display = "block";
+        }
+        function hideGymnasts() {
+            document.getElementById("GymnastBody").style.display = "none";
+            document.getElementById("dontShow").style.display = "block";
+            document.getElementById("show").style.display = "none";
+        }
+    </script>
     <div class="card mt-5">
-        <h5 class="card-header">Gymnasts (<span th:text="${competition.getParticipants().size()}"></span>)</h5>
-        <div class="card-body">
+        <div class="card-header">
+            <h5 class="row">
+                <span class="col"> Gymnasts (<span th:text="${competition.getParticipants().size()}"></span>)</span>
+                <a class="col-1" href="javascript:displayGymnasts()" id="dontShow"><i class="fas fa-angle-left"></i></a>
+                <a class="col-1" href="javascript:hideGymnasts()" id="show" style="display: none"><i class="fas fa-angle-down"></i> </a>
+            </h5>
+        </div>
+        <div class="card-body" id="GymnastBody" style="display: none">
             <div th:switch="${competition.getParticipants()}">
                 <h5 th:case="null">No participants yet!</h5>
                 <div th:case="*">
@@ -61,11 +79,11 @@
                                 <div class="col">
                                    <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
                                         class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
-                                       <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span></a>
+                                         <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>  </a>
                                 </div>
                                 <div class="col-1">
                                    <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
-                                      class="list-group-item list-group-item-action"><i class="fas fa-trash-alt"></i></a>
+                                      class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
                                 </div>
                             </div>
                         </div>
