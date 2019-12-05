@@ -31,7 +31,7 @@ public class JudgeServiceImpl implements JudgeService{
 
  @Override
  public void save(Judge judge) {
-     judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
+     //judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
      Role  judgeRole = roleRepository.findByRole("JUDGE");
      judge.setRoles(new HashSet<>(Arrays.asList(judgeRole)));
      judgeRepository.save(judge);
