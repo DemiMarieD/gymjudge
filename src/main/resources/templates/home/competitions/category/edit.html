@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <title>Edit Category</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
 </head>
 <body>
-
+<div class="container my-5">
+    <h2 class="mb-5">Edit Category: "<span th:text="${category.getLabel()}"></span>"</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="#" th:action="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${comp_id}, cat_id=${category.getId()})}" th:object="${category}" method="post">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="label" class="col-form-label">Category Label</label>
+                        <input type="text" th:field="*{label}" class="form-control" id="label" placeholder="Category Label">
+                        <span th:if="${#fields.hasErrors('label')}" th:errors="*{label}" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="desc" class="col-form-label">Description</label>
+                        <input type="text" th:field="*{description}" class="form-control" id="desc" placeholder="Category Description">
+                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-5">
+                        <input type="submit" class="btn btn-primary" value="Save Changes">
+                    </div>
+                </div>
+            </form>
+            <div class="card mt-5">
+                <h5 class="card-header">Gymnasts (<span th:text="${category.getParticipants().size()}"></span>)</h5>
+                <div class="card-body">
+                    <div th:switch="${category.getParticipants()}">
+                        <h5 th:case="null">No participants yet!</h5>
+                        <div th:case="*">
+                            <div th:each="pat : ${category.getParticipants()}" >
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="my-5"><a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${comp_id})}" class="btn btn-primary"><i class="fas fa-user-plus"></i></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-</html>

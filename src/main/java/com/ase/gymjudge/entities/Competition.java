@@ -40,13 +40,18 @@ public class Competition {
     private Status status;
 
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
+    private List<Participants> participants;
+
+    @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Category> categories;
 
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Bracket> groups;
 
+
     @OneToMany(mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Judge> judges;
+
 
     public Integer getId() {
         return id;
@@ -118,6 +123,14 @@ public class Competition {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setParticipants(List<Participants> participants) {
+        this.participants = participants;
+    }
+
+    public List<Participants> getParticipants() {
+        return participants;
     }
 
     public void setCategories(List<Category> categories) {

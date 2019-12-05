@@ -1,9 +1,6 @@
 package com.ase.gymjudge.controller;
 
-import com.ase.gymjudge.entities.Category;
-import com.ase.gymjudge.entities.Competition;
-import com.ase.gymjudge.entities.Role;
-import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
@@ -58,16 +55,56 @@ public class CategoryController {
         category.setCompetition(comp);
         categoryRepository.save(category);
 
-        //add it to competition table
-        List<Category> categories = comp.getCategories();
-        categories.add(category);
-        comp.setCategories(categories);
-        compRepository.save(comp);
-
-        //model.addAttribute("competition", comp);
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
 
+
+    @GetMapping("home/competitions/view/category/edit/{comp_id}/{cat_id}")
+    public ModelAndView editCategory(@PathVariable("comp_id") int comp_id, @PathVariable("cat_id") int cat_id, ModelAndView model) {
+        Competition comp = compRepository.findById(comp_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
+        Category cat = categoryRepository.findById(cat_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
+
+        model.addObject("comp_id", comp_id);
+        model.addObject("category", cat);
+        model.setViewName("home/competitions/category/edit");
+        return model;
+    }
+
+    @PostMapping("home/competitions/view/category/edit/{comp_id}/{cat_id}")
+    public String editCategory(@Valid Category category, @PathVariable("comp_id") int comp_id, @PathVariable("cat_id") int cat_id, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("comp_id", comp_id);
+            //todo not sure if it works
+            model.addAttribute("category", category);
+            return "home/competitions/category/edit";
+        }
+        Competition comp = compRepository.findById(comp_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
+        Category cat = categoryRepository.findById(cat_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
+
+        //add it to category table
+        category.setCompetition(comp);
+        category.setId(cat_id);
+        categoryRepository.save(category);
+
+        return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
+    }
+
+    @GetMapping("home/competitions/view/category/delete/{comp_id}/{cat_id}")
+    public String deleteCompetition(@PathVariable("comp_id") int comp_id, @PathVariable("cat_id") int cat_id, Model model) {
+        Competition comp = compRepository.findById(comp_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
+        Category cat = categoryRepository.findById(cat_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
+
+        //todo change: removes all categories connected and all participants connected to those!
+        categoryRepository.delete(cat);
+
+        return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
+    }
 
 
 

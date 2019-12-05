@@ -22,7 +22,7 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY)
     private Competition competition;
 
-    @OneToMany(mappedBy = "category", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade=CascadeType.ALL)
     private List<Participants> participants;
 
   //  @NotNull
