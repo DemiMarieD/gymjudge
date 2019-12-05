@@ -13,4 +13,5 @@ public class Judge {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+
 }

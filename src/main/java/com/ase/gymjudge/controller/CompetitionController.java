@@ -101,6 +101,7 @@ public class CompetitionController {
             comp.setId(id);
             return "home/competitions/edit";
           }
+
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
         compRepository.save(comp);
