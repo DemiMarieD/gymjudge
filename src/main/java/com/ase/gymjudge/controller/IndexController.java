@@ -37,8 +37,11 @@ public class IndexController {
 
         if (roles.size() == 0) {
             Role adminRole = new Role();
+            Role judgeRole = new Role();
+            judgeRole.setRole("JUDGE");
             adminRole.setRole("ADMIN");
             roleRepository.save(adminRole);
+            roleRepository.save(judgeRole);
         }
         // todo: figure out how to drop table and then run this if statement
         if (roles.size() != 1 || roles.get(0).getRole() != "ADMIN") {
