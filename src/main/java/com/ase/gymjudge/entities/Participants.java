@@ -4,8 +4,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +38,7 @@ public class Participants {
 
     //todo check how to.
     @ManyToOne (cascade= CascadeType.ALL)
-    private Bracket bracket;
+    private Grouping grouping;
 
 
     public String getParticipantsInfo(){
@@ -109,12 +107,12 @@ public class Participants {
         return category;
     }
 
-    public void setBracket(Bracket bracket) {
-        this.bracket = bracket;
+    public void setGrouping(Grouping grouping) {
+        this.grouping = grouping;
     }
 
-    public Bracket getBracket() {
-        return bracket;
+    public Grouping getGrouping() {
+        return grouping;
     }
 
     public Competition getCompetition() {

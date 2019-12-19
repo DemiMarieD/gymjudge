@@ -1,15 +1,17 @@
 package com.ase.gymjudge.repositories;
 
-import com.ase.gymjudge.entities.Bracket;
+import com.ase.gymjudge.entities.Apparatus;
+import com.ase.gymjudge.entities.Grouping;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface GroupRepository extends CrudRepository<Bracket, Integer> {
-    @Query(value = "select b from Bracket b")
-    List<Bracket> getAllGroups();
+public interface GroupRepository extends CrudRepository<Grouping, Integer> {
+    @Query(value = "select b from Grouping b")
+    List<Grouping> getAllGroups();
 
-    @Query(value = "select b from Bracket b where b.id = ?1")
-    List<Bracket> getBracketById(Integer groupId);
+    @Query(value = "select b from Grouping b where b.id = ?1")
+    List<Grouping> getGroupById(Integer groupId);
+
 }

@@ -3,9 +3,10 @@ package com.ase.gymjudge.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-public class Bracket {
+public class Grouping {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -30,6 +31,9 @@ public class Bracket {
     // @Column(name = "gymnastIDs")
     private List<Integer> GymnastIDs;
 
+    //todo: for each round the specific apparatus is def. here
+    @ManyToMany(cascade=CascadeType.ALL)
+    private Set<Order> orders;
 
     // Getter and Setter
 
