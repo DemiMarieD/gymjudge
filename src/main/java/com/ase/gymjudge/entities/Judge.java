@@ -2,6 +2,7 @@ package com.ase.gymjudge.entities;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "judge")
@@ -16,12 +17,6 @@ public class Judge {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "firstname")
-    private String firstname;
-
-    @Column(name = "lastname")
-    private String lastname;
-
     @Column(name = "password")
     private String password;
 
@@ -31,6 +26,10 @@ public class Judge {
 
    @ManyToOne(fetch = FetchType.LAZY)
     private Competition competition;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Apparatus apparatus;
 
 
    public Integer getJudgeID(){
@@ -44,18 +43,6 @@ public class Judge {
    }
    public void setEmail(String email){
        this.email = email;
-   }
-   public String getFirstname(){
-       return firstname;
-   }
-   public void setFirstname(String firstname){
-       this.firstname = firstname;
-   }
-   public String getLastname(){
-       return lastname;
-   }
-   public void setLastname(String lastname){
-       this.lastname = lastname;
    }
    public String getPassword(){
        return password;
@@ -76,6 +63,14 @@ public class Judge {
    public void setCompetition(Competition competition){
        this.competition = competition;
    }
+   public Apparatus getApparatus(){
+       return apparatus;
+   }
+   public void setApparatus(Apparatus apparatus){
+       this.apparatus = apparatus;
+   }
+
+
 
 
 }

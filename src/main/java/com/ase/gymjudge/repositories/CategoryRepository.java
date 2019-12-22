@@ -19,4 +19,5 @@ public interface CategoryRepository  extends CrudRepository<Category, Integer> {
     @Query(value = "select c.competition from Category c where c.id like ?1")
     Competition getCompetition(int categoryId);
 
+
 }

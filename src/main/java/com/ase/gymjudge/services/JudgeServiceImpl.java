@@ -20,8 +20,6 @@ public class JudgeServiceImpl implements JudgeService{
  private JudgeRepository judgeRepository;
  @Autowired
  private RoleRepository roleRepository;
- @Autowired
- private BCryptPasswordEncoder bCryptPasswordEncoder;
 
  @Override
  public Judge findByEmail(String email) {
@@ -31,12 +29,18 @@ public class JudgeServiceImpl implements JudgeService{
 
  @Override
  public void save(Judge judge) {
-     //judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
      Role  judgeRole = roleRepository.findByRole("JUDGE");
      judge.setRoles(new HashSet<>(Arrays.asList(judgeRole)));
      judgeRepository.save(judge);
-        }
+ }
+ @Override
+  public void delete(Integer judgeID){
+    judgeRepository.delete(judgeID);
+ }
+
 
 
     }
+
+
 
