@@ -4,6 +4,7 @@ import com.ase.gymjudge.entities.Bracket;
 import com.ase.gymjudge.entities.Competition;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.GroupRepository;
+import com.ase.gymjudge.repositories.ParticipantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class GroupController {
     private CompetitionRepository competitionRepository;
     @Autowired
     private GroupRepository groupRepository;
+    @Autowired
+    private ParticipantsRepository participantsRepository;
 
     @GetMapping("home/competitions/view/group/new/{comp_id}")
     public ModelAndView deleteGroup(@PathVariable("comp_id") int comp_id, ModelAndView model) {
