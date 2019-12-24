@@ -1,11 +1,10 @@
 package com.ase.gymjudge.controller;
 
-import com.ase.gymjudge.entities.Bracket;
+import com.ase.gymjudge.entities.Grouping;
 import com.ase.gymjudge.entities.Competition;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,13 +29,13 @@ public class GroupController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id: " + comp_id));
 
         model.addObject("comp_id", comp_id);
-        model.addObject("group", new Bracket());
+        model.addObject("group", new Grouping());
         model.setViewName("home/competitions/group/new");
         return model;
     }
 
     @PostMapping("home/competitions/view/group/new/{comp_id}")
-    public String addCompetition(@Valid Bracket group, @PathVariable("comp_id") int comp_id, BindingResult result, Model model) {
+    public String addCompetition(@Valid Grouping group, @PathVariable("comp_id") int comp_id, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("comp_id", comp_id);
             return "home/competitions/category/new";
@@ -49,7 +48,7 @@ public class GroupController {
         groupRepository.save(group);
 
         // add it to competition table
-        List<Bracket> groups = competition.getGroups();
+        List<Grouping> groups = competition.getGroups();
         groups.add(group);
         competition.setGroups(groups);
         competitionRepository.save(competition);
@@ -59,10 +58,10 @@ public class GroupController {
     }
     @GetMapping("/home/groups/view/{group_id}")
     public String viewGroup(@PathVariable("group_id") int group_id, Model model) {
-        Bracket bracket = groupRepository.findById(group_id)
+        Grouping grouping = groupRepository.findById(group_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Group Id: " + group_id));
 
-        model.addAttribute("bracket", bracket);
+        model.addAttribute("grouping", grouping);
         return "home/competitions/group/overview";
     }
 }

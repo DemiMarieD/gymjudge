@@ -10,4 +10,6 @@ public class Scoring {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+
 }

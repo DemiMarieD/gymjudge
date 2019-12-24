@@ -10,8 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static javax.persistence.TemporalType.DATE;
-
 @Entity // This tells Hibernate to make a table out of this class
 public class Competition {
     @Id
@@ -46,7 +44,7 @@ public class Competition {
     private List<Category> categories;
 
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
-    private List<Bracket> groups;
+    private List<Grouping> groups;
 
 
     @OneToMany(mappedBy = "competition", cascade= CascadeType.ALL)
@@ -140,11 +138,11 @@ public class Competition {
         this.judges = judges;
     }
 
-    public List<Bracket> getGroups() {
+    public List<Grouping> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Bracket> groups) {
+    public void setGroups(List<Grouping> groups) {
         this.groups = groups;
     }
 }
