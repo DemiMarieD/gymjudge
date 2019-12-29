@@ -102,7 +102,8 @@
                     <div th:case="*">
                         <div th:each="group : ${competition.getGroups()}">
                             <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
-                                <span th:text="${group.name}"></span> <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
+                                <span th:text="${group.name}"></span>
+                                <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
                             </a>
                             <div></div>
                         </div>

@@ -30,8 +30,18 @@
     <div class="card mt-5">
         <h5 class="card-header">Gymnasts</h5>
         <div class="card-body">
-            <div class="panel-body">Edit Gymnasts here</div>
-        </div>
+            <div th:switch="${grouping.getParticipants()}">
+                <h5 th:case="null">No participants yet!</h5>
+                <div th:case="*">
+                    <div th:each="pat : ${grouping.getParticipants()}" >
+                        <div class="row">
+                            <div class="col">
+                                <p class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
     <div class="card mt-5">
         <h5 class="card-header">Starting order</h5>

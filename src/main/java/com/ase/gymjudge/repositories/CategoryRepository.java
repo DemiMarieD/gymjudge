@@ -13,8 +13,8 @@ public interface CategoryRepository  extends CrudRepository<Category, Integer> {
     List<Category> getAllCategories();
 
     //@Query(value = "select p from Category c, Participants p where c.id like ?1 and c like p.category")
-    @Query(value = "select c.participants from Category c where c.id like ?1")
-    List<Participants> getParticipants(int categoryId);
+    //@Query(value = "select c.participants from Category c where c.id like ?1")
+    //List<Participants> getParticipants(int categoryId);
 
     @Query(value = "select c.competition from Category c where c.id like ?1")
     Competition getCompetition(int categoryId);

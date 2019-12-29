@@ -18,7 +18,7 @@ public class Grouping {
     @ManyToOne(cascade = CascadeType.ALL)
     private Competition competition;
   
-    @OneToMany(cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "grouping", cascade= CascadeType.ALL)
     private List<Participants> participants;
 
     // @NotNull
