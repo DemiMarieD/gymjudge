@@ -36,7 +36,7 @@ public class CompetitionController {
         User user = userService.findByEmail(auth.getName());
         return user;
     }
-
+//
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();

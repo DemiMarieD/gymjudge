@@ -36,3 +36,4 @@ public class JudgeServiceImpl implements JudgeService{
         judgeRepository.deleteById(judge.getJudgeID());
     }
 }
+//

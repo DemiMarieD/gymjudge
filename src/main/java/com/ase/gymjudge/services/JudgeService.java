@@ -7,3 +7,4 @@ public interface JudgeService {
     public void save(Judge judge);
     public void delete(Judge judge);
 }
+//

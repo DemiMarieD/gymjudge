@@ -23,3 +23,4 @@ public interface CompetitionRepository extends CrudRepository<Competition, Integ
     List<Judge> getJudges(Integer competitionId);
 }
 
+//

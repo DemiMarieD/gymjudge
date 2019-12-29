@@ -17,3 +17,4 @@ public interface JudgeRepository extends CrudRepository<Judge, Integer> {
     @Query(value = "delete from Judge j where j.judgeID like ?1")
     Judge getJudgeByJudgeID(int judgeID);
 }
+//

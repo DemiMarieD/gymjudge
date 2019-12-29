@@ -34,7 +34,7 @@ public class IndexController {
     @EventListener
     public void seed(ContextRefreshedEvent event) {
         List<Role> roles = roleRepository.getAllRoles();
-
+//
         if (roles.size() == 0) {
             Role adminRole = new Role();
             adminRole.setRole("ADMIN");

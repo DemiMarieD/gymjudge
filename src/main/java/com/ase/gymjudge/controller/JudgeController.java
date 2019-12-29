@@ -20,7 +20,7 @@ public class JudgeController {
 
     @Autowired
     private JudgeService judgeService;
-
+//
     @RequestMapping(value= {"/judge/login"}, method= RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView model = new ModelAndView();
