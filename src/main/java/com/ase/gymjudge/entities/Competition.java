@@ -10,8 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static javax.persistence.TemporalType.DATE;
-
 @Entity // This tells Hibernate to make a table out of this class
 public class Competition {
     @Id
@@ -40,10 +38,18 @@ public class Competition {
     private Status status;
 
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
+    private List<Participants> participants;
+
+    @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Category> categories;
 
-    @OneToMany
-    private List<Bracket> groups;
+    @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
+    private List<Grouping> groups;
+
+
+    @OneToMany(mappedBy = "competition", cascade= CascadeType.ALL)
+    private List<Judge> judges;
+
 
     public Integer getId() {
         return id;
@@ -81,6 +87,10 @@ public class Competition {
         return categories;
     }
 
+    public List<Judge> getJudges(){
+        return judges;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -113,15 +123,26 @@ public class Competition {
         this.type = type;
     }
 
+    public void setParticipants(List<Participants> participants) {
+        this.participants = participants;
+    }
+
+    public List<Participants> getParticipants() {
+        return participants;
+    }
+
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+    public void setJudges(List<Judge> judges){
+        this.judges = judges;
+    }
 
-    public List<Bracket> getGroups() {
+    public List<Grouping> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Bracket> groups) {
+    public void setGroups(List<Grouping> groups) {
         this.groups = groups;
     }
 }

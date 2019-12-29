@@ -22,14 +22,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Autowired
     private DataSource dataSource;
 
-                                        //todo what about club ? (error when added here)
+
     private final String USERS_QUERY = "select email, password, active from user where email=?";
     private final String ROLES_QUERY = "select u.email, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.role_id) where u.email=?";
+    private final String JUDGE_QUERY = "select login, password from user where login=?";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(USERS_QUERY)
+                //todo authentication -> error..
+               // .judgeByUsernameQuery(JUDGE_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
@@ -42,9 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/home/**").hasAuthority("ADMIN").anyRequest()
+                //todo area restricted to judges -> does not let me
+               // .antMatchers("/judge/**").hasAuthority("JUDGE").anyRequest()
                 .authenticated().and().csrf().disable()
                 .formLogin().loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/home/home")
+                //todo default success for judge -> not possible ?!
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
