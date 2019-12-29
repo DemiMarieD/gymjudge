@@ -32,7 +32,7 @@ public class JudgeServiceImpl implements JudgeService{
         judgeRepository.save(judge);
     }
     @Override
-    public void delete(Integer judgeID){
-        judgeRepository.delete(judgeID);
+    public void delete(Judge judge){
+        judgeRepository.deleteById(judge.getJudgeID());
     }
 }
