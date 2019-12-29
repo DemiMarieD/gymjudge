@@ -31,4 +31,8 @@ public class JudgeServiceImpl implements JudgeService{
         judge.setRole(role);
         judgeRepository.save(judge);
     }
+    @Override
+    public void delete(Integer judgeID){
+        judgeRepository.delete(judgeID);
+    }
 }

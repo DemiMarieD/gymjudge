@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface JudgeRepository extends CrudRepository<Judge, Integer> {
     Judge findByLogin(String login);
+    Judge delete(Integer judgeID);
 }
