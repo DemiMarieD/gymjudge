@@ -36,12 +36,14 @@
                     <div th:each="pat : ${grouping.getParticipants()}" >
                         <div class="row">
                             <div class="col">
-                                <p class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></p>
+                                <a th:href="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${pat.getCompetition().getId()}, pat_id=${pat.getId()})}"
+                                   class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
     <div class="card mt-5">
         <h5 class="card-header">Starting order</h5>
