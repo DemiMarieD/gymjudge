@@ -1,11 +1,9 @@
 package com.ase.gymjudge.controller;
 //import org.springframework.http.ResponseEntity;
-import com.ase.gymjudge.entities.Category;
-import com.ase.gymjudge.entities.Competition;
-import com.ase.gymjudge.entities.Participants;
-import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
+import com.ase.gymjudge.repositories.JudgeRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,8 @@ public class CompetitionController {
     @Autowired
     private ParticipantsRepository patRepository;
     @Autowired
+    private JudgeRepository judgeRepository;
+    @Autowired
     private UserService userService;
 
     public User getLoggedInUser(){
@@ -40,7 +40,8 @@ public class CompetitionController {
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-
+        List<Judge> judges = compRepository.getJudges(competition.getId());
+        model.addObject("judges", judges);
         model.addObject("competition", competition);
         model.setViewName ("home/competitions/new");
         return model;

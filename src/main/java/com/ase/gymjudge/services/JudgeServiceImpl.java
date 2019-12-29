@@ -7,17 +7,17 @@ import com.ase.gymjudge.repositories.JudgeRepository;
 import com.ase.gymjudge.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
+@Service
 public class JudgeServiceImpl implements JudgeService{
     @Autowired
     private JudgeRepository judgeRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Judge findByLogin(String login) {

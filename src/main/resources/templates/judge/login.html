@@ -1,16 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <head>
+        <title>Sign in</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+    </head>
 </head>
 <body>
-<!--todo login for judge
-maybe we have to use the user class for judge?!  so no new table just different status..
-A) then we would need to append the user class for the vars we need for the judge
-but then the forwarding to different page after login (then for users) will be hard
-and password will be hashed..
-
--->
+<div class="container my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}">
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.error}">
+            The email or password is incorrect!
+        </div>
+        <form th:action="@{/judge/login}" method="post" >
+            <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
+            <label for="login" class="sr-only">Email</label>
+            <input type="login" id="login" name="login" class="form-control" placeholder="Email" required autofocus>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </form>
+    </div>
+</div>
 </body>
 </html>

@@ -25,15 +25,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     private final String USERS_QUERY = "select email, password, active from user where email=?";
     private final String ROLES_QUERY = "select u.email, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.role_id) where u.email=?";
-    private final String JUDGE_QUERY = "select login, password from user where login=?";
+    private final String JUDGE_QUERY = "select login, password from judge where login=?";
+    private final String JUDGEROLE_QUERY = "select j.login, r.role from judge j inner join role r on (j.role_role_id = r.role_id) where login=?";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(USERS_QUERY)
-                //todo authentication -> error..
-               // .judgeByUsernameQuery(JUDGE_QUERY)
+                .usersByUsernameQuery(JUDGE_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
+                .authoritiesByUsernameQuery(JUDGEROLE_QUERY)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
@@ -44,22 +45,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-                .antMatchers("/home/**").hasAuthority("ADMIN").anyRequest()
-                //todo area restricted to judges -> does not let me
-               // .antMatchers("/judge/**").hasAuthority("JUDGE").anyRequest()
-                .authenticated().and().csrf().disable()
-                .formLogin().loginPage("/login").failureUrl("/login?error=true")
+                .antMatchers("/home/**").hasAuthority("ADMIN")
+                .antMatchers("/judge/**").hasAuthority("JUDGE")
+                .anyRequest().authenticated()
+                .and().csrf().disable()
+                //forAdmin
+                .formLogin().loginPage("/login")
+                .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/home/home")
-                //todo default success for judge -> not possible ?!
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .and().logout()
+                .and()
+                //forJudge
+                .formLogin().loginPage("/judge/login")
+                .failureUrl("/judge/login?error=true")
+                .defaultSuccessUrl("/")
+                .usernameParameter("login")
+                .passwordParameter("password")
+                .and()
+                .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
                 .and().rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(60*60)
-                .and().exceptionHandling().accessDeniedPage("/access_denied");
+                .and()
+                .exceptionHandling().accessDeniedPage("/access_denied");
     }
 
     @Bean
