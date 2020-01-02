@@ -44,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/livescores/**").permitAll()
                 .antMatchers("/home/**").hasAuthority("ADMIN").anyRequest()
                 //todo area restricted to judges -> does not let me
                // .antMatchers("/judge/**").hasAuthority("JUDGE").anyRequest()

@@ -1,11 +1,11 @@
 $(document).ready(function () {
     function again() {
-        $.get("update-competitions", function (fragment) {
-            $('#table').replaceWith(fragment);
+        let id = location.href.split('/').pop();
+        $.get('/update-scores/' + id, function (fragment) {
+            $('#scoreTable').replaceWith(fragment);
         });
     }
 
-    setInterval(again, 3000);
+    setInterval(again, 2000);
 });
-
 
