@@ -2,6 +2,7 @@ package com.ase.gymjudge.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -54,11 +55,17 @@ public class Grouping {
     }
 
     public List<Apparatus> getApparatuses() {
+        //apparatuses.add(Apparatus.BODEN);
+        //apparatuses.add(Apparatus.SPRUNG);
         return apparatuses;
     }
 
     public void setApparatuses(List<Apparatus> apparatuses) {
         this.apparatuses = apparatuses;
+    }
+
+    public void addApparatus() {
+        apparatuses.add(Apparatus.BODEN);
     }
 
     public List<Integer> getGymnastIDs() {
