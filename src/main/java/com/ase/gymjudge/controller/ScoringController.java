@@ -33,6 +33,7 @@ public class ScoringController {
     @Autowired
     private ScoreRepository scoreRepository;
 
+    // entering scores
     /*
     public Judge getJudge() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -41,18 +42,34 @@ public class ScoringController {
     }
     */
 
+    @GetMapping({"roundsoverview"})
+    public String showRoundsOverview() {
+
+
+        return "roundOverview";
+    }
+
+    // showing scores
     @GetMapping("livescores/{id}")
     public String showGroupOverview(@PathVariable("id") int id, Model model) {
         List<Score> scores = scoreRepository.getScoresByCompetition(id);
+        String compName = compRepository.findById(id).get().getName();
         model.addAttribute("scores", scores);
+        model.addAttribute("compName", compName);
         return "livescores";
     }
 
-    @GetMapping({"update-scores/{id}"})
+    @GetMapping({"livescores/update-scores/{id}"})
     public String updateScores(@PathVariable("id") int id, Model model) {
         List<Score> scores = scoreRepository.getScoresByCompetition(id);
         model.addAttribute("scores", scores);
-        return "livescores :: #scoreTable";
+        /*
+        if (scores.isEmpty()) {
+            return "livescores :: #scoring";
+        }
+        */
+
+        return "livescores :: #scoring";
     }
 
     /*
