@@ -9,24 +9,6 @@
 </head>
 <body>
 <div class="container my-5">
-    <div class="panel panel-default">
-        <h2 class="mb-5" th:object="${grouping}">Infos for Group <span th:text="*{name}"></span></h2>
-        <!--div class="card mt-5">
-            <h5 class="card-header">Basic Infos</h5>
-            <div class="card-body">
-                <p>Start Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
-                <p>End Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
-                <p>Description: <span th:text="${competition.description}"></span></p>
-                <p>Type: <span th:text="${competition.type}"></span></p>
-                <p>Status: <span th:text="${competition.status}"></span></p>
-                <div class="ml-2">
-                    <a th:href="@{/home/competitions/edit/{id}(id=*{id})}" class="btn btn-primary">Edit</a>
-                    <a th:href="@{/home/competitions/delete/{id}(id=*{id})}" class="btn btn-primary">Delete</a>
-                </div>
-            </div>
-        </div-->
-    </div>
-
     <script>
         function addApparatus() {
             var list = document.getElementById("dynamic-list");
@@ -60,7 +42,7 @@
             if (enumString.lastIndexOf(enumToRemove) >= 0) {
                 console.log("remove " + enumToRemove);
                 enumString = enumString.substring(0, enumString.lastIndexOf(enumToRemove)) +
-                        enumString.substring(enumString.lastIndexOf(enumToRemove) + enumToRemove.length, enumString.length);
+                    enumString.substring(enumString.lastIndexOf(enumToRemove) + enumToRemove.length, enumString.length);
                 if (enumString.indexOf(",,") > 0) {
                     console.log("case ,,");
                     enumString = enumString.substring(0, enumString.indexOf(",,")) +
@@ -76,13 +58,22 @@
             }
         }
     </script>
+    <form action="#" th:action="@{/home/groups/view/{group_id}(group_id=${group_id})}" th:object="${grouping}" method="post">
+        <div class="panel panel-default">
+            <h2 class="mb-5" th:object="${grouping}">Infos for Group <input type="text" th:field="*{name}" th:value="*{name}"></h2>
+        </div>
 
-    <div class="card mt-5">
-        <h5 class="card-header">Starting order</h5>
-        <div class="card-body">
-            <form action="#" th:action="@{/home/groups/view/{group_id}(group_id=${group_id})}" th:object="${grouping}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="submit" class="btn btn-primary" value="Back and Save">
+            </div>
+        </div>
+
+        <div class="card mt-5">
+            <h5 class="card-header">Starting order</h5>
+            <div class="card-body">
                 <div>
-                    <input hidden type="text" th:field="*{name}" th:value="*{name}">
+                    <!--input hidden type="text" th:field="*{name}" th:value="*{name}"-->
                     <input hidden type="text" th:field="*{apparatuses}" th:value="*{apparatuses}">
                     <input hidden type="text" th:field="*{competition}" th:value="*{competition}">
                 </div>
@@ -107,37 +98,33 @@
                         <span th:text="${apparatus.displayValue}"></span>
                     </li-->
                 </ol>
-                <!--ol ondragstart="">
-                    <li th:each="apparatus : ${grouping.getApparatuses()}" draggable="true" data-value="data1">
-                        <span th:text="${apparatus.displayValue}"></span>
-                    </li-->
-                </ol>
-                <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Save Order">
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <div class="card mt-5">
-        <h5 class="card-header">Gymnasts</h5>
-        <div class="card-body">
-            <div th:switch="${grouping.getParticipants()}">
-                <h5 th:case="null">No participants yet!</h5>
-                <div th:case="*">
-                    <div th:each="pat : ${grouping.getParticipants()}" >
-                        <div class="row">
-                            <div class="col">
-                                <a th:href="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${pat.getCompetition().getId()}, pat_id=${pat.getId()})}"
-                                   class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></a>
+        <div class="card mt-5">
+            <h5 class="card-header">Gymnasts</h5>
+            <div class="card-body">
+                <div th:switch="${grouping.getParticipants()}">
+                    <h5 th:case="null">No participants yet!</h5>
+                    <div th:case="*">
+                        <div th:each="pat : ${grouping.getParticipants()}" >
+                            <div class="row">
+                                <div class="col">
+                                    <a th:href="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${pat.getCompetition().getId()}, pat_id=${pat.getId()})}"
+                                       class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-5">
+                <input type="submit" class="btn btn-primary" value="Back and Save">
+            </div>
+        </div>
+    </form>
 </div>
 </body>
