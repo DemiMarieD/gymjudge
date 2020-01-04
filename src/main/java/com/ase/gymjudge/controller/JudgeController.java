@@ -20,14 +20,7 @@ public class JudgeController {
 
     //todo: check whats the problem
     @Autowired
-  // private JudgeService judgeService; //shows error
-
-    @RequestMapping(value= {"/judge/login"}, method= RequestMethod.GET)
-    public ModelAndView login() {
-        ModelAndView model = new ModelAndView();
-        model.setViewName("judge/login");
-        return model;
-    }
+    private JudgeService judgeService;
 
      /*  @GetMapping("judge/scoring")
     public ModelAndView newCategory(ModelAndView model) {

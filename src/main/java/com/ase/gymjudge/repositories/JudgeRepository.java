@@ -9,7 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface JudgeRepository extends CrudRepository<Judge, Integer> {
-    Judge findByLogin(String login);
+
+   // Judge findByEmail(String email);
 
     @Query(value = "select j from Judge j")
     List<Judge> getAllJudges();

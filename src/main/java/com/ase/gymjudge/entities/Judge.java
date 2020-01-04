@@ -12,12 +12,6 @@ public class Judge {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer judgeID;
 
-    @Column(name = "login")
-    private String login;
-
-    @Column(name = "password")
-    private String password;
-
     @ManyToOne(cascade=CascadeType.ALL)
     private Role role;
 
@@ -41,18 +35,6 @@ public class Judge {
    public void setJudgeID(Integer judgeID){
        this.judgeID = judgeID;
    }
-   public String getLogin(){
-       return login;
-   }
-   public void setLogin(String email){
-       this.login = email;
-   }
-   public String getPassword(){
-       return password;
-   }
-   public void setPassword(String password){
-       this.password = password;
-   }
    public Role getRole(){
        return role;
    }
@@ -66,8 +48,6 @@ public class Judge {
    public void setCompetition(Competition competition){
        this.competition = competition;
    }
-   //
-
 
 
 }

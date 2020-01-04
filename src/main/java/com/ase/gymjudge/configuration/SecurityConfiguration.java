@@ -25,16 +25,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     private final String USERS_QUERY = "select email, password, active from user where email=?";
     private final String ROLES_QUERY = "select u.email, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.role_id) where u.email=?";
-    private final String JUDGE_QUERY = "select login, password from judge where login=?";
-    private final String JUDGEROLE_QUERY = "select j.login, r.role from judge j inner join role r on (j.role_role_id = r.role_id) where login=?";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(USERS_QUERY)
-                .usersByUsernameQuery(JUDGE_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
-                .authoritiesByUsernameQuery(JUDGEROLE_QUERY)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
@@ -50,19 +46,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/home/**").hasAuthority("ADMIN")
                 .antMatchers("/judge/**").hasAuthority("JUDGE")
                 .anyRequest().authenticated()
-                .and().csrf().disable()
-                //forAdmin
-                .formLogin().loginPage("/login")
-                .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home/home")
-                .usernameParameter("email")
-                .passwordParameter("password")
                 .and()
-                //forJudge
-                .formLogin().loginPage("/judge/login")
-                .failureUrl("/judge/login?error=true")
-                .defaultSuccessUrl("/")
-                .usernameParameter("login")
+                .formLogin().loginPage("/login")
+                .loginProcessingUrl("/login")
+                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/index")
+                .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
                 .logout()
@@ -71,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .and().rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(60*60)
-                .and()
+                .and().csrf().disable()
                 .exceptionHandling().accessDeniedPage("/access_denied");
     }
 //
@@ -83,3 +72,107 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         return db;
     }
 }
+/*
+package com.ase.gymjudge.configuration;
+        import javax.sql.DataSource;
+
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
+        import org.springframework.core.annotation.Order;
+        import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+        import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+        import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+        import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+        import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+        import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+        import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+        import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+        import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+@Configuration
+@EnableWebSecurity
+public class SecurityConfiguration{
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private DataSource dataSource;
+
+
+    private final String USERS_QUERY = "select email, password, active from user where email=?";
+    private final String ROLES_QUERY = "select u.email, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.role_id) where u.email=?";
+    private final String JUDGE_QUERY = "select login, password from judge where login=?";
+    private final String JUDGEROLE_QUERY = "select j.login, r.role from judge j inner join role r on (j.role_role_id = r.role_id) where login=?";
+
+    @Configuration
+    @Order(1)
+    public static class SecurityConfigAdmin extends WebSecurityConfigurerAdapter{
+        public SecurityConfigAdmin(){
+            super();
+        }
+        @Override
+        protected void configure(HttpSecurity http) throws Exception{
+            http.authorizeRequests()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/login").permitAll()
+                    .antMatchers("/home/**").hasAuthority("ADMIN")
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .formLogin().loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/home/home")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .and().csrf().disable();
+
+        }
+
+    }
+
+    @Configuration
+    @Order(2)
+    public static class SecurityConfigJudge extends WebSecurityConfigurerAdapter{
+        public SecurityConfigJudge(){
+            super();
+        }
+
+        protected void configure(HttpSecurity http) throws Exception{
+            http.authorizeRequests()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/judge/**").hasAuthority("JUDGE")
+                    .antMatchers("/judge/judge_login").permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .formLogin()
+                    .loginPage("/judge/judge_login")
+                    .loginProcessingUrl("/judge/judge_login")
+                    .defaultSuccessUrl("/")
+                    .usernameParameter("login")
+                    .passwordParameter("password")
+                    .and().csrf().disable();
+        }
+    }
+
+    @Autowired
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+                .usersByUsernameQuery(USERS_QUERY)
+                .usersByUsernameQuery(JUDGE_QUERY)
+                .authoritiesByUsernameQuery(ROLES_QUERY)
+                .authoritiesByUsernameQuery(JUDGEROLE_QUERY)
+                .dataSource(dataSource)
+                .passwordEncoder(bCryptPasswordEncoder);
+    }
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+        db.setDataSource(dataSource);
+
+        return db;
+    }
+}
+
+*/
