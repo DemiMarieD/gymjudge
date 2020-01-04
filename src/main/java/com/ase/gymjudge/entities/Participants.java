@@ -37,7 +37,8 @@ public class Participants {
     private Category category;
 
     //todo check how to.
-    @ManyToOne (cascade= CascadeType.ALL)
+    //@ManyToOne (cascade= CascadeType.ALL)
+    @ManyToOne (fetch = FetchType.LAZY)
     private Grouping grouping;
 
 
