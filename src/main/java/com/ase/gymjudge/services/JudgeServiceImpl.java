@@ -19,11 +19,6 @@ public class JudgeServiceImpl implements JudgeService{
     @Autowired
     private RoleRepository roleRepository;
 
-    /*@Override
-    public Judge findByEmail(String email) {
-        return judgeRepository.findByLogin(login);
-    }*/
-
     @Override
     public void save(Judge judge) {
         Role role = roleRepository.findByRole("JUDGE");
@@ -35,3 +30,4 @@ public class JudgeServiceImpl implements JudgeService{
         judgeRepository.deleteById(judge.getJudgeID());
     }
 }
+//
