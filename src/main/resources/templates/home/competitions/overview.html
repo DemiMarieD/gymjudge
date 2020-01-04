@@ -101,18 +101,15 @@
                     <h2 th:case="null">No groups yet!</h2>
                     <div th:case="*">
                         <div th:each="group : ${competition.getGroups()}">
-                            <a th:text="${group.name}" th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action"></a>
+                            <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
+                                <span th:text="${group.name}"></span>
+                                <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
+                            </a>
                             <div></div>
                         </div>
                     </div>
                 </div>
                 <p class="my-5"><a th:href="@{/home/competitions/view/group/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Group</a></p>
-                <ul>
-                    <li>New</li>
-                    <li>Add Participants</li>
-                    <li>Add Apparatus</li>
-                    <li>Delete</li>
-                </ul>
             </div>
         </div>
     </div>

@@ -53,6 +53,13 @@
                                 th:value="${catOpt.id}"  th:text="${catOpt.getLabel()}"></option>
                     </select>
                 </div>
+                <div>
+                    <label for="grouping" class="col-form-label">Category for Competition "<span th:text="${competition.getName()}"></span>" </label>
+                    <select id="grouping" th:field="*{grouping}" class="form-control selcls" >
+                        <option th:each="groupOpt : ${competition.getGroups()}"
+                                th:value="${groupOpt.id}"  th:text="${groupOpt.getName()}"></option>
+                    </select>
+                </div>
                 <div class="row">
                     <div class="col-md-6 mt-5">
                         <input type="submit" class="btn btn-primary" value="Update Gymnast">
