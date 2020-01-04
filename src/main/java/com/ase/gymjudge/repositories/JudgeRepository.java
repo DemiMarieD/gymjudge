@@ -12,8 +12,8 @@ import java.util.List;
 public interface JudgeRepository extends CrudRepository<Judge, Integer> {
 
 
-    @Query(value = "SELECT u.email FROM USER u INNER JOIN user_role ur ON (u.id = ur.user_id) INNER JOIN role r ON (ur.role_id=r.role_id) WHERE r.role = 'JUDGE'")
-    List<User> judgesEmails();
+    /*@Query(value = "SELECT u.email FROM USER u INNER JOIN user_role ur ON (u.id = ur.user_id) INNER JOIN role r ON (ur.role_id=r.role_id) WHERE r.role = 'JUDGE'")
+    List<User> judgesEmails();*/
 
     @Query(value = "select j from Judge j")
     List<Judge> getAllJudges();
