@@ -31,8 +31,10 @@ public class GroupController {
         Competition competition = competitionRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id: " + comp_id));
 
+        Grouping newGroup = new Grouping();
+        newGroup.setCompetition(competition);
         model.addObject("comp_id", comp_id);
-        model.addObject("group", new Grouping());
+        model.addObject("group", newGroup);
         model.setViewName("home/competitions/group/new");
         return model;
     }
@@ -86,19 +88,12 @@ public class GroupController {
     }*/
     @PostMapping("/home/groups/view/{group_id}")
     public String saveGroup(@Valid Grouping grouping, @PathVariable("group_id") int group_id, Model model) {
-        // Grouping grouping = groupRepository.findById(group_id)
-                //.orElseThrow(() -> new IllegalArgumentException("Invalid Group Id: " + group_id));
         Competition competition = competitionRepository.findById(grouping.getCompetition().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + grouping.getCompetition().getId()));
-        System.out.println(grouping.getName());
-        System.out.println(grouping.getApparatuses());
-        System.out.println(grouping.getApparatuses().size());
-        System.out.println(competition.getId());
 
         grouping.setId(group_id);
         grouping.setCompetition(competition);
         groupRepository.save(grouping);
-        System.out.println("saved Group");
         return "redirect:/home/competitions/view/" + grouping.getCompetition().getId();
     }
 
