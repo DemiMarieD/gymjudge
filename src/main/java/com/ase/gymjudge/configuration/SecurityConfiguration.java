@@ -32,9 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(USERS_QUERY)
-                .usersByUsernameQuery(JUDGE_QUERY)
+                // .usersByUsernameQuery(JUDGE_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
-                .authoritiesByUsernameQuery(JUDGEROLE_QUERY)
+                // .authoritiesByUsernameQuery(JUDGEROLE_QUERY)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/livescores/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/home/**").hasAuthority("ADMIN")
-                .antMatchers("/judge/**").hasAuthority("JUDGE")
+                // .antMatchers("/judge/**").hasAuthority("JUDGE")
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 //forAdmin
@@ -59,12 +59,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .passwordParameter("password")
                 .and()
                 //forJudge
+                /*
                 .formLogin().loginPage("/judge/login")
                 .failureUrl("/judge/login?error=true")
                 .defaultSuccessUrl("/")
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .and()
+                 */
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
