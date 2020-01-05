@@ -69,13 +69,14 @@ public class JudgeController {
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
 
+
     @GetMapping("/home/competitions/view/judge/new/{comp_id}")
     public ModelAndView addJudges(@PathVariable("comp_id") int comp_id, ModelAndView model) {
         Competition comp = competitionRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
-
+        Judge judge = new Judge();
         model.addObject("competition", comp);
-        model.addObject("judge", new Judge());
+        model.addObject("judge", judge);
         model.setViewName("home/competitions/judge/new");
         return model;
     }
@@ -90,6 +91,11 @@ public class JudgeController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
         judge.setCompetition(comp);
         judgeRepository.save(judge);
+
+        List<Judge> judges = comp.getJudges();
+        judges.add(judge);
+        comp.setJudges(judges);
+        competitionRepository.save(comp);
         model.addAttribute("competition", comp);
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
