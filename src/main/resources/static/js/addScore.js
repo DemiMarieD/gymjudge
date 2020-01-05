@@ -1,18 +1,16 @@
-function updateUI(id) {
-    $('#form_' + id).submit();
-    $(document).find('.score_' + id).each(function () {
-        $(this).find('input').attr('disabled', true);
-    });
+$(document).ready(function() {
+    let id = $('.card-body:first').attr('id').split('_').pop();
+    displayRound(id);
+});
 
-    $('#save_' + id).get(0).type = 'hidden';
-    $('#edit_' + id).get(0).type = 'button';
+function displayRound(id) {
+    $('#roundBody_' + id).css('display', 'block');
+    $('#dontShow_' + id).css('display', 'none');
+    $('#show_' + id).css('display', 'block');
 }
 
-function makeEditable(id) {
-    $(document).find('.score_' + id).each(function () {
-        $(this).find('input').attr('disabled', false);
-    });
-
-    $('#edit_' + id).get(0).type = 'hidden';
-    $('#save_' + id).get(0).type = 'submit';
+function hideRound(id) {
+    $('#roundBody_' + id).css('display', 'none');
+    $('#dontShow_' + id).css('display', 'block');
+    $('#show_' + id).css('display', 'none');
 }

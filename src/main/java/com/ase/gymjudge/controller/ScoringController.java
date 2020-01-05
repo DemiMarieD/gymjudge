@@ -12,16 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -58,11 +56,20 @@ public class ScoringController {
 
         if (compRepository.findById(compId).isPresent()) {
             Competition comp = compRepository.findById(compId).get();
-            List<Grouping> groups = comp.getGroups();
+
+            List<Score> currScores = scoreRepository.getScoresByCompetition(comp.getId());
+            List<Integer> scoredPart = new ArrayList<>();
+
+            for (Score s : currScores) {
+                scoredPart.add(s.getParticipants().getId());
+            }
+
             model.addAttribute("comp", comp);
             model.addAttribute("score", new Score());
             model.addAttribute("apparatus", app);
-            // model.addAttribute("currScores", scoreRepository.getScoresByCompetition(comp.getId()));
+            model.addAttribute("scoredPart", scoredPart);
+            model.addAttribute("currScores", currScores);
+
 
             return "judge/scoring/roundOverview";
         }
@@ -70,12 +77,11 @@ public class ScoringController {
         return "redirect:/";
     }
 
-
     @PostMapping({"/roundsoverview"})
-    public void addScore(@RequestParam(name = "patId") int id, @Valid Score score, BindingResult result, Model model) {
+    public String addScore(@RequestParam(name = "patId") int id, @Valid Score score, BindingResult result, Model model) {
         if (result.hasErrors()) {
             System.err.println(result.getFieldError());
-            // return "judge/scoring/roundOverview";
+            return "judge/scoring/roundOverview";
         }
 
         score.setParticipants(patRepository.findById(id).orElseThrow(RuntimeException::new));
@@ -94,7 +100,69 @@ public class ScoringController {
 
         scoreRepository.save(score);
 
-        // return "judge/scoring/roundOverview";
+        return "redirect:/roundsoverview";
+    }
+
+    @PostMapping({"/roundsoverview/delete/{scoreId}"})
+    public String removeScore(@PathVariable("scoreId") int scoreId, Model model) {
+        scoreRepository.delete(scoreRepository.findById(scoreId).get());
+
+        return "redirect:/roundsoverview";
+    }
+
+    @GetMapping({"/roundsoverview/updatetable"})
+    public String updateTables(Model model) {
+        // TODO: get real id and apparatus from judge login
+        /*
+        int compId = 4;
+        Apparatus app = Apparatus.BODEN;
+
+        if (groupRepository.findById(roundId).isPresent()) {
+            Grouping round = groupRepository.findById(roundId).get();
+
+            List<Score> currScores = scoreRepository.getScoresByGroup(roundId);
+            List<Integer> scoredPart = new ArrayList<>();
+
+            for (Score s : currScores) {
+                scoredPart.add(s.getParticipants().getId());
+            }
+
+            System.out.println(scoredPart.size());
+
+            model.addAttribute("score", new Score());
+            model.addAttribute("round", round);
+            model.addAttribute("scoredPart", scoredPart);
+            model.addAttribute("currScores", currScores);
+
+            return "judge/scoring/roundOverview :: #table";
+        }
+        */
+
+        int compId = 4;
+        Apparatus app = Apparatus.BODEN;
+
+        if (compRepository.findById(compId).isPresent()) {
+            Competition comp = compRepository.findById(compId).get();
+
+            List<Score> currScores = scoreRepository.getScoresByCompetition(comp.getId());
+            List<Integer> scoredPart = new ArrayList<>();
+
+            for (Score s : currScores) {
+                scoredPart.add(s.getParticipants().getId());
+            }
+
+            System.out.println(scoredPart.size());
+
+            model.addAttribute("comp", comp);
+            model.addAttribute("score", new Score());
+            model.addAttribute("apparatus", app);
+            model.addAttribute("scoredPart", scoredPart);
+            model.addAttribute("currScores", currScores);
+
+            return "judge/scoring/roundOverview :: #rounds";
+        }
+
+        return "redirect:/";
     }
 
     // showing scores

@@ -13,99 +13,148 @@
     <script type="text/javascript" th:src="@{/js/addScore.js}" defer></script>
 
     <style>
-        .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; }
+        .hide {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 1px;
+            height: 1px;
+        }
     </style>
-
-    <script>
-        function displayRound(id) {
-            document.getElementById("roundBody" + id).style.display = "block";
-            document.getElementById("dontShow" + id).style.display = "none";
-            document.getElementById("show" + id).style.display = "block";
-        }
-
-        function hideRound(id) {
-            document.getElementById("roundBody" + id).style.display = "none";
-            document.getElementById("dontShow" + id).style.display = "block";
-            document.getElementById("show" + id).style.display = "none";
-        }
-    </script>
-
 </head>
 <body>
 <div class="container my-5">
-<h1 th:text="${comp.getName()}"></h1>
-<h1 th:text="'Round overview for ' + ${apparatus}"></h1>
+    <h1 th:text="${comp.getName()}"></h1>
+    <h1 th:text="'Round overview for ' + ${apparatus}"></h1>
 
-<div id="rounds" class="list-group my-5" th:switch="${comp}">
-    <h2 th:case="null">No rounds yet!</h2>
-    <div th:case="*">
-        <div class="card mt-5" th:each="round : ${comp.getGroups()}">
-            <div class="card-header">
-                <span th:text="${round.getName()}"> (<span th:text="${round.getParticipants().size()}"></span>)</span>
-                <a class="col-1" th:href="'javascript:displayRound(' + ${round.getId()} + ')'"
-                   th:id="'dontShow' + ${round.getId()}"><i class="fas fa-angle-left"></i></a>
-                <a class="col-1" th:href="'javascript:hideRound(' + ${round.getId()} + ')'"
-                   th:id="'show' + ${round.getId()}" style="display: none"><i
-                        class="fas fa-angle-down"></i> </a>
-            </div>
-            <div class="card-body" th:switch="${round.getParticipants().size()}" th:id="'roundBody' + ${round.getId()}" style="display: none">
-                <span th:case="0">Uups, this round is empty!</span>
-                <table th:case="*" class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th style="width: 15%" scope="col">Gymnast</th>
-                        <th style="width: 10%" scope="col">Club</th>
-                        <th scope="col">D</th>
-                        <th scope="col">E1</th>
-                        <th scope="col">E2</th>
-                        <th scope="col">E3</th>
-                        <th scope="col">E4</th>
-                        <th scope="col">N</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="pat : ${round.getParticipants()}">
-                        <form th:id="'form_' + ${pat.getId()}" th:action="@{/roundsoverview}" th:object="${score}" target="hiddenFrame" method="post">
-                            <td th:text="${pat.getFirstname()} + ' ' + ${pat.getLastname()}"></td>
-                            <td th:text="${pat.getClub()}"></td>
-                            <td th:class="'score_' + ${pat.getId()}">
-                                <input class="form-control" th:id="'d_' + ${pat.getId()}" type="number" step="0.1" th:field="*{d}">
-                                <span th:if="${#fields.hasErrors('d')}" th:errors="*{d}" class="text-danger"></span>
+    <div id="rounds" class="list-group my-5" th:switch="${comp}">
+        <h2 th:case="null">No rounds yet!</h2>
+        <div th:case="*">
+            <div class="card mt-5" th:each="round : ${comp.getGroups()}">
+                <div class="card-header">
+                    <h5 class="row">
+                        <span class="col-auto" th:text="${round.getName()}"></span>
+                        <span class="badge badge-primary badge-pill col-0" th:text="${round.getParticipants().size()}"></span>
+                        <span class="col"></span>
+                        <span th:if="${round.getParticipants().size()} == ${currScores.size()}" class="col-auto badge badge-success" th:text="'complete'"></span>
+                        <span th:if="${round.getParticipants().size()} > ${currScores.size()}" class="col-auto badge badge-warning" th:text="'open'"></span>
+                        <span th:if="${round.getParticipants().size() == 0}" class="col-auto badge badge-info" th:text="'incomplete'"></span>
+                        <a class="col-1" th:href="'javascript:displayRound(' + ${round.getId()} + ')'"
+                           th:id="'dontShow_' + ${round.getId()}"><i class="fas fa-angle-left float-right"></i></a>
+                        <a class="col-1" th:href="'javascript:hideRound(' + ${round.getId()} + ')'"
+                           th:id="'show_' + ${round.getId()}" style="display: none"><i class="fas fa-angle-down float-right"></i></a>
+                    </h5>
+                </div>
+                <div class="card-body" th:switch="${round.getParticipants().size()}"
+                     th:id="'roundBody_' + ${round.getId()}" style="display: none">
+                    <span th:case="0">Oops, this round is empty!</span>
+                    <div th:case="*">
+                    <table id="table" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%" scope="col">Gymnast</th>
+                            <th style="width: 10%" scope="col">Club</th>
+                            <th scope="col">D</th>
+                            <th scope="col">E1</th>
+                            <th scope="col">E2</th>
+                            <th scope="col">E3</th>
+                            <th scope="col">E4</th>
+                            <th scope="col">N</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pat : ${round.getParticipants()}">
+                            <!-- Participant has not been scored yet -->
+                            <div th:if="${!scoredPart.contains(pat.getId())}">
+                                <form th:id="'form_' + ${pat.getId()}" th:action="@{/roundsoverview}"
+                                      th:object="${score}" method="post">
+                                    <td th:text="${pat.getFirstname()} + ' ' + ${pat.getLastname()}"></td>
+                                    <td th:text="${pat.getClub()}"></td>
+                                    <td th:class="'score_' + ${pat.getId()}">
+                                        <input class="form-control" th:id="'d_' + ${pat.getId()}" type="number"
+                                               step="0.1" th:field="*{d}">
+                                        <span th:if="${#fields.hasErrors('d')}" th:errors="*{d}"
+                                              class="text-danger"></span>
+                                    </td>
+                                    <td th:class="'score_' + ${pat.getId()}">
+                                        <input class="form-control" th:id="'e1_' + ${pat.getId()}" type="number"
+                                               step="0.1" th:field="*{e1}">
+                                        <span th:if="${#fields.hasErrors('e1')}" th:errors="*{e1}"
+                                              class="text-danger"></span>
+                                    </td>
+                                    <td th:class="'score_' + ${pat.getId()}">
+                                        <input class="form-control" th:id="'e2_' + ${pat.getId()}" type="number"
+                                               step="0.1" th:field="*{e2}">
+                                        <span th:if="${#fields.hasErrors('e2')}" th:errors="*{e2}"
+                                              class="text-danger"></span>
+                                    </td>
+                                    <td th:class="'score_' + ${pat.getId()}">
+                                        <input class="form-control" th:id="'e3_' + ${pat.getId()}" type="number"
+                                               step="0.1" th:field="*{e3}">
+                                        <span th:if="${#fields.hasErrors('e3')}" th:errors="*{e3}"
+                                              class="text-danger"></span>
+                                    </td>
+                                    <td th:class="'score_' + ${pat.getId()}">
+                                        <input class="form-control" th:id="'e4_' + ${pat.getId()}" type="number"
+                                               step="0.1" th:field="*{e4}">
+                                        <span th:if="${#fields.hasErrors('e4')}" th:errors="*{e4}"
+                                              class="text-danger"></span>
+                                    </td>
+                                    <td th:class="'score_' + ${pat.getId()}">
+                                        <input class="form-control" th:id="'n_' + ${pat.getId()}" type="number"
+                                               step="0.1" th:field="*{n}">
+                                        <span th:if="${#fields.hasErrors('n')}" th:errors="*{n}"
+                                              class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input th:id="'save_' + ${pat.getId()}" type="submit" class="btn btn-primary saveBtn"
+                                               value="Save">
+                                        <input th:id="'edit_' + ${pat.getId()}" type="hidden" class="btn btn-primary"
+                                               value="Edit" th:onclick="'makeEditable(' + ${pat.getId()} + ')'">
+                                    </td>
+                                    <input type="hidden" name="patId" th:value="${pat.getId()}">
+                                </form>
+                            </div>
+                        </tr>
+
+                        <!-- Participant has already been scored -->
+                        <tr th:each="s : ${currScores}">
+                            <form th:action="@{/roundsoverview/delete/{scoreId}(scoreId=${s.getId()})}" method="post">
+                            <td th:text="${s.getParticipants().getFirstname()} + ' ' + ${s.getParticipants().getLastname()}"></td>
+                            <td th:text="${s.getParticipants().getClub()}"></td>
+                            <td th:class="'score_' + ${s.getParticipants().getId()}">
+                                <label class="" th:id="'d_' + ${s.getParticipants().getId()}"
+                                       th:text="${s.getD()}"></label>
                             </td>
-                            <td th:class="'score_' + ${pat.getId()}">
-                                <input class="form-control" th:id="'e1_' + ${pat.getId()}" type="number" step="0.1" th:field="*{e1}">
-                                <span th:if="${#fields.hasErrors('e1')}" th:errors="*{e1}" class="text-danger"></span>
+                            <td th:class="'score_' + ${s.getParticipants().getId()}">
+                                <label th:id="'e1_' + ${s.getParticipants().getId()}" th:text="${s.getE1()}"></label>
                             </td>
-                            <td th:class="'score_' + ${pat.getId()}">
-                                <input class="form-control" th:id="'e2_' + ${pat.getId()}" type="number" step="0.1" th:field="*{e2}">
-                                <span th:if="${#fields.hasErrors('e2')}" th:errors="*{e2}" class="text-danger"></span>
+                            <td th:class="'score_' + ${s.getParticipants().getId()}">
+                                <label th:id="'e2_' + ${s.getParticipants().getId()}" th:text="${s.getE2()}"></label>
                             </td>
-                            <td th:class="'score_' + ${pat.getId()}">
-                                <input class="form-control" th:id="'e3_' + ${pat.getId()}" type="number" step="0.1" th:field="*{e3}">
-                                <span th:if="${#fields.hasErrors('e3')}" th:errors="*{e3}" class="text-danger"></span>
+                            <td th:class="'score_' + ${s.getParticipants().getId()}">
+                                <label th:id="'e3_' + ${s.getParticipants().getId()}" th:text="${s.getE3()}"></label>
                             </td>
-                            <td th:class="'score_' + ${pat.getId()}">
-                                <input class="form-control" th:id="'e4_' + ${pat.getId()}" type="number" step="0.1" th:field="*{e4}">
-                                <span th:if="${#fields.hasErrors('e4')}" th:errors="*{e4}" class="text-danger"></span>
+                            <td th:class="'score_' + ${s.getParticipants().getId()}">
+                                <label th:id="'e4_' + ${s.getParticipants().getId()}" th:text="${s.getE4()}"></label>
                             </td>
-                            <td th:class="'score_' + ${pat.getId()}">
-                                <input class="form-control" th:id="'n_' + ${pat.getId()}" type="number" step="0.1" th:field="*{n}">
-                                <span th:if="${#fields.hasErrors('n')}" th:errors="*{n}" class="text-danger"></span>
+                            <td th:class="'score_' + ${s.getParticipants().getId()}">
+                                <label th:id="'n_' + ${s.getParticipants().getId()}" th:text="${s.getN()}"></label>
                             </td>
                             <td>
-                                <input th:id="'save_' + ${pat.getId()}" type="submit" class="btn btn-primary" value="Save" th:onclick="'updateUI(' + ${pat.getId()} + ')'">
-                                <input th:id="'edit_' + ${pat.getId()}" type="hidden" class="btn btn-primary" value="Edit" th:onclick="'makeEditable(' + ${pat.getId()} + ')'">
+                                <input th:id="'edit_' + ${s.getParticipants().getId()}" type="submit"
+                                       class="btn btn-primary" value="Edit">
                             </td>
-                            <input type="hidden" name="patId" th:value="${pat.getId()}">
-                        </form>
-                    </tr>
-                    </tbody>
-                </table>
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <iframe name="hiddenFrame" class="hide"></iframe>
 </body>
