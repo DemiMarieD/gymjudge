@@ -59,11 +59,6 @@ public class ScoringController {
             Competition comp = compRepository.findById(compId).get();
 
             List<Score> currScores = scoreRepository.getScoresByCompetition(comp.getId());
-            List<Integer> scoredPart = new ArrayList<>();
-
-            for (Score s : currScores) {
-                scoredPart.add(s.getParticipants().getId());
-            }
 
             // ordering of grouping TODO: discuss how to handle following rounds
             List<Grouping> orderedGroups = new ArrayList<>();
@@ -94,25 +89,11 @@ public class ScoringController {
                 }
             }
 
-            /*
-            currentScores.forEach((k,v) -> {
-                if (v != null) {
-                    System.out.println("k: " + k + "; v: " + v.getParticipants().getId());
-                } else {
-                    System.out.println("k: " + k + "; v: null");
-                }
-
-            });
-             */
-
             model.addAttribute("compName", comp.getName());
             model.addAttribute("score", new Score());
             model.addAttribute("rounds", orderedGroups);
             model.addAttribute("apparatus", app);
-            model.addAttribute("scoredPart", scoredPart);
-            model.addAttribute("currScores", currScores);
             model.addAttribute("currentScores", currentScores);
-
 
             return "judge/scoring/roundOverview";
         }
@@ -150,64 +131,11 @@ public class ScoringController {
 
     @PostMapping({"/roundsoverview/delete/{scoreId}"})
     public String removeScore(@PathVariable("scoreId") int scoreId, Model model) {
-        scoreRepository.delete(scoreRepository.findById(scoreId).get());
+        if (scoreRepository.findById(scoreId).isPresent()) {
+            scoreRepository.delete(scoreRepository.findById(scoreId).get());
+        }
 
         return "redirect:/roundsoverview";
-    }
-
-    @GetMapping({"/roundsoverview/updatetable"})
-    public String updateTables(Model model) {
-        // TODO: get real id and apparatus from judge login
-        /*
-        int compId = 4;
-        Apparatus app = Apparatus.BODEN;
-
-        if (groupRepository.findById(roundId).isPresent()) {
-            Grouping round = groupRepository.findById(roundId).get();
-
-            List<Score> currScores = scoreRepository.getScoresByGroup(roundId);
-            List<Integer> scoredPart = new ArrayList<>();
-
-            for (Score s : currScores) {
-                scoredPart.add(s.getParticipants().getId());
-            }
-
-            System.out.println(scoredPart.size());
-
-            model.addAttribute("score", new Score());
-            model.addAttribute("round", round);
-            model.addAttribute("scoredPart", scoredPart);
-            model.addAttribute("currScores", currScores);
-
-            return "judge/scoring/roundOverview :: #table";
-        }
-        */
-
-        int compId = 4;
-        Apparatus app = Apparatus.BODEN;
-
-        if (compRepository.findById(compId).isPresent()) {
-            Competition comp = compRepository.findById(compId).get();
-
-            List<Score> currScores = scoreRepository.getScoresByCompetition(comp.getId());
-            List<Integer> scoredPart = new ArrayList<>();
-
-            for (Score s : currScores) {
-                scoredPart.add(s.getParticipants().getId());
-            }
-
-            System.out.println(scoredPart.size());
-
-            model.addAttribute("comp", comp);
-            model.addAttribute("score", new Score());
-            model.addAttribute("apparatus", app);
-            model.addAttribute("scoredPart", scoredPart);
-            model.addAttribute("currScores", currScores);
-
-            return "judge/scoring/roundOverview :: #rounds";
-        }
-
-        return "redirect:/";
     }
 
     // showing scores
