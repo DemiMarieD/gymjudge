@@ -5,6 +5,7 @@ import com.ase.gymjudge.entities.Score;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface ScoreRepository extends CrudRepository<Score, Integer> {

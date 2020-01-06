@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -64,11 +65,53 @@ public class ScoringController {
                 scoredPart.add(s.getParticipants().getId());
             }
 
-            model.addAttribute("comp", comp);
+            // ordering of grouping TODO: discuss how to handle following rounds
+            List<Grouping> orderedGroups = new ArrayList<>();
+            for (int i = 0; i < comp.getGroups().get(0).getApparatuses().size(); i++) {
+                for (Grouping g : comp.getGroups()) {
+                    if (g.getApparatuses().get(i) == app) {
+                        orderedGroups.add(g);
+                        break;
+                    }
+                }
+            }
+
+            HashMap<Integer, Score> currentScores = new HashMap<>();
+            for (Grouping g : orderedGroups) {
+                for (Participants p : g.getParticipants()) {
+                    boolean hadScore = false;
+                    for (Score s : currScores) {
+                        if (p == s.getParticipants()) {
+                            currentScores.put(p.getId(), s);
+                            hadScore = true;
+                            break;
+                        }
+                    }
+
+                    if (!hadScore) {
+                        currentScores.put(p.getId(), null);
+                    }
+                }
+            }
+
+            /*
+            currentScores.forEach((k,v) -> {
+                if (v != null) {
+                    System.out.println("k: " + k + "; v: " + v.getParticipants().getId());
+                } else {
+                    System.out.println("k: " + k + "; v: null");
+                }
+
+            });
+             */
+
+            model.addAttribute("compName", comp.getName());
             model.addAttribute("score", new Score());
+            model.addAttribute("rounds", orderedGroups);
             model.addAttribute("apparatus", app);
             model.addAttribute("scoredPart", scoredPart);
             model.addAttribute("currScores", currScores);
+            model.addAttribute("currentScores", currentScores);
 
 
             return "judge/scoring/roundOverview";
@@ -91,12 +134,14 @@ public class ScoringController {
 
         List<Score> scores = scoreRepository.getScoresByCompetition(score.getParticipants().getCompetition().getId());
 
+        /*
         for (Score s : scores) {
             if (s.getParticipants().getId() == score.getParticipants().getId() && s.getApparatus() == score.getApparatus()) {
                 System.out.println("Found double and delete it.");
                 scoreRepository.delete(s);
             }
         }
+        */
 
         scoreRepository.save(score);
 
