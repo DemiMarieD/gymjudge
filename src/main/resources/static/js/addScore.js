@@ -85,6 +85,11 @@ function makeEditable(partId) {
     $('#hold_ctrl_' + partId).addClass('hide');
     $('#edit_ctrl_' + partId).addClass('hide');
 
+    $('[id*="_ctrl_"]').each(function () {
+        // $(this).find('button').addClass('disabled');
+        $(this).find('button').prop('disabled', true);
+    });
+
     $('.score_' + partId).each(function () {
         $(this).find('label').each(function () {
             let id = $(this).attr('id');
@@ -95,5 +100,5 @@ function makeEditable(partId) {
         $(this).find('label').addClass('hide');
     });
 
-    $('#save_ctrl_' + partId).removeClass('hide');
+    $('#save_ctrl_' + partId).removeClass('hide').find('button').prop('disabled', false);
 }
