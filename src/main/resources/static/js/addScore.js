@@ -47,14 +47,16 @@ function hideRound(id) {
 }
 
 function save(partId) {
-    $('#form_' + partId).submit();
+    const form = $('#form_' + partId);
+    let action = form.attr('action');
+    form.attr('action', action + '1');
+    form.submit();
 }
 
 function hold(partId) {
-    let form = $('#form_' + partId);
+    const form = $('#form_' + partId);
     let action = form.attr('action');
-    action = action.substring(0, action.length - 1) + '0';
-    form.attr('action', action);
+    form.attr('action', action + '0');
     form.submit()
 }
 
@@ -67,11 +69,21 @@ function approve(partId) {
         });
     });
 
-    $('#form_' + partId).submit();
+    const form = $('#form_' + partId);
+    form.attr('action', form.attr('action') + '1');
+    form.submit();
+}
+
+function deleteScore(partId, scoreId) {
+    let form = $('#form_' + partId);
+    let action = form.attr('action');
+    form.attr('action', action + 'delete/' + scoreId);
+    form.submit()
 }
 
 function makeEditable(partId) {
     $('#hold_ctrl_' + partId).addClass('hide');
+    $('#edit_ctrl_' + partId).addClass('hide');
 
     $('.score_' + partId).each(function () {
         $(this).find('label').each(function () {
@@ -83,6 +95,5 @@ function makeEditable(partId) {
         $(this).find('label').addClass('hide');
     });
 
-    $('#ctrl_' + partId).removeClass('hide');
-    $('#edit_' + partId).addClass('hide');
+    $('#save_ctrl_' + partId).removeClass('hide');
 }

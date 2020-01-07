@@ -114,33 +114,45 @@ public class ScoringController {
         score.setApparatus(Apparatus.BODEN);
         score.setStatus(status);
 
-        removeScoreIfExists(score);
+        int existingScoreId = findScoreIdIfExists(score);
 
-        scoreRepository.save(score);
+        if (scoreRepository.findById(existingScoreId).isPresent()) {
+            Score existingScore = scoreRepository.findById(existingScoreId).get();
+            existingScore.setD(score.getD());
+            existingScore.setE1(score.getE1());
+            existingScore.setE2(score.getE2());
+            existingScore.setE3(score.getE3());
+            existingScore.setE4(score.getE4());
+            existingScore.setN(score.getN());
+            existingScore.setStatus(status);
+            scoreRepository.save(existingScore);
+        } else {
+            scoreRepository.save(score);
+        }
 
         return "redirect:/roundsoverview";
     }
 
-    private void removeScoreIfExists(Score score) {
-        List<Score> scores = scoreRepository.getScoresByCompetitionId(score.getParticipants().getCompetition().getId());
-
-        for (Score s : scores) {
-            if (s.getParticipants() == score.getParticipants() && s.getApparatus() == score.getApparatus()) {
-                scoreRepository.delete(s);
-            }
-        }
-    }
-
-    /*
     @PostMapping({"/roundsoverview/delete/{scoreId}"})
-    public String removeScore(@PathVariable("scoreId") int scoreId, Model model) {
+    public String deleteScore(@PathVariable("scoreId") int scoreId, Model model) {
         if (scoreRepository.findById(scoreId).isPresent()) {
             scoreRepository.delete(scoreRepository.findById(scoreId).get());
         }
 
         return "redirect:/roundsoverview";
     }
-    */
+
+    private int findScoreIdIfExists(Score score) {
+        List<Score> scores = scoreRepository.getScoresByCompetitionId(score.getParticipants().getCompetition().getId());
+
+        for (Score s : scores) {
+            if (s.getParticipants() == score.getParticipants() && s.getApparatus() == score.getApparatus()) {
+                return s.getId();
+            }
+        }
+
+        return -1;
+    }
 
     // showing scores
     @GetMapping("/livescores/{id}")

@@ -8,9 +8,15 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
           integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
     <!--script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}" defer></script-->
     <script type="text/javascript" th:src="@{/js/addScore.js}" defer></script>
 
@@ -27,8 +33,26 @@
             vertical-align: middle;
         }
 
-        .card-header {
+        .card-header, .dropdown-item {
             cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            color: white!important;
+            background-color: rgba(43, 124, 247, 0.5);
+            font-weight: bold;
+        }
+
+        .dropdown-item.delete:hover {
+            color: white!important;
+            font-weight: bold;
+            background-color: rgba(255, 0, 0, 0.75);
+        }
+
+        .dropdown-item.hold:hover {
+            color: white!important;
+            font-weight: bold;
+            background-color: rgba(71, 160, 181, 0.5);
         }
     </style>
 </head>
@@ -36,6 +60,7 @@
 <div class="container-fluid my-4 px-5">
     <div class="box">
         <h3 th:text="${compName}"></h3>
+        <div class="divider"></div>
         <h2>Round overview for <b><span th:text="${apparatus}"></span></b></h2>
     </div>
 
@@ -46,132 +71,185 @@
                 <div class="card-header" th:onclick="'javascript:displayRound(' + ${round.getId()} + ')'">
                     <h5 class="row">
                         <span class="col-auto" th:text="${round.getName()}"></span>
-                        <span class="badge badge-primary badge-pill col-0" th:text="${round.getParticipants().size()}"></span>
+                        <span class="badge badge-primary badge-pill col-0"
+                              th:text="${round.getParticipants().size()}"></span>
                         <span class="col"></span>
-                        <span th:id="'complete_' + ${round.getId()}" class="col-auto badge badge-success hide" th:text="'complete'"></span>
-                        <span th:id="'open_' + ${round.getId()}" class="col-auto badge badge-warning hide" th:text="'open'"></span>
-                        <span th:id="'incomplete_' + ${round.getId()}" class="col-auto badge badge-info hide" th:text="'incomplete'"></span>
+                        <span th:id="'complete_' + ${round.getId()}" class="col-auto badge badge-success hide"
+                              th:text="'complete'"></span>
+                        <span th:id="'open_' + ${round.getId()}" class="col-auto badge badge-warning hide"
+                              th:text="'open'"></span>
+                        <span th:id="'incomplete_' + ${round.getId()}" class="col-auto badge badge-info hide"
+                              th:text="'incomplete'"></span>
                         <a class="col-0 mx-3" href="#"
                            th:id="'dontShow_' + ${round.getId()}"><i class="fas fa-angle-left float-right"></i></a>
                         <a class="col-0 mx-3" href="#"
-                           th:id="'show_' + ${round.getId()}" style="display: none"><i class="fas fa-angle-down float-right"></i></a>
+                           th:id="'show_' + ${round.getId()}" style="display: none"><i
+                                class="fas fa-angle-down float-right"></i></a>
                     </h5>
                 </div>
                 <div class="card-body" th:switch="${round.getParticipants().size()}"
                      th:id="'roundBody_' + ${round.getId()}" style="display: none">
                     <span th:case="0">Oops, this round is empty!</span>
                     <div th:case="*">
-                    <table id="table" class="table table-striped table-sm">
-                        <thead class="thead-light">
-                        <tr>
-                            <th style="width: 15%" scope="col">Gymnast</th>
-                            <th style="width: 10%" scope="col">Club</th>
-                            <th scope="col">D</th>
-                            <th scope="col">E1</th>
-                            <th scope="col">E2</th>
-                            <th scope="col">E3</th>
-                            <th scope="col">E4</th>
-                            <th scope="col">N</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="pat : ${round.getParticipants()}">
-                            <div>
-                                <form th:id="'form_' + ${pat.getId()}" th:action="@{/roundsoverview/1}"
-                                      th:object="${score}" method="post">
-                                    <td th:text="${pat.getFirstname()} + ' ' + ${pat.getLastname()}"></td>
-                                    <td th:text="${pat.getClub()}"></td>
-                                    <td th:class="'score_' + ${pat.getId()}">
-                                        <input class="form-control" th:id="'i_d_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" type="number"
-                                               step="0.1" th:field="*{d}">
-                                        <span th:if="${#fields.hasErrors('d')}" th:errors="*{d}"
-                                              class="text-danger"></span>
-                                        <label th:unless="${currentScores.get(pat.getId()) == null}" class="" th:id="'l_d_' + ${pat.getId()}"
-                                               th:text="${currentScores.get(pat.getId()).getD()}"></label>
-                                    </td>
-                                    <td th:class="'score_' + ${pat.getId()}">
-                                        <input class="form-control" th:id="'i_e1_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" type="number"
-                                               step="0.1" th:field="*{e1}">
-                                        <span th:if="${#fields.hasErrors('e1')}" th:errors="*{e1}"
-                                              class="text-danger"></span>
-                                        <label th:unless="${currentScores.get(pat.getId()) == null}" th:id="'l_e1_' + ${pat.getId()}"
-                                               th:text="${currentScores.get(pat.getId()).getE1()}"></label>
-                                    </td>
-                                    <td th:class="'score_' + ${pat.getId()}">
-                                        <input class="form-control" th:id="'i_e2_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" type="number"
-                                               step="0.1" th:field="*{e2}">
-                                        <span th:if="${#fields.hasErrors('e2')}" th:errors="*{e2}"
-                                              class="text-danger"></span>
-                                        <label th:unless="${currentScores.get(pat.getId()) == null}" th:id="'l_e2_' + ${pat.getId()}"
-                                               th:text="${currentScores.get(pat.getId()).getE2()}"></label>
-                                    </td>
-                                    <td th:class="'score_' + ${pat.getId()}">
-                                        <input class="form-control" th:id="'i_e3_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" type="number"
-                                               step="0.1" th:field="*{e3}">
-                                        <span th:if="${#fields.hasErrors('e3')}" th:errors="*{e3}"
-                                              class="text-danger"></span>
-                                        <label th:unless="${currentScores.get(pat.getId()) == null}" th:id="'l_e3_' + ${pat.getId()}"
-                                               th:text="${currentScores.get(pat.getId()).getE3()}"></label>
-                                    </td>
-                                    <td th:class="'score_' + ${pat.getId()}">
-                                        <input class="form-control" th:id="'i_e4_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" type="number"
-                                               step="0.1" th:field="*{e4}">
-                                        <span th:if="${#fields.hasErrors('e4')}" th:errors="*{e4}"
-                                              class="text-danger"></span>
-                                        <label th:unless="${currentScores.get(pat.getId()) == null}" th:id="'l_e4_' + ${pat.getId()}"
-                                               th:text="${currentScores.get(pat.getId()).getE4()}"></label>
-                                    </td>
-                                    <td th:class="'score_' + ${pat.getId()}">
-                                        <input class="form-control" th:id="'i_n_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" type="number"
-                                               step="0.1" th:field="*{n}">
-                                        <span th:if="${#fields.hasErrors('n')}" th:errors="*{n}"
-                                              class="text-danger"></span>
-                                        <label th:unless="${currentScores.get(pat.getId()) == null}" th:id="'l_n_' + ${pat.getId()}"
-                                               th:value="${currentScores.get(pat.getId()).getN()}" th:text="${currentScores.get(pat.getId()).getN()}"></label>
-                                    </td>
-                                    <td>
-                                        <div th:id="'ctrl_' + ${pat.getId()}" th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide" class="btn-group float-right">
-                                            <button type="button" class="btn btn-primary" th:onclick="'save(' + ${pat.getId()} + ')'">Save</button>
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a th:onclick="'hold(' + ${pat.getId()} + ')'">Hold</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                        <div th:unless="${currentScores.get(pat.getId()) == null}" class="float-right">
-                                            <div th:if="${currentScores.get(pat.getId()).getStatus() == 1}">
-                                                <input th:id="'edit_' + ${pat.getId()}" type="button" class="btn btn-primary"
-                                                       value="Edit" th:onclick="'makeEditable(' + ${pat.getId()} + ', ' + ${currentScores.get(pat.getId()).getId()} + ')'">
-                                            </div>
-                                            <div th:if="${currentScores.get(pat.getId()).getStatus() == 0}">
-                                                <div th:id="'hold_ctrl_' + ${pat.getId()}" class="btn-group">
-                                                    <button type="button" class="btn btn-info" th:onclick="'approve(' + ${pat.getId()} + ')'">Approve</button>
-                                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a th:onclick="'makeEditable(' + ${pat.getId()} + ')'">Edit</a>
-                                                        </li>
-                                                    </ul>
+                        <table id="table" class="table table-striped table-sm">
+                            <thead class="thead-light">
+                            <tr>
+                                <th style="width: 15%" scope="col">Gymnast</th>
+                                <th style="width: 10%" scope="col">Club</th>
+                                <th scope="col">D</th>
+                                <th scope="col">E1</th>
+                                <th scope="col">E2</th>
+                                <th scope="col">E3</th>
+                                <th scope="col">E4</th>
+                                <th scope="col">N</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="pat : ${round.getParticipants()}">
+                                <div>
+                                    <form th:id="'form_' + ${pat.getId()}" th:action="@{/roundsoverview/}"
+                                          th:object="${score}" method="post">
+                                        <td th:text="${pat.getFirstname()} + ' ' + ${pat.getLastname()}"></td>
+                                        <td th:text="${pat.getClub()}"></td>
+                                        <td th:class="'score_' + ${pat.getId()}">
+                                            <input class="form-control" th:id="'i_d_' + ${pat.getId()}"
+                                                   th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                   type="number"
+                                                   step="0.1" th:field="*{d}">
+                                            <span th:if="${#fields.hasErrors('d')}" th:errors="*{d}"
+                                                  class="text-danger"></span>
+                                            <label th:unless="${currentScores.get(pat.getId()) == null}" class=""
+                                                   th:id="'l_d_' + ${pat.getId()}"
+                                                   th:text="${currentScores.get(pat.getId()).getD()}"></label>
+                                        </td>
+                                        <td th:class="'score_' + ${pat.getId()}">
+                                            <input class="form-control" th:id="'i_e1_' + ${pat.getId()}"
+                                                   th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                   type="number"
+                                                   step="0.1" th:field="*{e1}">
+                                            <span th:if="${#fields.hasErrors('e1')}" th:errors="*{e1}"
+                                                  class="text-danger"></span>
+                                            <label th:unless="${currentScores.get(pat.getId()) == null}"
+                                                   th:id="'l_e1_' + ${pat.getId()}"
+                                                   th:text="${currentScores.get(pat.getId()).getE1()}"></label>
+                                        </td>
+                                        <td th:class="'score_' + ${pat.getId()}">
+                                            <input class="form-control" th:id="'i_e2_' + ${pat.getId()}"
+                                                   th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                   type="number"
+                                                   step="0.1" th:field="*{e2}">
+                                            <span th:if="${#fields.hasErrors('e2')}" th:errors="*{e2}"
+                                                  class="text-danger"></span>
+                                            <label th:unless="${currentScores.get(pat.getId()) == null}"
+                                                   th:id="'l_e2_' + ${pat.getId()}"
+                                                   th:text="${currentScores.get(pat.getId()).getE2()}"></label>
+                                        </td>
+                                        <td th:class="'score_' + ${pat.getId()}">
+                                            <input class="form-control" th:id="'i_e3_' + ${pat.getId()}"
+                                                   th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                   type="number"
+                                                   step="0.1" th:field="*{e3}">
+                                            <span th:if="${#fields.hasErrors('e3')}" th:errors="*{e3}"
+                                                  class="text-danger"></span>
+                                            <label th:unless="${currentScores.get(pat.getId()) == null}"
+                                                   th:id="'l_e3_' + ${pat.getId()}"
+                                                   th:text="${currentScores.get(pat.getId()).getE3()}"></label>
+                                        </td>
+                                        <td th:class="'score_' + ${pat.getId()}">
+                                            <input class="form-control" th:id="'i_e4_' + ${pat.getId()}"
+                                                   th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                   type="number"
+                                                   step="0.1" th:field="*{e4}">
+                                            <span th:if="${#fields.hasErrors('e4')}" th:errors="*{e4}"
+                                                  class="text-danger"></span>
+                                            <label th:unless="${currentScores.get(pat.getId()) == null}"
+                                                   th:id="'l_e4_' + ${pat.getId()}"
+                                                   th:text="${currentScores.get(pat.getId()).getE4()}"></label>
+                                        </td>
+                                        <td th:class="'score_' + ${pat.getId()}">
+                                            <input class="form-control" th:id="'i_n_' + ${pat.getId()}"
+                                                   th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                   type="number"
+                                                   step="0.1" th:field="*{n}">
+                                            <span th:if="${#fields.hasErrors('n')}" th:errors="*{n}"
+                                                  class="text-danger"></span>
+                                            <label th:unless="${currentScores.get(pat.getId()) == null}"
+                                                   th:id="'l_n_' + ${pat.getId()}"
+                                                   th:value="${currentScores.get(pat.getId()).getN()}"
+                                                   th:text="${currentScores.get(pat.getId()).getN()}"></label>
+                                        </td>
+                                        <td>
+                                            <div th:id="'save_ctrl_' + ${pat.getId()}"
+                                                 th:classappend="${currentScores.get(pat.getId()) == null} ? '' : hide"
+                                                 class="btn-group">
+                                                <button type="button" class="btn btn-primary"
+                                                        th:onclick="'save(' + ${pat.getId()} + ')'">Save
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item hold"
+                                                       th:onclick="'hold(' + ${pat.getId()} + ')'">Hold</a>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <input type="hidden" name="patId" th:value="${pat.getId()}">
-                                    <input type="hidden" th:unless="${currentScores.get(pat.getId()) == null}" th:id="'status_' + ${pat.getId()}" th:value="${currentScores.get(pat.getId()).getStatus()}">
-                                </form>
-                            </div>
-                        </tr>
-                        </tbody>
-                    </table>
+
+                                            <div th:unless="${currentScores.get(pat.getId()) == null}">
+                                                <!--div th:if="${currentScores.get(pat.getId()).getStatus() == 1}">
+                                                    <input th:id="'edit_' + ${pat.getId()}" type="button" class="btn btn-primary"
+                                                           value="Edit" th:onclick="'makeEditable(' + ${pat.getId()} + ', ' + ${currentScores.get(pat.getId()).getId()} + ')'">
+                                                </div-->
+                                                <div th:if="${currentScores.get(pat.getId()).getStatus() == 1}">
+                                                    <div th:id="'edit_ctrl_' + ${pat.getId()}" class="btn-group">
+                                                        <button type="button" class="btn btn-primary"
+                                                                th:onclick="'makeEditable(' + ${pat.getId()} + ')'">Edit
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item delete"
+                                                               th:onclick="'deleteScore(' + ${pat.getId()} + ', ' + ${currentScores.get(pat.getId()).getId()} + ')'">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div th:if="${currentScores.get(pat.getId()).getStatus() == 0}">
+                                                    <div th:id="'hold_ctrl_' + ${pat.getId()}" class="btn-group">
+                                                        <button type="button" class="btn btn-info"
+                                                                th:onclick="'approve(' + ${pat.getId()} + ')'">Approve
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item"
+                                                               th:onclick="'makeEditable(' + ${pat.getId()} + ')'">Edit</a>
+                                                            <a class="dropdown-item delete"
+                                                               th:onclick="'deleteScore(' + ${pat.getId()} + ', ' + ${currentScores.get(pat.getId()).getId()} + ')'">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <input type="hidden" name="patId" th:value="${pat.getId()}">
+                                        <input type="hidden" th:unless="${currentScores.get(pat.getId()) == null}"
+                                               th:id="'status_' + ${pat.getId()}"
+                                               th:value="${currentScores.get(pat.getId()).getStatus()}">
+                                    </form>
+                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
