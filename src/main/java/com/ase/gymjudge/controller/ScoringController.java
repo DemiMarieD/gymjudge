@@ -58,7 +58,7 @@ public class ScoringController {
         if (compRepository.findById(compId).isPresent()) {
             Competition comp = compRepository.findById(compId).get();
 
-            List<Score> currScores = scoreRepository.getScoresByCompetition(comp.getId());
+            List<Score> currScores = scoreRepository.getScoresByCompetitionId(comp.getId());
 
             // ordering of grouping TODO: discuss how to handle following rounds
             List<Grouping> orderedGroups = new ArrayList<>();
@@ -101,8 +101,8 @@ public class ScoringController {
         return "redirect:/";
     }
 
-    @PostMapping({"/roundsoverview"})
-    public String addScore(@RequestParam(name = "patId") int id, @Valid Score score, BindingResult result, Model model) {
+    @PostMapping({"/roundsoverview/{status}"})
+    public String addScore(@PathVariable("status") int status, @RequestParam(name = "patId") int id, @Valid Score score, BindingResult result, Model model) {
         if (result.hasErrors()) {
             System.err.println(result.getFieldError());
             return "judge/scoring/roundOverview";
@@ -112,23 +112,26 @@ public class ScoringController {
 
         // TODO: get real apparatus via judge login
         score.setApparatus(Apparatus.BODEN);
+        score.setStatus(status);
 
-        List<Score> scores = scoreRepository.getScoresByCompetition(score.getParticipants().getCompetition().getId());
-
-        /*
-        for (Score s : scores) {
-            if (s.getParticipants().getId() == score.getParticipants().getId() && s.getApparatus() == score.getApparatus()) {
-                System.out.println("Found double and delete it.");
-                scoreRepository.delete(s);
-            }
-        }
-        */
+        removeScoreIfExists(score);
 
         scoreRepository.save(score);
 
         return "redirect:/roundsoverview";
     }
 
+    private void removeScoreIfExists(Score score) {
+        List<Score> scores = scoreRepository.getScoresByCompetitionId(score.getParticipants().getCompetition().getId());
+
+        for (Score s : scores) {
+            if (s.getParticipants() == score.getParticipants() && s.getApparatus() == score.getApparatus()) {
+                scoreRepository.delete(s);
+            }
+        }
+    }
+
+    /*
     @PostMapping({"/roundsoverview/delete/{scoreId}"})
     public String removeScore(@PathVariable("scoreId") int scoreId, Model model) {
         if (scoreRepository.findById(scoreId).isPresent()) {
@@ -137,6 +140,7 @@ public class ScoringController {
 
         return "redirect:/roundsoverview";
     }
+    */
 
     // showing scores
     @GetMapping("/livescores/{id}")
@@ -150,7 +154,7 @@ public class ScoringController {
         }
 
         if (compRepository.findById(id).isPresent()) {
-            List<Score> scores = scoreRepository.getScoresByCompetition(id);
+            List<Score> scores = scoreRepository.getActiveScoresByCompetitionId(id);
             String compName = compRepository.findById(id).get().getName();
             model.addAttribute("scores", scores);
             model.addAttribute("compName", compName);
@@ -162,29 +166,9 @@ public class ScoringController {
 
     @GetMapping({"/livescores/update-scores/{id}"})
     public String updateScores(@PathVariable("id") int id, Model model) {
-        List<Score> scores = scoreRepository.getScoresByCompetition(id);
+        List<Score> scores = scoreRepository.getActiveScoresByCompetitionId(id);
         model.addAttribute("scores", scores);
 
         return "livescores :: #scoring";
     }
-
-    /*
-    @GetMapping({"testing"})
-    public String addEntry(Model model) {
-        Score temp = new Score();
-        temp.setParticipants(patRepository.findById(7).orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:")));
-        temp.setApparatus(Apparatus.SCHWEBEBALKEN);
-        temp.setStatus(1);
-        temp.setD(1);
-        temp.setE1(2);
-        temp.setE2(3);
-        temp.setE3(4);
-        temp.setE4(5);
-        temp.setN(0);
-
-        scoreRepository.save(temp);
-
-        return "livescores";
-    }
-    */
 }

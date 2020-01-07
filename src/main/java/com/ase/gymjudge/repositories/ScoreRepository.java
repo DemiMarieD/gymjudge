@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface ScoreRepository extends CrudRepository<Score, Integer> {
     @Query(value = "select s from Score s, Participants p, Competition c where c.id = ?1 and p.id = s.participants.id order by s.date desc")
-    List<Score> getScoresByCompetition(int competitionId);
+    List<Score> getScoresByCompetitionId(int competitionId);
 
-    @Query(value = "select s from Score s, Participants p, Grouping g where g.id = ?1 and s.participants.grouping.id = ?1")
-    List<Score> getScoresByGroup(int groupId);
+    @Query(value = "select s from Score s, Participants p, Competition c where c.id = ?1 and p.id = s.participants.id and s.status = 1 order by s.date desc")
+    List<Score> getActiveScoresByCompetitionId(int competitionId);
 }
