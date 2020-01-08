@@ -134,16 +134,16 @@ public class CompetitionController {
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
 
-       /*
         Boolean active = false;
         if(comp.getStatus() == Status.ACTIVE){ active=true;}
-        //todo: fix null pointer exception
-        for(User judge : comp.getJudges()){
+
+        List<User> judges = compRepository.getCompetitionsById(id).getJudges();
+        for(User judge : judges){
             if(active){  judge.setActive(1);
             }else{ judge.setActive(0);}
             userService.saveJudge(judge);
         }
-        */
+
         compRepository.save(comp);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
@@ -154,6 +154,8 @@ public class CompetitionController {
     public String deleteCompetition(@PathVariable("id") int id, Model model) {
         Competition comp = compRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
+
+        //todo: fix problem with deleting the judges.
 
         //removes all categories connected and all participants connected to those!
         compRepository.delete(comp);

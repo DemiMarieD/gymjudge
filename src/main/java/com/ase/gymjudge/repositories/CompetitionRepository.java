@@ -12,12 +12,17 @@ public interface CompetitionRepository extends CrudRepository<Competition, Integ
     @Query(value = "select c from Competition c where c.adminID like ?1")
     List<Competition> getCompetitionsByUserId(Integer userId);
 
+    @Query(value = "select c from Competition c where c.id like ?1")
+    Competition getCompetitionsById(Integer id);
+
     @Query(value = "select c from Competition c where c.status like ?1")
     List<Competition> getCompetitionsByStatus(Status status);
 
     @Query(value = "select c.categories from Competition c where c.status like ?1")
     List<Category> getCategories(Integer competitionId);
-/*
+
+
+    /*
     @Query(value = "select c.judges from Competition c where c.type like ?1")
     List<Judge> getJudges(Integer competitionId);
     */
