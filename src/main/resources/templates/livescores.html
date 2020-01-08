@@ -8,14 +8,37 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
           integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}" defer></script>
+    <script   src="https://code.jquery.com/jquery-3.4.1.min.js"
+              integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+              crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/liveUpdate.js}" defer></script>
+
+    <style>
+        small {
+            color: darkgrey;
+        }
+
+        .page-header {
+            border-bottom: 1px solid lightgray;
+            margin: 1em 0em;
+        }
+    </style>
 </head>
 <body>
 <div class="container my-6">
-<h1 th:text="'Live scores for ' + ${compName}"></h1>
-<a th:href="@{/}" class="btn btn-primary">Back</a>
-<br/> <br/>
+    <div class="page-header">
+        <h2>
+            <small th:text="${compName}"></small> <br/>
+            Live scoring
+            <a th:href="@{/}" class="btn btn-primary float-right">Back</a>
+        </h2>
+    </div>
 <div id="scoring" class="list-group" th:switch="${scores}">
     <h2 th:if="${scores.isEmpty()}">No scores yet!</h2>
     <div th:if="${!scores.isEmpty()}">

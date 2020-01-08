@@ -6,6 +6,7 @@ import com.ase.gymjudge.services.JudgeService;
 import com.ase.gymjudge.services.UserService;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import javax.xml.bind.SchemaOutputResolver;
+import java.awt.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;

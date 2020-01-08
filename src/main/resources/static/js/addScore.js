@@ -86,7 +86,6 @@ function makeEditable(partId) {
     $('#edit_ctrl_' + partId).addClass('hide');
 
     $('[id*="_ctrl_"]').each(function () {
-        // $(this).find('button').addClass('disabled');
         $(this).find('button').prop('disabled', true);
     });
 
