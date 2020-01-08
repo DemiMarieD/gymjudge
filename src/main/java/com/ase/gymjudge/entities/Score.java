@@ -23,17 +23,20 @@ public class Score implements Serializable {
     private int status;
 
     // point system
-    private float d;
-    private float e1;
-    private float e2;
-    private float e3;
-    private float e4;
-    private float n;
+    private double d;
+    private double e1;
+    private double e2;
+    private double e3;
+    private double e4;
+    private double n;
 
     // for ordering
     @DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
-    @NotNull
     private Date date;
+
+    public Score() {
+        status = 1;
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -78,51 +81,51 @@ public class Score implements Serializable {
         this.status = status;
     }
 
-    public float getD() {
+    public double getD() {
         return d;
     }
 
-    public void setD(float d) {
+    public void setD(double d) {
         this.d = d;
     }
 
-    public float getE1() {
+    public double getE1() {
         return e1;
     }
 
-    public void setE1(float e1) {
+    public void setE1(double e1) {
         this.e1 = e1;
     }
 
-    public float getE2() {
+    public double getE2() {
         return e2;
     }
 
-    public void setE2(float e2) {
+    public void setE2(double e2) {
         this.e2 = e2;
     }
 
-    public float getE3() {
+    public double getE3() {
         return e3;
     }
 
-    public void setE3(float e3) {
+    public void setE3(double e3) {
         this.e3 = e3;
     }
 
-    public float getE4() {
+    public double getE4() {
         return e4;
     }
 
-    public void setE4(float e4) {
+    public void setE4(double e4) {
         this.e4 = e4;
     }
 
-    public float getN() {
+    public double getN() {
         return n;
     }
 
-    public void setN(float n) {
+    public void setN(double n) {
         this.n = n;
     }
 
