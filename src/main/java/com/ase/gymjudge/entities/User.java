@@ -38,6 +38,35 @@ public class User {
     @Column(name = "active")
     private int active;
 
+    //for Judges
+    @Column(name = "apparatus")
+    private Apparatus apparatus;
+    public Apparatus getApparatus() {
+        return apparatus;
+    }
+    public void setApparatus(Apparatus apparatus) {
+        this.apparatus = apparatus;
+    }
+
+    @Column(name = "judgePassword")
+    private String judgePassword;
+    public void setJudgePassword(String judgePassword) {
+        this.judgePassword = judgePassword;
+    }
+    public String getJudgePassword() {
+        return judgePassword;
+    }
+    //todo use maybe for deleting later
+    //caused error on first try "can not be set to null"; also problem: connected to role can not be deleted
+   /* @Column(name = "competition")
+    private int competitionId;
+    public int getCompetitionId() {
+        return competitionId;
+    }
+    public void setCompetitionId(int competitionId) {
+        this.competitionId = competitionId;
+    }*/
+
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<Role> roles;

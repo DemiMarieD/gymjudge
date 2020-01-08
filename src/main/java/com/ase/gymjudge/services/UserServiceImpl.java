@@ -37,5 +37,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void saveJudge(User judge) {
+        //password is not hashed so it can be made visible
+        judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
+        Role userRole = roleRepository.findByRole("JUDGE");
+        judge.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        userRepository.save(judge);
+    }
+
 
 }

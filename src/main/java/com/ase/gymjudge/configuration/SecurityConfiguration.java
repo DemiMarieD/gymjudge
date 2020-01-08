@@ -48,13 +48,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/livescores/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/home/**").hasAuthority("ADMIN")
-                // .antMatchers("/judge/**").hasAuthority("JUDGE")
+                //todo change accordingly
+                .antMatchers("/judge/**").hasAuthority("JUDGE")
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 //forAdmin
                 .formLogin().loginPage("/login")
                 .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home/home")
+                .defaultSuccessUrl("/login_successful")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()

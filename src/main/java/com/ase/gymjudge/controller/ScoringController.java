@@ -43,19 +43,20 @@ public class ScoringController {
     private ScoreRepository scoreRepository;
 
     // entering scores
-    /*
-    public Judge getJudge() {
+
+    public User getJudge() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Judge judge = judgeRepository.findByLogin(auth.getName());
+        User judge = userService.findByEmail(auth.getName());
         return judge;
     }
-    */
+
 
     @GetMapping({"/roundsoverview"})
     public String showRoundsOverview(Model model) {
-        // TODO: get real id and apparatus from judge login
-        int compId = 4;
-        Apparatus app = Apparatus.BODEN;
+        // TODO: get real id from judge login
+        int compId = 75;
+       // Apparatus app = Apparatus.BODEN;
+        Apparatus app = getJudge().getApparatus();
 
         if (compRepository.findById(compId).isPresent()) {
             Competition comp = compRepository.findById(compId).get();

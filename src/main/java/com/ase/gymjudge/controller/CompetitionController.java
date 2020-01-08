@@ -31,6 +31,7 @@ public class CompetitionController {
     @Autowired
     private UserService userService;
 
+
     public User getLoggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
@@ -58,6 +59,32 @@ public class CompetitionController {
         competition.setAdminID(user.getId());
         //todo: check TYPE (if-else) and create # judge login
         compRepository.save(competition);
+
+        //creating Judge
+        List<Apparatus> apparatuses = competition.getAvailableApparatuses();
+        for (Apparatus a : apparatuses){
+            User judge = new User();
+            judge.setApparatus(a);
+            //todo use maybe for deleting later
+            //judge.setCompetitionId(competition.getId()); //caused error on first try "can not be set to null"
+
+            judge.setEmail(a.getDisplayValue() + "@" + competition.getName() + ".at");
+            judge.setFirstname(a.getDisplayValue());
+            judge.setLastname(competition.getName());
+
+            String password = "1234"; //todo: set nicer passwords
+            judge.setPassword(password);
+            judge.setJudgePassword(password); //not hashed
+
+            if(competition.getStatus() == Status.ACTIVE){
+                judge.setActive(1);
+            }else{
+                judge.setActive(0); //default not active
+                // todo: set to active when competition edited to active!
+            }
+            userService.saveJudge(judge);
+        }
+        //todo: figure out how to delete them when competition is deleted
 
        /* model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addObject("adminId", user.getId());*/
@@ -106,6 +133,8 @@ public class CompetitionController {
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
         compRepository.save(comp);
+
+        //todo depending on status change the activeness of the related judges
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "redirect:/home/competitions/view/" + String.valueOf(id);
