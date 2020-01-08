@@ -40,7 +40,7 @@ public class CompetitionController {
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-        List<Judge> judges = compRepository.getJudges(competition.getId());
+        List<User> judges = compRepository.getJudges(competition.getId());
         model.addObject("judges", judges);
         model.addObject("competition", competition);
         model.setViewName ("home/competitions/new");

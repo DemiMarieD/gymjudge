@@ -9,16 +9,15 @@ import org.springframework.data.repository.CrudRepository;
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
-public interface JudgeRepository extends CrudRepository<Judge, Integer> {
+public interface JudgeRepository extends CrudRepository<User, Integer> {
 
 
     /*@Query(value = "SELECT u.email FROM USER u INNER JOIN user_role ur ON (u.id = ur.user_id) INNER JOIN role r ON (ur.role_id=r.role_id) WHERE r.role = 'JUDGE'")
     User judgesEmails();*/
+    User findByEmail(String email);
 
-    @Query(value = "select j from Judge j")
-    List<Judge> getAllJudges();
+    /*@Query(value = "select j from user j inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.role_id) where  r.role = 'JUDGE'")
+    List<User> getAllJudges();*/
 
-    @Query(value = "delete from Judge j where j.judgeID like ?1")
-    Judge getJudgeByJudgeID(int judgeID);
 }
 //

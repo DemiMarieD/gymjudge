@@ -15,6 +15,11 @@ public class Judge {
     @ManyToOne(cascade=CascadeType.ALL)
     private Role role;
 
+    @Column(name = "email")
+    private String email;
+    @Column(name = "password")
+    private String password;
+
    @ManyToOne(fetch = FetchType.LAZY)
     private Competition competition;
 
@@ -48,6 +53,17 @@ public class Judge {
    public void setCompetition(Competition competition){
        this.competition = competition;
    }
+   public String getEmail(){
+        return email;
+   }
+   public void setEmail(String email){
+        this.email = email;
+   }
+   public String getPassword(){
+        return password;
+   }
 
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

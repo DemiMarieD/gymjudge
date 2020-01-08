@@ -48,7 +48,7 @@ public class Competition {
 
 
     @OneToMany(mappedBy = "competition", cascade= CascadeType.ALL)
-    private List<Judge> judges;
+    private List<User> judges;
 
 
     public Integer getId() {
@@ -87,7 +87,7 @@ public class Competition {
         return categories;
     }
 
-    public List<Judge> getJudges(){
+    public List<User> getJudges(){
         return judges;
     }
 
@@ -134,7 +134,7 @@ public class Competition {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-    public void setJudges(List<Judge> judges){
+    public void setJudges(List<User> judges){
         this.judges = judges;
     }
 

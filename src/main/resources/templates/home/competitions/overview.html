@@ -37,6 +37,16 @@
             document.getElementById("dontShow").style.display = "block";
             document.getElementById("show").style.display = "none";
         }
+        function displayJudges() {
+            document.getElementById("JudgesBody").style.display = "block";
+            document.getElementById("dontShow").style.display = "none";
+            document.getElementById("show").style.display = "block";
+        }
+        function hideJudges() {
+            document.getElementById("JudgesBody").style.display = "none";
+            document.getElementById("dontShow").style.display = "block";
+            document.getElementById("show").style.display = "none";
+        }
     </script>
     <div class="card mt-5">
         <div class="card-header">
@@ -77,13 +87,13 @@
                         <div th:each="cat : ${competition.getCategories()}">
                             <div class="row">
                                 <div class="col">
-                                   <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
-                                        class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
-                                         <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>  </a>
+                                    <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                       class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
+                                        <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>  </a>
                                 </div>
                                 <div class="col-1">
-                                   <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
-                                      class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
+                                    <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                       class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
                                 </div>
                             </div>
                         </div>
@@ -109,15 +119,35 @@
                         </div>
                     </div>
                 </div>
-                <p class="my-5"><a th:href="@{/home/competitions/view/group/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Group</a></p>
             </div>
         </div>
     </div>
+
+
     <div class="card mt-5">
-        <h5 class="card-header">Judges</h5>
-        <div class="card-body">
-            <div class="panel-body">Their Login (make password hidden - button to show)</div>
+        <div class="card-header">
+            <h5 class="row">
+                <span class="col"> Judges (<span th:text="${competition.getJudges().size()}"></span>)</span>
+                <a class="col-1" href="javascript:displayJudges()" id="dontShow"><i class="fas fa-angle-left"></i></a>
+                <a class="col-1" href="javascript:hideJudges()" id="show" style="display: none"><i class="fas fa-angle-down"></i> </a>
+            </h5>
+        </div>
+        <div class="card-body" id="JudgesBody" style="display: none">
+            <form action="#" th:action="@{/home/competitions/view/{comp_id}}" th:object="${judge}" method="post">
+            <div class="row">
+                <input type="password" th:field="*{password}" class="form-control" id="password"
+                       placeholder="Password" required>
+            </div>
+                <div class="row">
+                    <div class="col-md-6 mt-5">
+                        <input type="submit" class="btn btn-primary" value="Generate Logins">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+
+</div>
+</div>
 </div>
 </body>

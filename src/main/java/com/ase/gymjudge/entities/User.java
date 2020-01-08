@@ -1,16 +1,10 @@
 package com.ase.gymjudge.entities;
+import org.hibernate.annotations.JoinColumnOrFormula;
+
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -37,6 +31,13 @@ public class User {
 
     @Column(name = "active")
     private int active;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Competition competition;
+
+    @Column
+    private Apparatus apparatus;
+
 
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
@@ -103,5 +104,17 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+    public Competition getCompetition(){
+        return competition;
+    }
+    public void setCompetition(Competition competition){
+        this.competition = competition;
+    }
+    public Apparatus getApparatuses(){
+        return apparatus;
+    }
+    public void setApparatus(Apparatus apparatus){
+        this.apparatus = apparatus;
     }
 }

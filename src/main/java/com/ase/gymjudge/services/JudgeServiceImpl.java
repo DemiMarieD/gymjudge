@@ -1,33 +1,57 @@
 package com.ase.gymjudge.services;
 
-import com.ase.gymjudge.entities.Judge;
-import com.ase.gymjudge.entities.Role;
-import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.entities.*;
+import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.JudgeRepository;
 import com.ase.gymjudge.repositories.RoleRepository;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 @Service
-public class JudgeServiceImpl implements JudgeService{
+public class JudgeServiceImpl implements JudgeService {
     @Autowired
     private JudgeRepository judgeRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private CompetitionRepository competitionRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+     @Override
+     public User findByEmail(String email){
+         return judgeRepository.findByEmail(email);
+     }
+
+    public List<User> create(Competition comp) {
+        List<User> judges = new ArrayList<>();
+        User judge = new User();
+        Role role = roleRepository.findByRole("JUDGE");
+        for (Apparatus app : new ApparatusesDto().getApparatuses()) {
+            judge.setEmail(app.getDisplayValue()+ comp.getId());
+            judge.setApparatus(app);
+            judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
+            judge.setActive(1);
+            judge.setRoles(new HashSet<Role>(Arrays.asList(role)));
+
+        }
+
+        return judges;
+    }
 
     @Override
-    public void save(Judge judge) {
-        Role role = roleRepository.findByRole("JUDGE");
-        judge.setRole(role);
+    public void save(User judge) {
         judgeRepository.save(judge);
     }
+
     @Override
-    public void delete(Judge judge){
-        judgeRepository.deleteById(judge.getJudgeID());
+    public void delete(User judge) {
+        judgeRepository.delete(judge);
     }
 }
 //
