@@ -1,9 +1,6 @@
 package com.ase.gymjudge.controller;
 //import org.springframework.http.ResponseEntity;
-import com.ase.gymjudge.entities.Category;
-import com.ase.gymjudge.entities.Competition;
-import com.ase.gymjudge.entities.Participants;
-import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;

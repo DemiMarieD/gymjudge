@@ -71,21 +71,7 @@ public class GroupController {
         //model.addAttribute("apparatusList", apparatusesForm);
         return "home/competitions/group/overview";
     }
-    /*@PostMapping("/home/groups/view/{group_id}")
-    public String saveGroup(@ModelAttribute ApparatusesDto apparatusList, @PathVariable("group_id") int group_id, Model model) {
-        System.out.println("start saving Group");
-        Grouping grouping = groupRepository.findById(group_id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Group Id: " + group_id));
-        System.out.println("found Group:");
-        System.out.println(grouping.getApparatuses());
 
-        System.out.println(apparatusList.getApparatuses());
-        grouping.setApparatuses(apparatusList.getApparatuses());
-        System.out.println("saved Apparatuses");
-        groupRepository.save(grouping);
-        System.out.println("saved Group");
-        return "redirect:/home/home";
-    }*/
     @PostMapping("/home/groups/view/{group_id}")
     public String saveGroup(@Valid Grouping grouping, @PathVariable("group_id") int group_id, Model model) {
         Competition competition = competitionRepository.findById(grouping.getCompetition().getId())
@@ -96,9 +82,4 @@ public class GroupController {
         groupRepository.save(grouping);
         return "redirect:/home/competitions/view/" + grouping.getCompetition().getId();
     }
-
-    /*@RequestMapping("/home/groups/view/newapparatus/{group_id}")
-    public String addApparatus(@PathVariable("group_id") int group_id, Model model) {
-        return "home/competitions/group/overview";
-    }*/
 }

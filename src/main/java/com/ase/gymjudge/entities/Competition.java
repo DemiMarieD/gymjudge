@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -144,5 +145,33 @@ public class Competition {
 
     public void setGroups(List<Grouping> groups) {
         this.groups = groups;
+    }
+
+    public List<Integer> getGroupingOrderFor(Apparatus apparatus) {
+        List<Integer> order = new ArrayList<>();
+        int maxApparatuses = 0;
+        boolean apparatusFound = false;
+
+        for (Grouping group: groups) {
+            if (group.getApparatuses().size() > maxApparatuses) {
+                maxApparatuses = group.getApparatuses().size();
+            }
+        }
+
+        for (int i = 0; i < maxApparatuses; i++) {
+            for (Grouping group: groups) {
+                if (group.getApparatuses().indexOf(apparatus) == i) {
+                    order.add(group.getId());
+                    apparatusFound = true;
+                    break;
+                }
+            }
+            if (!apparatusFound) {
+                order.add(-1);
+            }
+            apparatusFound = false;
+        }
+
+        return order;
     }
 }
