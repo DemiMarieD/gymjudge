@@ -18,10 +18,9 @@ public class JudgeController {
     @Autowired
     private OrderRepository orderRepository;
 
-    //todo: check whats the problem
     @Autowired
-  // private JudgeService judgeService; //shows error
-
+    private JudgeService judgeService;
+//
     @RequestMapping(value= {"/judge/login"}, method= RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView model = new ModelAndView();
@@ -29,18 +28,18 @@ public class JudgeController {
         return model;
     }
 
-     /*  @GetMapping("judge/scoring")
+    @GetMapping("judge/scoring")
     public ModelAndView newCategory(ModelAndView model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Judge judge = judgeService.findByLogin(auth.getName());
-        Grouping group = orderRepository.getGroup(round, judge.getApparatus());
+        //Grouping group = orderRepository.getGroup(round, judge.getApparatus());
         //todo calculate/find the number of rounds
         model.addObject("judge", judge);
         model.setViewName("judge/scoring/roundOverview");
 
         return model;
     }
-    */
+
 
 /*
    @GetMapping("judge/scoring/{round}")

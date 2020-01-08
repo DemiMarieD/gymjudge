@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Live scores</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}" defer></script>
+    <script type="text/javascript" th:src="@{/js/liveUpdate.js}" defer></script>
+</head>
+<body>
+<h1 th:text="'Live scores for ' + ${compName}"></h1>
+<br/>
+<a th:href="@{/}" class="btn btn-primary">Back</a>
+<br/> <br/>
+<div id="scoring" class="list-group" th:switch="${scores}">
+    <h2 th:if="${scores.isEmpty()}">No scores yet!</h2>
+    <div th:if="${!scores.isEmpty()}">
+        <table class="table" id="scoreTable">
+            <thead>
+                <tr>
+                    <th scope="col">Gymnast</th>
+                    <th scope="col">Club</th>
+                    <th scope="col">Apparatus</th>
+                    <th scope="col">D</th>
+                    <th scope="col">E1</th>
+                    <th scope="col">E2</th>
+                    <th scope="col">E3</th>
+                    <th scope="col">E4</th>
+                    <th scope="col">N</th>
+                </tr>
+            </thead>
+            <tr th:each="score:${scores}">
+                <td th:text="${score.participants.firstname} + ' ' + ${score.participants.lastname}"></td>
+                <td th:text="${score.participants.club}"></td>
+                <td th:text="${score.apparatus}"></td>
+                <td th:text="${score.d}"></td>
+                <td th:text="${score.e1}"></td>
+                <td th:text="${score.e2}"></td>
+                <td th:text="${score.e3}"></td>
+                <td th:text="${score.e4}"></td>
+                <td th:text="${score.n}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
