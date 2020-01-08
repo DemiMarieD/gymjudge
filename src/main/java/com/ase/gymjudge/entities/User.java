@@ -1,16 +1,7 @@
 package com.ase.gymjudge.entities;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -56,6 +47,16 @@ public class User {
     public String getJudgePassword() {
         return judgePassword;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Competition competition;
+    public Competition getCompetition() {
+        return competition;
+    }
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
+
     //todo use maybe for deleting later
     //caused error on first try "can not be set to null"; also problem: connected to role can not be deleted
    /* @Column(name = "competition")

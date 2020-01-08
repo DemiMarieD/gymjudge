@@ -3,7 +3,6 @@ package com.ase.gymjudge.controller;
 import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
-import com.ase.gymjudge.repositories.JudgeRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -26,8 +26,6 @@ public class CompetitionController {
     private CategoryRepository catRepository;
     @Autowired
     private ParticipantsRepository patRepository;
-    @Autowired
-    private JudgeRepository judgeRepository;
     @Autowired
     private UserService userService;
 
@@ -41,8 +39,9 @@ public class CompetitionController {
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-        List<Judge> judges = compRepository.getJudges(competition.getId());
-        model.addObject("judges", judges);
+        //todo get all judges for that competition
+        //User judges = compRepository.getJudges(competition.getId());
+        //model.addObject("judges", judges);
         model.addObject("competition", competition);
         model.setViewName ("home/competitions/new");
         return model;
@@ -57,17 +56,15 @@ public class CompetitionController {
         User user = getLoggedInUser();
         //todo: check DATES
         competition.setAdminID(user.getId());
-        //todo: check TYPE (if-else) and create # judge login
         compRepository.save(competition);
 
         //creating Judge
         List<Apparatus> apparatuses = competition.getAvailableApparatuses();
+        List<User> judges = new LinkedList<>();
         for (Apparatus a : apparatuses){
             User judge = new User();
             judge.setApparatus(a);
-            //todo use maybe for deleting later
-            //judge.setCompetitionId(competition.getId()); //caused error on first try "can not be set to null"
-
+            judge.setCompetition(competition);
             judge.setEmail(a.getDisplayValue() + "@" + competition.getName() + ".at");
             judge.setFirstname(a.getDisplayValue());
             judge.setLastname(competition.getName());
@@ -83,7 +80,11 @@ public class CompetitionController {
                 // todo: set to active when competition edited to active!
             }
             userService.saveJudge(judge);
+            judges.add(judge);
         }
+        competition.setJudges(judges);
+        compRepository.save(competition);
+
         //todo: figure out how to delete them when competition is deleted
 
        /* model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
@@ -132,9 +133,18 @@ public class CompetitionController {
 
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
-        compRepository.save(comp);
 
-        //todo depending on status change the activeness of the related judges
+       /*
+        Boolean active = false;
+        if(comp.getStatus() == Status.ACTIVE){ active=true;}
+        //todo: fix null pointer exception
+        for(User judge : comp.getJudges()){
+            if(active){  judge.setActive(1);
+            }else{ judge.setActive(0);}
+            userService.saveJudge(judge);
+        }
+        */
+        compRepository.save(comp);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "redirect:/home/competitions/view/" + String.valueOf(id);

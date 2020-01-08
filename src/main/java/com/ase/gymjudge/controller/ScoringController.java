@@ -2,25 +2,16 @@ package com.ase.gymjudge.controller;
 
 import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.*;
-import com.ase.gymjudge.services.JudgeService;
 import com.ase.gymjudge.services.UserService;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import javax.xml.bind.SchemaOutputResolver;
-import java.awt.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +26,6 @@ public class ScoringController {
     private ParticipantsRepository patRepository;
     @Autowired
     private UserService userService;
-    @Autowired
-    private JudgeRepository judgeRepository;
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -53,11 +42,9 @@ public class ScoringController {
 
     @GetMapping({"/roundsoverview"})
     public String showRoundsOverview(Model model) {
-        // TODO: get real id from judge login
-        int compId = 75;
-       // Apparatus app = Apparatus.BODEN;
+        int compId = getJudge().getCompetition().getId();
         Apparatus app = getJudge().getApparatus();
-
+        //this could be made shorter?!
         if (compRepository.findById(compId).isPresent()) {
             Competition comp = compRepository.findById(compId).get();
 
