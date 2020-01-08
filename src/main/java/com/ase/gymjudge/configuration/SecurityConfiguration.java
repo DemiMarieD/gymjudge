@@ -48,8 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/livescores/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/home/**").hasAuthority("ADMIN")
-                //todo change accordingly
-                .antMatchers("/judge/**").hasAuthority("JUDGE")
+                .antMatchers("/roundsoverview/**").hasAuthority("JUDGE")
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 //forAdmin

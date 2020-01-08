@@ -69,7 +69,7 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value= {"/home/home"}, method=RequestMethod.GET)
+    @RequestMapping(value= {"/home"}, method=RequestMethod.GET)
     public String home(Model model) {
 
         if(getLoggedInUser().getRoles().contains(roleRepository.findByRole("ADMIN"))) {
@@ -86,7 +86,7 @@ public class UserController {
     @RequestMapping(value= {"/login_successful"}, method=RequestMethod.GET)
     public String login_successful(){
         if(getLoggedInUser().getRoles().contains(roleRepository.findByRole("ADMIN"))) {
-            return "redirect:/home/home";
+            return "redirect:/home";
         }else{
             return "redirect:/roundsoverview";
         }

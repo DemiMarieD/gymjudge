@@ -22,11 +22,6 @@ public interface CompetitionRepository extends CrudRepository<Competition, Integ
     List<Category> getCategories(Integer competitionId);
 
 
-    /*
-    @Query(value = "select c.judges from Competition c where c.type like ?1")
-    List<Judge> getJudges(Integer competitionId);
-    */
-
 }
 
 //
