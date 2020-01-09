@@ -38,8 +38,6 @@ public class ScoringController {
         User judge = userService.findByEmail(auth.getName());
         return judge;
     }
-
-
     @GetMapping({"/roundsoverview"})
     public String showRoundsOverview(Model model) {
         int compId = getJudge().getCompetition().getId();
