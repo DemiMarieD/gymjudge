@@ -84,7 +84,7 @@
                 <div>
                     <label for="apparatusesDropdown" class="col-form-label">Select Apparatus:</label>
                     <select id="apparatusesDropdown" class="form-control selcls">
-                        <option th:each="apparatus : ${T(com.ase.gymjudge.entities.Apparatus).values()}"
+                        <option th:each="apparatus : ${group.getGroupApparatuses()}"
                                 th:value="${apparatus}" th:text="${apparatus.displayValue}"></option>
                     </select>
                 </div>

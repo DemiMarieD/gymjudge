@@ -91,4 +91,8 @@ public class Grouping {
     public void setParticipants(List<Participants> participants) {
         this.participants = participants;
     }
+
+    public List<Apparatus> getGroupApparatuses() {
+        return competition.getAvailableApparatuses();
+    }
 }
