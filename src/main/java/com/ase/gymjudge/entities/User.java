@@ -1,16 +1,9 @@
 package com.ase.gymjudge.entities;
+import org.hibernate.annotations.Cascade;
+
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -38,9 +31,37 @@ public class User {
     @Column(name = "active")
     private int active;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
-    private Set<Role> roles;
+    //for Judges
+    @Column(name = "apparatus")
+    private Apparatus apparatus;
+    public Apparatus getApparatus() {
+        return apparatus;
+    }
+    public void setApparatus(Apparatus apparatus) {
+        this.apparatus = apparatus;
+    }
+
+    @Column(name = "judgePassword")
+    private String judgePassword;
+    public void setJudgePassword(String judgePassword) {
+        this.judgePassword = judgePassword;
+    }
+    public String getJudgePassword() {
+        return judgePassword;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Competition competition;
+    public Competition getCompetition() {
+        return competition;
+    }
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    //@JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
+    private Role roles;
 
     public int getId() {
         return id;
@@ -97,11 +118,11 @@ public class User {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
+    public Role getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Role roles) {
         this.roles = roles;
     }
 }

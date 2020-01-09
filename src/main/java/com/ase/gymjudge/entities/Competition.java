@@ -2,6 +2,7 @@ package com.ase.gymjudge.entities;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,10 +48,14 @@ public class Competition {
     @OneToMany (mappedBy = "competition", cascade= CascadeType.ALL)
     private List<Grouping> groups;
 
-
     @OneToMany(mappedBy = "competition", cascade= CascadeType.ALL)
-    private List<Judge> judges;
-
+    private List<User> judges;
+    public void setJudges(List<User> judges) {
+        this.judges = judges;
+    }
+    public List<User> getJudges() {
+        return judges;
+    }
 
     public Integer getId() {
         return id;
@@ -86,10 +91,6 @@ public class Competition {
 
     public List<Category> getCategories() {
         return categories;
-    }
-
-    public List<Judge> getJudges(){
-        return judges;
     }
 
     public void setId(Integer id) {
@@ -134,9 +135,6 @@ public class Competition {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
-    }
-    public void setJudges(List<Judge> judges){
-        this.judges = judges;
     }
 
     public List<Grouping> getGroups() {

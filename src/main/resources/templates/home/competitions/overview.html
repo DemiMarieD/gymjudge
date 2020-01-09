@@ -116,7 +116,24 @@
     <div class="card mt-5">
         <h5 class="card-header">Judges</h5>
         <div class="card-body">
-            <div class="panel-body">Their Login (make password hidden - button to show)</div>
+            <div class="panel-body">
+                <div class="list-group" th:switch="${competition.getJudges()}">
+                    <h2 th:case="null">No groups yet!</h2>
+                    <div th:case="*">
+                        <div th:each="judge : ${competition.getJudges()}">
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <span th:text="${judge.getFirstname()}"></span>
+                                <span>, Login: </span>
+                                <span th:text="${judge.getEmail()}"></span>
+                                <span>, </span>
+                                <!--Todo: Hidde password and on click show?! -->
+                                <span class="badge badge-primary badge-pill" th:text="${judge.getJudgePassword()}"></span>
+                            </a>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

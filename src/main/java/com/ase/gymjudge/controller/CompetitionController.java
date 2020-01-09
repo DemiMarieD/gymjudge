@@ -3,7 +3,6 @@ package com.ase.gymjudge.controller;
 import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
-import com.ase.gymjudge.repositories.JudgeRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -27,9 +27,8 @@ public class CompetitionController {
     @Autowired
     private ParticipantsRepository patRepository;
     @Autowired
-    private JudgeRepository judgeRepository;
-    @Autowired
     private UserService userService;
+
 
     public User getLoggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -40,8 +39,7 @@ public class CompetitionController {
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-        List<Judge> judges = compRepository.getJudges(competition.getId());
-        model.addObject("judges", judges);
+
         model.addObject("competition", competition);
         model.setViewName ("home/competitions/new");
         return model;
@@ -56,15 +54,43 @@ public class CompetitionController {
         User user = getLoggedInUser();
         //todo: check DATES
         competition.setAdminID(user.getId());
-        //todo: check TYPE (if-else) and create # judge login
         compRepository.save(competition);
+
+        //creating Judge
+        List<Apparatus> apparatuses = competition.getAvailableApparatuses();
+        List<User> judges = new LinkedList<>();
+        for (Apparatus a : apparatuses){
+            User judge = new User();
+            judge.setApparatus(a);
+            judge.setCompetition(competition);
+            judge.setEmail(a.getDisplayValue() + "@" + competition.getName() + ".at");
+            judge.setFirstname(a.getDisplayValue());
+            judge.setLastname(competition.getName());
+
+            String password = "1234"; //todo: set nicer passwords
+            judge.setPassword(password);
+            judge.setJudgePassword(password); //not hashed
+
+            if(competition.getStatus() == Status.ACTIVE){
+                judge.setActive(1);
+            }else{
+                judge.setActive(0); //default not active
+                // todo: set to active when competition edited to active!
+            }
+            userService.saveJudge(judge);
+            judges.add(judge);
+        }
+        competition.setJudges(judges);
+        compRepository.save(competition);
+
+        //todo: figure out how to delete them when competition is deleted
 
        /* model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addObject("adminId", user.getId());*/
         //model.setViewName ("home/competitions");
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addAttribute("adminId", user.getId());
-        return "redirect:/home/home";
+        return "redirect:/home";
     }
 
     //should not be needed anymore
@@ -105,6 +131,20 @@ public class CompetitionController {
 
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
+
+        Boolean active = false;
+        if(comp.getStatus() == Status.ACTIVE){ active=true;}
+
+        List<User> judges = compRepository.getCompetitionsById(id).getJudges();
+        for(User judge : judges){
+            if(active){
+                judge.setActive(1);
+            }else{
+                judge.setActive(0);
+            }
+            userService.saveJudge(judge);
+        }
+
         compRepository.save(comp);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
@@ -116,12 +156,14 @@ public class CompetitionController {
         Competition comp = compRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
 
+        //todo: fix problem with deleting the judges.
+
         //removes all categories connected and all participants connected to those!
         compRepository.delete(comp);
 
         User user = getLoggedInUser();
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "redirect:/home/home";
+        return "redirect:/home";
     }
 
     // For live updates
