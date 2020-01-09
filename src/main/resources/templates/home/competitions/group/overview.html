@@ -120,9 +120,12 @@
 
         <div class="row">
             <div class="col-md-6 mt-5">
-                <input type="submit" class="btn btn-primary" value="Back and Save">
+                <input type="submit" class="btn btn-primary" value="Save">
             </div>
         </div>
     </form>
+    <div class="row justify-content-center">
+        <p class="my-5"> <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${grouping.getCompetition().getId()})}" class="btn btn-primary">Back</a>
+    </div>
 </div>
 </body>

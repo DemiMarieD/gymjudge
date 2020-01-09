@@ -15,7 +15,7 @@
     <h2 class="mb-5">New Category</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/home/competitions/view/category/new/{comp_id}(comp_id=${comp_id})}" th:object="${category}" method="post">
+            <form action="#" th:action="@{/home/competitions/view/category/new/{comp_id}(comp_id = ${comp_id})}" th:object="${category}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="label" class="col-form-label">Category Label</label>
@@ -40,6 +40,9 @@
                 </div>
             </form>
         </div>
+    </div>
+    <div class="row justify-content-center">
+        <p class="my-5"> <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${category.getCompetition().getId()})}" class="btn btn-primary">Back</a>
     </div>
 </div>
 </body>
