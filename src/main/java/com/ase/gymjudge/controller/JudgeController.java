@@ -112,11 +112,10 @@ public class JudgeController {
         judgeService.create(comp);
         judgeRepository.save(judge);
 
-        List<User> judges = comp.getJudges();
-        judges.add(judge);
         comp.setJudges(judges);
         competitionRepository.save(comp);
         model.addAttribute("competition", comp);
+        model.addAttribute("judge", judgeRepository.findById(judge.getId()));
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
     }
 

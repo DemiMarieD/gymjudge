@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -145,4 +146,33 @@ public class Competition {
     public void setGroups(List<Grouping> groups) {
         this.groups = groups;
     }
+    public List<Apparatus> getAvailableApparatuses() {
+        List<Apparatus> tempList = new ArrayList<>();
+        if (type == Type.TURN10) {
+            tempList.add(Apparatus.BODEN);
+            tempList.add(Apparatus.PFERD);
+            tempList.add(Apparatus.RINGE);
+            tempList.add(Apparatus.SPRUNG);
+            tempList.add(Apparatus.BARREN);
+            tempList.add(Apparatus.RECK);
+            tempList.add(Apparatus.BALKEN);
+            tempList.add(Apparatus.STUFENBARREN);
+            tempList.add(Apparatus.MINITRAMPOLIN);
+            tempList.add(Apparatus.PAUSE);
+        } else if (type == Type.STUFENWETTKAMPF) {
+            tempList.add(Apparatus.STATION1);
+            tempList.add(Apparatus.STATION2);
+            tempList.add(Apparatus.STATION3);
+            tempList.add(Apparatus.STATION4);
+            tempList.add(Apparatus.STATION5);
+            tempList.add(Apparatus.STATION6);
+            tempList.add(Apparatus.STATION7);
+            tempList.add(Apparatus.STATION8);
+            tempList.add(Apparatus.STATION9);
+            tempList.add(Apparatus.STATION10);
+            tempList.add(Apparatus.PAUSE);
+        }
+        return tempList;
+    }
 }
+

@@ -30,15 +30,18 @@ public class JudgeServiceImpl implements JudgeService {
 
     public List<User> create(Competition comp) {
         List<User> judges = new ArrayList<>();
-        User judge = new User();
         Role role = roleRepository.findByRole("JUDGE");
-        for (Apparatus app : new ApparatusesDto().getApparatuses()) {
+        List<Apparatus> apparatuses =comp.getAvailableApparatuses();
+        for (Apparatus app : apparatuses) {
+            User judge = new User();
+            judge.setFirstname(app.getDisplayValue());
+            judge.setLastname(comp.getName());
             judge.setEmail(app.getDisplayValue()+ comp.getId());
             judge.setApparatus(app);
             judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
             judge.setActive(1);
             judge.setRoles(new HashSet<Role>(Arrays.asList(role)));
-
+            judges.add(judge);
         }
 
         return judges;

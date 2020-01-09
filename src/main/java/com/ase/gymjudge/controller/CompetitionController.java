@@ -5,6 +5,7 @@ import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.JudgeRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
+import com.ase.gymjudge.services.JudgeService;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,8 @@ public class CompetitionController {
     private JudgeRepository judgeRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JudgeService judgeService;
 
     public User getLoggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -40,8 +43,6 @@ public class CompetitionController {
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-        List<User> judges = compRepository.getJudges(competition.getId());
-        model.addObject("judges", judges);
         model.addObject("competition", competition);
         model.setViewName ("home/competitions/new");
         return model;
