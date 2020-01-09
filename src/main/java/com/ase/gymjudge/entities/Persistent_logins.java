@@ -1,9 +1,8 @@
 package com.ase.gymjudge.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.security.Timestamp;
+import java.util.Date;
 
 //Needed for the logout
 
@@ -27,7 +26,6 @@ public class Persistent_logins {
     @Id
     private String series;
     private String token;
-    private Timestamp last_used; //todo: default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-
-
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date last_used; //todo: default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 }

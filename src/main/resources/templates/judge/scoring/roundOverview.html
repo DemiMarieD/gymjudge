@@ -70,6 +70,7 @@
         <h2>
             <small th:text="${compName}"></small><br/>
             Round overview for <b><span th:text="${apparatus}"></span></b>
+            <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
         </h2>
 
         </div>
@@ -226,6 +227,8 @@
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <div class="dropdown-menu">
+                                                            <a class="dropdown-item hold"
+                                                               th:onclick="'hold(' + ${pat.getId()} + ')'">Hold</a>
                                                             <a class="dropdown-item delete"
                                                                th:onclick="'deleteScore(' + ${pat.getId()} + ', ' + ${currentScores.get(pat.getId()).getId()} + ')'">Delete</a>
                                                         </div>
