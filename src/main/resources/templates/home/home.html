@@ -8,10 +8,11 @@
 </head>
 <body>
 <div class="container my-5">
-    <h1>Welcome <span th:utext="${userName}"></span></h1>
+        <div>
+            <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+        </div>
     <div>
-        <a th:href="@{/logout}">Sign out</a>
-        <!--p><a th:href="@{/home/competitions}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Show Competitions</a></p-->
+        <h1>Welcome <span th:utext="${userName}"></span></h1>
     </div>
     <div>
         <h3>Here are your competitions:</h3>
@@ -25,6 +26,7 @@
         </div>
     </div>
     <p class="my-5"><a th:href="@{/home/competitions/new}" class="btn btn-primary">New Competition</a></p>
+
 </div>
 </body>
 </html>
