@@ -39,9 +39,7 @@ public class CompetitionController {
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
-        //todo get all judges for that competition
-        //User judges = compRepository.getJudges(competition.getId());
-        //model.addObject("judges", judges);
+
         model.addObject("competition", competition);
         model.setViewName ("home/competitions/new");
         return model;
