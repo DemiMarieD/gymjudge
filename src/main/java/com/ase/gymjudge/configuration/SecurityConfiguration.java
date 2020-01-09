@@ -25,16 +25,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     private final String USERS_QUERY = "select email, password, active from user where email=?";
     private final String ROLES_QUERY = "select u.email, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.role_id) where u.email=?";
-    private final String JUDGE_QUERY = "select login, password from judge where login=?";
-    private final String JUDGEROLE_QUERY = "select j.login, r.role from judge j inner join role r on (j.role_role_id = r.role_id) where login=?";
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(USERS_QUERY)
-                // .usersByUsernameQuery(JUDGE_QUERY)
                 .authoritiesByUsernameQuery(ROLES_QUERY)
-                // .authoritiesByUsernameQuery(JUDGEROLE_QUERY)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
@@ -51,22 +47,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/roundsoverview/**").hasAuthority("JUDGE")
                 .anyRequest().authenticated()
                 .and().csrf().disable()
-                //forAdmin
                 .formLogin().loginPage("/login")
                 .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/login_successful")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
-                //forJudge
-                /*
-                .formLogin().loginPage("/judge/login")
-                .failureUrl("/judge/login?error=true")
-                .defaultSuccessUrl("/")
-                .usernameParameter("login")
-                .passwordParameter("password")
-                .and()
-                 */
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
@@ -76,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .and()
                 .exceptionHandling().accessDeniedPage("/access_denied");
     }
-//
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();

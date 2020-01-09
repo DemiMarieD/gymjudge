@@ -71,16 +71,11 @@ public class UserController {
 
     @RequestMapping(value= {"/home"}, method=RequestMethod.GET)
     public String home(Model model) {
-
-        if(getLoggedInUser().getRoles().contains(roleRepository.findByRole("ADMIN"))) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User user = userService.findByEmail(auth.getName());
-            model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-            model.addAttribute("userName", user.getFirstname() + " " + user.getLastname());
-            return "home/home";
-        }else{
-            return "redirect:/roundsoverview";
-        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+        model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
+        model.addAttribute("userName", user.getFirstname() + " " + user.getLastname());
+        return "home/home";
     }
 
     @RequestMapping(value= {"/login_successful"}, method=RequestMethod.GET)
@@ -101,8 +96,7 @@ public class UserController {
 
     @RequestMapping(value= {"/logout"}, method=RequestMethod.GET)
     public String logout() {
-        //todo logout not working
-        //error: nested exception is java.sql.SQLSyntaxErrorException: Table 'demodb.persistent_logins' doesn't exist
-        return "/index";
+         return "redirect:/index";
     }
+
 }
