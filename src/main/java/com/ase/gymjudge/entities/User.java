@@ -1,4 +1,6 @@
 package com.ase.gymjudge.entities;
+import org.hibernate.annotations.Cascade;
+
 import java.util.Set;
 
 import javax.persistence.*;
@@ -57,9 +59,9 @@ public class User {
         this.competition = competition;
     }
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
-    private Set<Role> roles;
+    @ManyToOne(cascade=CascadeType.ALL)
+    //@JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
+    private Role roles;
 
     public int getId() {
         return id;
@@ -116,11 +118,11 @@ public class User {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
+    public Role getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Role roles) {
         this.roles = roles;
     }
 }

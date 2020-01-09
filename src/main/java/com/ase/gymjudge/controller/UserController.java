@@ -80,7 +80,7 @@ public class UserController {
 
     @RequestMapping(value= {"/login_successful"}, method=RequestMethod.GET)
     public String login_successful(){
-        if(getLoggedInUser().getRoles().contains(roleRepository.findByRole("ADMIN"))) {
+        if(getLoggedInUser().getRoles().getId() == roleRepository.findByRole("ADMIN").getId()) {  //.contains(roleRepository.findByRole("ADMIN")
             return "redirect:/home";
         }else{
             return "redirect:/roundsoverview";

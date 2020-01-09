@@ -92,7 +92,7 @@ public class CompetitionController {
         //model.setViewName ("home/competitions");
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addAttribute("adminId", user.getId());
-        return "redirect:/home/home";
+        return "redirect:/home";
     }
 
     //should not be needed anymore
@@ -139,8 +139,11 @@ public class CompetitionController {
 
         List<User> judges = compRepository.getCompetitionsById(id).getJudges();
         for(User judge : judges){
-            if(active){  judge.setActive(1);
-            }else{ judge.setActive(0);}
+            if(active){
+                judge.setActive(1);
+            }else{
+                judge.setActive(0);
+            }
             userService.saveJudge(judge);
         }
 
@@ -162,7 +165,7 @@ public class CompetitionController {
 
         User user = getLoggedInUser();
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        return "redirect:/home/home";
+        return "redirect:/home";
     }
 
     // For live updates

@@ -33,7 +33,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         Role userRole = roleRepository.findByRole("ADMIN");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        //user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        user.setRoles(userRole);
         userRepository.save(user);
     }
 
@@ -41,8 +42,9 @@ public class UserServiceImpl implements UserService {
     public void saveJudge(User judge) {
         //password is not hashed so it can be made visible
         judge.setPassword(bCryptPasswordEncoder.encode(judge.getPassword()));
-        Role userRole = roleRepository.findByRole("JUDGE");
-        judge.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        Role judgeRole = roleRepository.findByRole("JUDGE");
+       // judge.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        judge.setRoles(judgeRole);
         userRepository.save(judge);
     }
 

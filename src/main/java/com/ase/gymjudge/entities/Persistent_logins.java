@@ -6,6 +6,7 @@ import javax.persistence.Table;
 import java.security.Timestamp;
 
 //Needed for the logout
+
 @Entity
 @Table(name = "persistent_logins")
 public class Persistent_logins {
@@ -20,7 +21,7 @@ public class Persistent_logins {
           `last_used` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
           PRIMARY KEY  (`series`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
- */
+*/
     //seems to work like that..
     private String username;
     @Id
