@@ -42,6 +42,54 @@
         }
     </script>
     <div class="card mt-5">
+        <h5 class="card-header">Categories (<span th:text="${competition.getCategories().size()}"></span>)</h5>
+        <div class="card-body">
+            <div class="panel-body">
+                <div  class="list-group"  th:switch="${competition.getCategories()}">
+                    <h2 th:case="null">No categories yet!</h2>
+                    <div th:case="*">
+                        <div th:each="cat : ${competition.getCategories()}">
+                            <div class="row">
+                                <div class="col">
+                                   <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                        class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
+                                         <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>  </a>
+                                </div>
+                                <div class="col-1">
+                                   <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                      class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <a th:href="@{/home/competitions/view/category/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Category</a>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <h5 class="card-header">Groups</h5>
+        <div class="card-body">
+            <div class="panel-body">
+                <div class="list-group" th:switch="${competition.getGroups()}">
+                    <h2 th:case="null">No groups yet!</h2>
+                    <div th:case="*">
+                        <div th:each="group : ${competition.getGroups()}">
+                            <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
+                                <span th:text="${group.name}"></span>
+                                <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
+                            </a>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <a th:href="@{/home/competitions/view/group/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Group</a>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-5">
         <div class="card-header">
             <h5 class="row">
                 <span class="col"> Gymnasts (<span th:text="${competition.getParticipants().size()}"></span>)</span>
@@ -68,52 +116,6 @@
                 </div>
             </div>
             <p class="my-5"><a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary">New Gymnast</a></p>
-        </div>
-    </div>
-    <div class="card mt-5">
-        <h5 class="card-header">Categories (<span th:text="${competition.getCategories().size()}"></span>)</h5>
-        <div class="card-body">
-            <div class="panel-body">
-                <div  class="list-group"  th:switch="${competition.getCategories()}">
-                    <h2 th:case="null">No categories yet!</h2>
-                    <div th:case="*">
-                        <div th:each="cat : ${competition.getCategories()}">
-                            <div class="row">
-                                <div class="col">
-                                   <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
-                                        class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
-                                         <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>  </a>
-                                </div>
-                                <div class="col-1">
-                                   <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
-                                      class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p class="my-5"><a th:href="@{/home/competitions/view/category/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Category</a></p>
-            </div>
-        </div>
-    </div>
-    <div class="card mt-5">
-        <h5 class="card-header">Groups</h5>
-        <div class="card-body">
-            <div class="panel-body">For each Group:
-                <div class="list-group" th:switch="${competition.getGroups()}">
-                    <h2 th:case="null">No groups yet!</h2>
-                    <div th:case="*">
-                        <div th:each="group : ${competition.getGroups()}">
-                            <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
-                                <span th:text="${group.name}"></span>
-                                <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
-                            </a>
-                            <div></div>
-                        </div>
-                    </div>
-                </div>
-                <p class="my-5"><a th:href="@{/home/competitions/view/group/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Group</a></p>
-            </div>
         </div>
     </div>
     <div class="card mt-5">
