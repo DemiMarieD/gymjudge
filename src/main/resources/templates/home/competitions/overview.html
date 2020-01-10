@@ -8,12 +8,47 @@
     <script type="text/javascript" src="/static/js/competitionOverview.js"></script>
 </head>
 <body>
+<script>
+    function displayGymnasts() {
+        if (document.getElementById("GymnastBody").style.display === 'none') {
+            document.getElementById("GymnastBody").style.display = "block";
+            document.getElementById("dontShow").style.display = "none";
+            document.getElementById("show").style.display = "block";
+        } else {
+            document.getElementById("GymnastBody").style.display = "none";
+            document.getElementById("dontShow").style.display = "block";
+            document.getElementById("show").style.display = "none";
+        }
+    }
+</script>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-    <div>
-        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
-    </div>
     <div class="panel panel-default">
-        <h2 class="mb-5" th:object="${competition}">Infos on the Competition <span th:text="*{name}"></span></h2>
+        <div class="panel panel-default">
+            <div class="page-header">
+                <h2>
+                    <small th:text="${competition.name}"></small><br/>
+                    Competition Overview<b><span th:text="*{name}"></span></b>
+                    <span>
+                        <a th:href="@{/home}" class="btn btn-primary float-right">Back</a>
+                        <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                    </span>
+                </h2>
+            </div>
+        </div>
         <div class="card mt-5">
             <h5 class="card-header">Basic Infos</h5>
             <div class="card-body">
@@ -22,25 +57,11 @@
                 <p>Description: <span th:text="${competition.description}"></span></p>
                 <p>Type: <span th:text="${competition.type}"></span></p>
                 <p>Status: <span th:text="${competition.status}"></span></p>
-                <div class="ml-2">
-                    <a th:href="@{/home/competitions/edit/{id}(id=*{id})}" class="btn btn-primary">Edit</a>
-                    <a th:href="@{/home/competitions/delete/{id}(id=*{id})}" class="btn btn-primary">Delete</a>
-                </div>
+                <a th:href="@{/home/competitions/edit/{id}(id=*{id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/home/competitions/delete/{id}(id=*{id})}" class="btn btn-primary">Delete</a>
             </div>
         </div>
     </div>
-    <script>
-        function displayGymnasts() {
-            document.getElementById("GymnastBody").style.display = "block";
-            document.getElementById("dontShow").style.display = "none";
-            document.getElementById("show").style.display = "block";
-        }
-        function hideGymnasts() {
-            document.getElementById("GymnastBody").style.display = "none";
-            document.getElementById("dontShow").style.display = "block";
-            document.getElementById("show").style.display = "none";
-        }
-    </script>
     <div class="card mt-5">
         <h5 class="card-header">Categories (<span th:text="${competition.getCategories().size()}"></span>)</h5>
         <div class="card-body">
@@ -90,11 +111,11 @@
         </div>
     </div>
     <div class="card mt-5">
-        <div class="card-header">
+        <div class="card-header gymnast" th:onclick="'javascript:displayGymnasts()'">
             <h5 class="row">
                 <span class="col"> Gymnasts (<span th:text="${competition.getParticipants().size()}"></span>)</span>
-                <a class="col-1" href="javascript:displayGymnasts()" id="dontShow"><i class="fas fa-angle-left"></i></a>
-                <a class="col-1" href="javascript:hideGymnasts()" id="show" style="display: none"><i class="fas fa-angle-down"></i> </a>
+                <a class="col-1" id="dontShow"><i class="fas fa-angle-left float-right"></i></a>
+                <a class="col-1" id="show" style="display: none"><i class="fas fa-angle-down float-right"></i> </a>
             </h5>
         </div>
         <div class="card-body" id="GymnastBody" style="display: none">
@@ -115,7 +136,8 @@
                     </div>
                 </div>
             </div>
-            <p class="my-5"><a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary">New Gymnast</a></p>
+            <br/>
+            <a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary">New Gymnast</a>
         </div>
     </div>
     <div class="card mt-5">
@@ -154,9 +176,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-    <p class="my-5"> <a th:href="@{/home}" class="btn btn-primary float-right">Back</a>
     </div>
 </div>
 </body>

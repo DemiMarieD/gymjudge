@@ -7,16 +7,33 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-        <div>
-            <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+    <div class="panel panel-default">
+        <div class="page-header">
+            <h2>
+                <small th:text="'Welcome ' + ${userName}"></small><br/>
+                Here are your competitions:
+                <span>
+                        <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                </span>
+            </h2>
         </div>
-    <div>
-        <h1>Welcome <span th:utext="${userName}"></span></h1>
     </div>
-    <div>
-        <h3>Here are your competitions:</h3>
-    </div>
+    <br/><br/>
     <div class="list-group" th:switch="${competitions}">
         <h2 th:case="null">No competition yet!</h2>
         <div th:case="*">

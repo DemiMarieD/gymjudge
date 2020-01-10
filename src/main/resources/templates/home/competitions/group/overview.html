@@ -8,67 +8,81 @@
 
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
+<script>
+    function addApparatus() {
+        var list = document.getElementById("dynamic-list");
+        var apparatusesDropdown = document.getElementById("apparatusesDropdown");
+        var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
+        var newLi = document.createElement("li");
+        let enumString = "";
+
+        newLi.setAttribute('name', apparatusName);
+        newLi.appendChild(document.createTextNode(apparatusName));
+        list.appendChild(newLi);
+
+        document.getElementById("apparatuses").value += "," +
+            apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
+
+        enumString = document.getElementById("apparatuses").value;
+        if (enumString.substring(0,1) === ",") {
+            document.getElementById("apparatuses").value = enumString.substring(1, enumString.length);
+        }
+    }
+    function removeApparatus() {
+        var list = document.getElementById("dynamic-list");
+        var apparatusesDropdown = document.getElementById("apparatusesDropdown");
+        var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
+        let enumToRemove = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
+        let subList = document.getElementsByName(apparatusName);
+        let enumString = document.getElementById("apparatuses").value;
+
+        list.removeChild(subList[subList.length - 1]);
+
+        if (enumString.lastIndexOf(enumToRemove) >= 0) {
+            console.log("remove " + enumToRemove);
+            enumString = enumString.substring(0, enumString.lastIndexOf(enumToRemove)) +
+                enumString.substring(enumString.lastIndexOf(enumToRemove) + enumToRemove.length, enumString.length);
+            if (enumString.indexOf(",,") > 0) {
+                console.log("case ,,");
+                enumString = enumString.substring(0, enumString.indexOf(",,")) +
+                    enumString.substring(enumString.indexOf(",,") + 1, enumString.length);
+            } else if (enumString.indexOf(",") === 0) {
+                console.log(", case");
+                enumString = enumString.substring(1, enumString.length);
+            } else if (enumString.lastIndexOf(",") === enumString.length - 1 && enumString.length > 0) {
+                console.log("case ,");
+                enumString = enumString.substring(0, enumString.length - 1);
+            }
+            document.getElementById("apparatuses").value = enumString;
+        }
+    }
+</script>
 <div class="container my-5">
-    <div>
-        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
-    </div>
-    <script>
-        function addApparatus() {
-            var list = document.getElementById("dynamic-list");
-            var apparatusesDropdown = document.getElementById("apparatusesDropdown");
-            var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
-            var newLi = document.createElement("li");
-            let enumString = "";
-
-            newLi.setAttribute('name', apparatusName);
-            newLi.appendChild(document.createTextNode(apparatusName));
-            list.appendChild(newLi);
-
-            document.getElementById("apparatuses").value += "," +
-                apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
-
-            enumString = document.getElementById("apparatuses").value;
-            if (enumString.substring(0,1) === ",") {
-                document.getElementById("apparatuses").value = enumString.substring(1, enumString.length);
-            }
-        }
-        function removeApparatus() {
-            var list = document.getElementById("dynamic-list");
-            var apparatusesDropdown = document.getElementById("apparatusesDropdown");
-            var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
-            let enumToRemove = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
-            let subList = document.getElementsByName(apparatusName);
-            let enumString = document.getElementById("apparatuses").value;
-
-            list.removeChild(subList[subList.length - 1]);
-
-            if (enumString.lastIndexOf(enumToRemove) >= 0) {
-                console.log("remove " + enumToRemove);
-                enumString = enumString.substring(0, enumString.lastIndexOf(enumToRemove)) +
-                    enumString.substring(enumString.lastIndexOf(enumToRemove) + enumToRemove.length, enumString.length);
-                if (enumString.indexOf(",,") > 0) {
-                    console.log("case ,,");
-                    enumString = enumString.substring(0, enumString.indexOf(",,")) +
-                        enumString.substring(enumString.indexOf(",,") + 1, enumString.length);
-                } else if (enumString.indexOf(",") === 0) {
-                    console.log(", case");
-                    enumString = enumString.substring(1, enumString.length);
-                } else if (enumString.lastIndexOf(",") === enumString.length - 1 && enumString.length > 0) {
-                    console.log("case ,");
-                    enumString = enumString.substring(0, enumString.length - 1);
-                }
-                document.getElementById("apparatuses").value = enumString;
-            }
-        }
-    </script>
     <form action="#" th:action="@{/home/groups/view/{group_id}(group_id=${group_id})}" th:object="${grouping}" method="post">
         <div class="panel panel-default">
-            <h2 class="mb-5" th:object="${grouping}">Infos for Group <input type="text" th:field="*{name}" th:value="*{name}"></h2>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <input type="submit" class="btn btn-primary" value="Back and Save">
+            <div class="page-header">
+                <h2>
+                    <small th:text="${grouping.competition.name}"></small><br/>
+                    Infos for Group <input type="text" th:field="*{name}" th:value="*{name}">
+                    <span>
+                        <input type="submit" class="btn btn-primary float-right" value="Back and Save">
+                        <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                    </span>
+                </h2>
             </div>
         </div>
 
@@ -117,15 +131,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-6 mt-5">
-                <input type="submit" class="btn btn-primary" value="Save">
-            </div>
-        </div>
     </form>
-    <div class="row justify-content-center">
-        <p class="my-5"> <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${grouping.getCompetition().getId()})}" class="btn btn-primary">Back</a>
-    </div>
 </div>
 </body>
