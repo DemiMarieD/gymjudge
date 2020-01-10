@@ -4,7 +4,9 @@ import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CategoryRepository;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
+import com.ase.gymjudge.repositories.UserRepository;
 import com.ase.gymjudge.services.UserService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class CompetitionController {
     private ParticipantsRepository patRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
 
     public User getLoggedInUser(){
@@ -57,7 +62,7 @@ public class CompetitionController {
         compRepository.save(competition);
 
         //creating Judge
-        List<Apparatus> apparatuses = competition.getAvailableApparatuses();
+        /*List<Apparatus> apparatuses = competition.getAvailableApparatuses();
         List<User> judges = new LinkedList<>();
         for (Apparatus a : apparatuses){
             User judge = new User();
@@ -81,7 +86,7 @@ public class CompetitionController {
             judges.add(judge);
         }
         competition.setJudges(judges);
-        compRepository.save(competition);
+        compRepository.save(competition);*/
 
         //todo: figure out how to delete them when competition is deleted
 
@@ -120,6 +125,49 @@ public class CompetitionController {
         return "home/competitions/overview";
     }
 
+    @PostMapping("home/competitions/view/{id}")
+    public String showCompetition(@PathVariable("id") int id, @Valid Competition comp,
+                                  BindingResult result, Model model) {
+
+        Competition competition = compRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
+
+        System.out.println(competition.getId());
+        System.out.println(competition.getJudgePassword());
+        System.out.println(competition.getType());
+        System.out.println(competition.getAvailableApparatuses().toString());
+
+        //creating Judge
+        List<Apparatus> apparatuses = competition.getAvailableApparatuses();
+        List<User> judges = new LinkedList<>();
+        for (Apparatus a : apparatuses){
+            if (a != Apparatus.PAUSE) {
+                User judge = new User();
+                judge.setApparatus(a);
+                judge.setCompetition(competition);
+                judge.setEmail(a.getDisplayValue() + "@" + competition.getName() + ".at");
+                judge.setFirstname(a.getDisplayValue());
+                judge.setLastname(competition.getName());
+                System.out.println("Generated new Judge:");
+                System.out.println(judge.getEmail());
+
+                String password = comp.getJudgePassword(); //todo: set nicer passwords
+                judge.setPassword(password);
+                judge.setJudgePassword(password); //not hashed
+                judge.setActive(1);
+
+                userService.saveJudge(judge);
+                judges.add(judge);
+            }
+        }
+        competition.setJudges(judges);
+        competition.setJudgePassword("");
+
+        compRepository.save(competition);
+
+        return "redirect:/home/competitions/view/" + String.valueOf(id);
+    }
+
     @PostMapping("home/competitions/update/{id}")
     public String updateCompetitions(@PathVariable("id") int id, @Valid Competition comp,
                              BindingResult result, Model model) {
@@ -132,21 +180,14 @@ public class CompetitionController {
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
 
-        Boolean active = false;
-        if(comp.getStatus() == Status.ACTIVE){ active=true;}
-
-        List<User> judges = compRepository.getCompetitionsById(id).getJudges();
-        for(User judge : judges){
-            if(active){
-                judge.setActive(1);
-            }else{
+        if (comp.getStatus() == Status.FINISHED) {
+            // userRepository.deleteAll(compRepository.getCompetitionsById(id).getJudges());
+            for (User judge: compRepository.getCompetitionsById(id).getJudges()) {
                 judge.setActive(0);
             }
-            userService.saveJudge(judge);
         }
 
         compRepository.save(comp);
-
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         return "redirect:/home/competitions/view/" + String.valueOf(id);
     }

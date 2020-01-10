@@ -50,11 +50,13 @@ public class ScoringController {
 
             // ordering of grouping TODO: discuss how to handle following rounds
             List<Grouping> orderedGroups = new ArrayList<>();
-            for (int i = 0; i < comp.getGroups().get(0).getApparatuses().size(); i++) {
-                for (Grouping g : comp.getGroups()) {
-                    if (g.getApparatuses().get(i) == app) {
-                        orderedGroups.add(g);
-                        break;
+            if (comp.getGroups().size() != 0) {
+                for (int i = 0; i < comp.getGroups().get(0).getApparatuses().size(); i++) {
+                    for (Grouping g : comp.getGroups()) {
+                        if (g.getApparatuses().get(i) == app) {
+                            orderedGroups.add(g);
+                            break;
+                        }
                     }
                 }
             }

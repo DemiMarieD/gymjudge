@@ -119,20 +119,34 @@
     <div class="card mt-5">
         <h5 class="card-header">Judges</h5>
         <div class="card-body">
-            <div class="panel-body">
-                <div class="list-group" th:switch="${competition.getJudges()}">
-                    <h2 th:case="null">No groups yet!</h2>
-                    <div th:case="*">
-                        <div th:each="judge : ${competition.getJudges()}">
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <span th:text="${judge.getFirstname()}"></span>
-                                <span>, Login: </span>
-                                <span th:text="${judge.getEmail()}"></span>
-                                <span>, </span>
-                                <!--Todo: Hidde password and on click show?! -->
-                                <span class="badge badge-primary badge-pill" th:text="${judge.getJudgePassword()}"></span>
-                            </a>
-                            <div></div>
+            <div class="panel-body" th:switch="${competition.getStatus().displayValue}">
+                <div th:case="'Finished'">
+                    <h3>Competition is over!</h3>
+                </div>
+                <div th:case="*">
+                    <div class="list-group" th:switch="${competition.getJudges().size()}">
+                        <div th:case="0">
+                            <form action="#" th:action="@{/home/competitions/view/{id}(id=${id})}" th:object="${competition}" method="post">
+                                <h3>Important:</h3>
+                                <p>Judges can only be created once and are active from that moment, so note the password!</p>
+                                <label for="judgePassword" class="col-form-label">Enter General Judge Password:</label>
+                                <input id ="judgePassword" type="text" th:field="*{judgePassword}">
+
+                                <input type="submit" class="btn btn-primary" value="Generate Judge Logins">
+                            </form>
+                        </div>
+                        <div th:case="*">
+                            <div th:each="judge : ${competition.getJudges()}">
+                                <a class="list-group-item list-group-item-action">
+                                    <span th:text="${judge.getFirstname()}"></span>
+                                    <span>, Login: </span>
+                                    <span th:text="${judge.getEmail()}"></span>
+                                    <span>, </span>
+                                    <!--Todo: Hidde password and on click show?! -->
+                                    <span class="badge badge-primary badge-pill" th:text="${judge.getJudgePassword()}"></span>
+                                </a>
+                                <div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
