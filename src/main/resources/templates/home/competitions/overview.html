@@ -9,6 +9,9 @@
 </head>
 <body>
 <div class="container my-5">
+    <div>
+        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+    </div>
     <div class="panel panel-default">
         <h2 class="mb-5" th:object="${competition}">Infos on the Competition <span th:text="*{name}"></span></h2>
         <div class="card mt-5">
@@ -135,6 +138,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row justify-content-center">
+    <p class="my-5"> <a th:href="@{/home}" class="btn btn-primary float-right">Back</a>
     </div>
 </div>
 </body>
