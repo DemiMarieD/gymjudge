@@ -86,7 +86,7 @@
             </div>
         </div>
 
-        <div class="card mt-5">
+        <div class="card mt-4">
             <h5 class="card-header">Starting order</h5>
             <div class="card-body">
                 <div>
@@ -102,10 +102,10 @@
                 </div>
                 <br/>
 
-                <a href="#" onclick="addApparatus();" class="btn btn-primary" >Add selected Apparatus</a>
-                <a href="#" onclick="removeApparatus();" class="btn btn-primary">Remove selected Apparatus</a>
+                <button type="button" onclick="addApparatus();" class="btn btn-primary" >Add selected Apparatus</button>
+                <button type="button" onclick="removeApparatus();" class="btn btn-primary">Remove selected Apparatus</button>
 
-                <div class="card mt-5">
+                <div class="card mt-4">
                     <h5 class="card-header">Apparatus Order</h5>
                     <div class="card-body">
                         <ol id="dynamic-list">
@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <div class="card mt-5">
+        <div class="card mt-4">
             <h5 class="card-header">Gymnasts</h5>
             <div class="card-body">
                 <div th:switch="${grouping.getParticipants()}">

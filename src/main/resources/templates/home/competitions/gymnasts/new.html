@@ -8,14 +8,38 @@
 
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-    <div>
-        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+    <div class="panel panel-default">
+        <div class="page-header">
+            <h2>
+                <small th:text="*{competition.name}"></small><br/>
+                New Gymnast
+                <span>
+                    <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary float-right">Back</a>
+                    <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                </span>
+            </h2>
+        </div>
     </div>
-    <h2 class="mb-5">New Gymnast</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <form action="#" th:action="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" th:object="${participant}" method="post">
+
+    <form action="#" th:action="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" th:object="${participant}" method="post">
+        <div class="card mt-4">
+            <h5 class="card-header">General Information</h5>
+            <div class="card-body">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="firstname" class="col-form-label">First Name</label>
@@ -38,7 +62,7 @@
                         <label for="gender" class="col-form-label">Gender</label>
                         <select id="gender" th:field="*{gender}" class="form-control selcls">
                             <option th:each="genderOpt : ${T(com.ase.gymjudge.entities.Gender).values()}"
-                            th:value="${genderOpt}" th:text="${genderOpt.displayValue}"></option>
+                                    th:value="${genderOpt}" th:text="${genderOpt.displayValue}"></option>
                         </select>
                     </div>
                 </div>
@@ -49,6 +73,11 @@
                         <span th:if="${#fields.hasErrors('club')}" th:errors="*{club}" class="text-danger"></span>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <h5 class="card-header">Assign Category and Group</h5>
+            <div class="card-body">
                 <div>
                     <label for="category" class="col-form-label">Category for Competition "<span th:text="${competition.getName()}"></span>" </label>
                     <select id="category" th:field="*{category}" class="form-control selcls" >
@@ -63,16 +92,14 @@
                                 th:value="${groupOpt.id}"  th:text="${groupOpt.getName()}"></option>
                     </select>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Add Gymnast">
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <p class="my-5"> <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary">Back</a>
-    </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Add Gymnast">
+            </div>
+        </div>
+    </form>
 </div>
 </body>

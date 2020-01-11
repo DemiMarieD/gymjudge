@@ -35,10 +35,10 @@
             </h2>
         </div>
     </div>
-    <div class="card mt-5">
-        <h5 class="card-header">General Information</h5>
-        <div class="card-body">
-            <form action="#" th:action="@{/home/competitions/update/{id}(id=${competition.getId()})}" th:object="${competition}" method="post">
+    <form action="#" th:action="@{/home/competitions/update/{id}(id=${competition.getId()})}" th:object="${competition}" method="post">
+        <div class="card mt-4">
+            <h5 class="card-header">General Information</h5>
+            <div class="card-body">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="name" class="col-form-label">Competition Name</label>
@@ -85,13 +85,13 @@
                         <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <input type="submit" class="btn btn-primary" value="Update Competition">
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Update Competition">
+            </div>
+        </div>
+    </form>
 </div>
 </body>
