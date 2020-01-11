@@ -102,14 +102,19 @@
                 </div>
                 <br/>
 
-                <a class="btn btn-primary" onclick="addApparatus();">Add selected Apparatus</a>
-                <a class="btn btn-primary" onclick="removeApparatus();">Remove selected Apparatus</a>
+                <a href="#" onclick="addApparatus();" class="btn btn-primary" >Add selected Apparatus</a>
+                <a href="#" onclick="removeApparatus();" class="btn btn-primary">Remove selected Apparatus</a>
 
-                <ol id="dynamic-list">
-                    <li th:each="apparatus, itemStat : *{apparatuses}" th:name="${apparatus.displayValue}">
-                        <span th:value="${apparatus.displayValue}" th:text="${apparatus.displayValue}"></span>
-                    </li>
-                </ol>
+                <div class="card mt-5">
+                    <h5 class="card-header">Apparatus Order</h5>
+                    <div class="card-body">
+                        <ol id="dynamic-list">
+                            <li th:each="apparatus, itemStat : *{apparatuses}" th:name="${apparatus.displayValue}">
+                                <span th:value="${apparatus.displayValue}" th:text="${apparatus.displayValue}"></span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -8,13 +8,36 @@
 
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-    <div>
-        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+    <div class="panel panel-default">
+        <div class="page-header">
+            <h2>
+                <small th:text="${competition.name}"></small><br/>
+                Edit Competition<b><span th:text="*{name}"></span></b>
+                <span>
+                    <a th:href="@{/home/competitions/view/{id}(id=${competition.getId()})}" class="btn btn-primary float-right">Back</a>
+                    <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                </span>
+            </h2>
+        </div>
     </div>
-    <h2 class="mb-5">Edit Competition</h2>
-    <div class="row">
-        <div class="col-md-6">
+    <div class="card mt-5">
+        <h5 class="card-header">General Information</h5>
+        <div class="card-body">
             <form action="#" th:action="@{/home/competitions/update/{id}(id=${competition.getId()})}" th:object="${competition}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
@@ -63,15 +86,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mt-5">
+                    <div class="col-md-6">
                         <input type="submit" class="btn btn-primary" value="Update Competition">
                     </div>
                 </div>
             </form>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <p class="my-5"> <a th:href="@{/home/competitions/view/{id}(id=${competition.getId()})}" class="btn btn-primary">Back</a>
     </div>
 </div>
 </body>
