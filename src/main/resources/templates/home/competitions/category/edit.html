@@ -32,7 +32,6 @@
                     Infos for Category <input type="text" th:field="*{label}" th:value="*{label}">
                     <span>
                         <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${category.getCompetition().getId()})}" class="btn btn-primary float-right">Back</a>
-                        <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
                     </span>
                 </h2>
             </div>

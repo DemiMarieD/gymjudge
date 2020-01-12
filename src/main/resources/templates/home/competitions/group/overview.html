@@ -79,8 +79,7 @@
                     <small th:text="${grouping.competition.name}"></small><br/>
                     Infos for Group <input type="text" th:field="*{name}" th:value="*{name}">
                     <span>
-                        <input type="submit" class="btn btn-primary float-right" value="Back and Save">
-                        <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                        <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${grouping.getCompetition().getId()})}" class="btn btn-primary float-right">Back</a>
                     </span>
                 </h2>
             </div>
@@ -134,6 +133,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Save Changes">
             </div>
         </div>
     </form>
