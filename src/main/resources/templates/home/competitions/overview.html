@@ -75,8 +75,10 @@
                             <div class="row">
                                 <div class="col">
                                    <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
-                                        class="list-group-item list-group-item-action"><span th:text="${cat.label}"></span>
-                                         <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>  </a>
+                                        class="list-group-item list-group-item-action">
+                                       <span th:text="${cat.label}"></span>
+                                       <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>
+                                   </a>
                                 </div>
                                 <div class="col-1">
                                    <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
@@ -100,11 +102,18 @@
                     <h2 th:case="null">No groups yet!</h2>
                     <div th:case="*">
                         <div th:each="group : ${competition.getGroups()}">
-                            <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
-                                <span th:text="${group.name}"></span>
-                                <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
-                            </a>
-                            <div></div>
+                            <div class="row">
+                                <div class="col">
+                                    <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
+                                        <span th:text="${group.name}"></span>
+                                        <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
+                                    </a>
+                                </div>
+                                <div class="col-1">
+                                    <a th:href="@{/home/groups/delete/{group_id}(group_id=${group.id})}"
+                                       class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
