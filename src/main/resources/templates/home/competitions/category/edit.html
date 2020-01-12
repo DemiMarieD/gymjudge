@@ -8,21 +8,44 @@
 
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-    <div>
-        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
-    </div>
-    <h2 class="mb-5">Edit Category: "<span th:text="${category.getLabel()}"></span>"</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <form action="#" th:action="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${comp_id}, cat_id=${category.getId()})}" th:object="${category}" method="post">
-                <div class="row">
+    <form action="#" th:action="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${comp_id}, cat_id=${category.getId()})}"
+          th:object="${category}" method="post">
+        <div class="panel panel-default">
+            <div class="page-header">
+                <h2>
+                    <small th:text="*{competition.name}"></small><br/>
+                    Infos for Category <input type="text" th:field="*{label}" th:value="*{label}">
+                    <span>
+                        <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${category.getCompetition().getId()})}" class="btn btn-primary float-right">Back</a>
+                    </span>
+                </h2>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <h5 class="card-header">General Information</h5>
+            <div class="card-body">
+                <!--div class="row">
                     <div class="form-group col-md-6">
                         <label for="label" class="col-form-label">Category Label</label>
                         <input type="text" th:field="*{label}" class="form-control" id="label" placeholder="Category Label">
                         <span th:if="${#fields.hasErrors('label')}" th:errors="*{label}" class="text-danger"></span>
                     </div>
-                </div>
+                </div-->
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="desc" class="col-form-label">Description</label>
@@ -30,34 +53,37 @@
                         <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Save Changes">
-                    </div>
-                </div>
-            </form>
-            <div class="card mt-5">
-                <h5 class="card-header">Gymnasts (<span th:text="${category.getParticipants().size()}"></span>)</h5>
-                <div class="card-body">
-                    <div th:switch="${category.getParticipants()}">
-                        <h5 th:case="null">No participants yet!</h5>
-                        <div th:case="*">
-                            <div th:each="pat : ${category.getParticipants()}" >
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></p>
-                                    </div>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <h5 class="card-header">Gymnasts (<span th:text="${category.getParticipants().size()}"></span>)</h5>
+            <div class="card-body">
+                <div th:switch="${category.getParticipants()}">
+                    <h5 th:case="null">No participants yet!</h5>
+                    <div th:case="*">
+                        <div th:each="pat : ${category.getParticipants()}" >
+                            <div class="row">
+                                <div class="col">
+                                    <p class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p class="my-5"><a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${comp_id})}" class="btn btn-primary"><i class="fas fa-user-plus"></i></a></p>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${comp_id})}" class="btn btn-primary"><i class="fas fa-user-plus"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <p class="my-5"> <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${category.getCompetition().getId()})}" class="btn btn-primary">Back</a>
-    </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </div>
+    </form>
 </div>
 </body>

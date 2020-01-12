@@ -36,8 +36,11 @@ public class CategoryController {
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
 
+        Category category = new Category();
+        category.setCompetition(comp);
+
         model.addObject("comp_id", comp_id);
-        model.addObject("category", new Category());
+        model.addObject("category", category);
         model.setViewName("home/competitions/category/new");
         return model;
     }

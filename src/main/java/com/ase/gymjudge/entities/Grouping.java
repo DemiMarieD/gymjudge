@@ -16,7 +16,7 @@ public class Grouping {
     // @Column(name = "name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Competition competition;
   
     @OneToMany(mappedBy = "grouping", cascade= CascadeType.ALL)
@@ -32,9 +32,9 @@ public class Grouping {
     // @Column(name = "gymnastIDs")
     private List<Integer> GymnastIDs;
 
-    //todo: for each round the specific apparatus is def. here
-    @ManyToMany(cascade=CascadeType.ALL)
-    private Set<Order> orders;
+    //todo: check if Order still relevant
+    //@ManyToMany(cascade=CascadeType.ALL)
+    //private Set<Order> orders;
 
     // Getter and Setter
 

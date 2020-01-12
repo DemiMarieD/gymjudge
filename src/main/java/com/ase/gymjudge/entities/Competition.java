@@ -23,6 +23,8 @@ public class Competition {
     private Integer adminID;
     private String description;
 
+    private String judgePassword;
+
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @NotNull
     private Date startDate;
@@ -50,6 +52,7 @@ public class Competition {
 
     @OneToMany(mappedBy = "competition", cascade= CascadeType.ALL)
     private List<User> judges;
+
     public void setJudges(List<User> judges) {
         this.judges = judges;
     }
@@ -87,6 +90,14 @@ public class Competition {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getJudgePassword() {
+        return judgePassword;
+    }
+
+    public void setJudgePassword(String judgePassword) {
+        this.judgePassword = judgePassword;
     }
 
     public List<Category> getCategories() {

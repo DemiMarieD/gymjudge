@@ -1,9 +1,6 @@
 package com.ase.gymjudge.controller;
 
-import com.ase.gymjudge.entities.Apparatus;
-import com.ase.gymjudge.entities.ApparatusesDto;
-import com.ase.gymjudge.entities.Grouping;
-import com.ase.gymjudge.entities.Competition;
+import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.GroupRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
@@ -81,5 +78,17 @@ public class GroupController {
         grouping.setCompetition(competition);
         groupRepository.save(grouping);
         return "redirect:/home/competitions/view/" + grouping.getCompetition().getId();
+    }
+
+    @GetMapping("home/groups/delete/{group_id}")
+    public String deleteGroup(@PathVariable("group_id") int group_id, Model model) {
+        Grouping grouping = groupRepository.findById(group_id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + group_id));
+
+        //todo change: check connected entities (participants), they are deleted too
+        groupRepository.delete(grouping);
+        System.out.println("deleted");
+
+        return "redirect:/home/competitions/view/" + String.valueOf(grouping.getCompetition().getId());
     }
 }

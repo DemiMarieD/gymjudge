@@ -8,14 +8,37 @@
 
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-    <div>
-        <p class="my-5"> <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+    <div class="panel panel-default">
+        <div class="page-header">
+            <h2>
+                <!--small th:text="*{competition.name}"></small><br/-->
+                New Competition
+                <span>
+                    <a th:href="@{/home}" class="btn btn-primary float-right">Back</a>
+                </span>
+            </h2>
+        </div>
     </div>
-    <h2 class="mb-5">New Competition</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <form action="#" th:action="@{new}" th:object="${competition}" method="post">
+
+    <form action="#" th:action="@{new}" th:object="${competition}" method="post">
+        <div class="card mt-4">
+            <h5 class="card-header">General Information</h5>
+            <div class="card-body">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="name" class="col-form-label">Competition Name</label>
@@ -47,10 +70,10 @@
                         <label for="type" class="col-form-label">Type</label>
                         <select id="type" th:field="*{type}" class="form-control selcls">
                             <option th:each="typeOpt : ${T(com.ase.gymjudge.entities.Type).values()}"
-                            th:value="${typeOpt}" th:text="${typeOpt.displayValue}"></option>
+                                    th:value="${typeOpt}" th:text="${typeOpt.displayValue}"></option>
                         </select>
                         <!--input type="text" th:field="*{type}" class="form-control" id="type" placeholder="type"-->
-                       <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></span>
+                        <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="status" class="col-form-label">Status</label>
@@ -59,19 +82,16 @@
                                     th:value="${statusOpt}" th:text="${statusOpt.displayValue}"></option>
                         </select>
                         <!--input type="text" th:field="*{status}" class="form-control" id="status" placeholder="status"-->
-                     <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></span>
+                        <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Add Competition">
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <p class="my-5"> <a th:href="@{/home}" class="btn btn-primary">Back</a>
-    </div>
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Add Competition">
+            </div>
+        </div>
+    </form>
 </div>
 </body>
