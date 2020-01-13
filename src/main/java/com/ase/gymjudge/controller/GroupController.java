@@ -85,7 +85,7 @@ public class GroupController {
         Grouping grouping = groupRepository.findById(group_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + group_id));
 
-        //todo remove connections with gymnasts
+        //remove connection to gymnasts
         for(Participants p : grouping.getParticipants()) {
             p.setGrouping(null);
             participantsRepository.save(p);
