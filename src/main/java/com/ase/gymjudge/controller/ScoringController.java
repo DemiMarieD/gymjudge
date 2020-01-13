@@ -49,32 +49,24 @@ public class ScoringController {
             List<Score> currScores = scoreRepository.getScoresByCompetitionId(comp.getId());
 
             // ordering of grouping TODO: discuss how to handle following rounds
-            List<Grouping> orderedGroups = new ArrayList<>();
-            if (comp.getGroups().size() != 0) {
-                for (int i = 0; i < comp.getGroups().get(0).getApparatuses().size(); i++) {
-                    for (Grouping g : comp.getGroups()) {
-                        if (g.getApparatuses().get(i) == app) {
-                            orderedGroups.add(g);
-                            break;
-                        }
-                    }
-                }
-            }
+            List<Grouping> orderedGroups = comp.getGroupingOrderFor(app);
 
             HashMap<Integer, Score> currentScores = new HashMap<>();
             for (Grouping g : orderedGroups) {
-                for (Participants p : g.getParticipants()) {
-                    boolean hadScore = false;
-                    for (Score s : currScores) {
-                        if (p == s.getParticipants()) {
-                            currentScores.put(p.getId(), s);
-                            hadScore = true;
-                            break;
+                if (g != null) {
+                    for (Participants p : g.getParticipants()) {
+                        boolean hadScore = false;
+                        for (Score s : currScores) {
+                            if (p == s.getParticipants()) {
+                                currentScores.put(p.getId(), s);
+                                hadScore = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (!hadScore) {
-                        currentScores.put(p.getId(), null);
+                        if (!hadScore) {
+                            currentScores.put(p.getId(), null);
+                        }
                     }
                 }
             }
