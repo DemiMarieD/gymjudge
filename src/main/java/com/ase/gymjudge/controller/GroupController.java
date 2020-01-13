@@ -85,9 +85,15 @@ public class GroupController {
         Grouping grouping = groupRepository.findById(group_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + group_id));
 
-        //todo change: check connected entities (participants), they are deleted too
+        //todo remove connections with gymnasts
+        for(Participants p : grouping.getParticipants()) {
+            p.setGrouping(null);
+            participantsRepository.save(p);
+        }
+        grouping.setParticipants(null);
+        groupRepository.save(grouping);
+
         groupRepository.delete(grouping);
-        System.out.println("deleted");
 
         return "redirect:/home/competitions/view/" + String.valueOf(grouping.getCompetition().getId());
     }
