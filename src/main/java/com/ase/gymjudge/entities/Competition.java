@@ -156,8 +156,8 @@ public class Competition {
         this.groups = groups;
     }
 
-    public List<Integer> getGroupingOrderFor(Apparatus apparatus) {
-        List<Integer> order = new ArrayList<>();
+    public List<Grouping> getGroupingOrderFor(Apparatus apparatus) {
+        List<Grouping> order = new ArrayList<>();
         int maxApparatuses = 0;
         boolean apparatusFound = false;
 
@@ -170,13 +170,13 @@ public class Competition {
         for (int i = 0; i < maxApparatuses; i++) {
             for (Grouping group: groups) {
                 if (group.getApparatuses().indexOf(apparatus) == i) {
-                    order.add(group.getId());
+                    order.add(group);
                     apparatusFound = true;
                     break;
                 }
             }
             if (!apparatusFound) {
-                order.add(-1);
+                order.add(null);
             }
             apparatusFound = false;
         }

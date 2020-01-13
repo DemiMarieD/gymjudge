@@ -145,7 +145,7 @@ public class CompetitionController {
                 User judge = new User();
                 judge.setApparatus(a);
                 judge.setCompetition(competition);
-                judge.setEmail(a.getDisplayValue() + "@" + competition.getName() + ".at");
+                judge.setEmail((a.getDisplayValue() + comp.getId() + "@gymjudge.at").toLowerCase());
                 judge.setFirstname(a.getDisplayValue());
                 judge.setLastname(competition.getName());
                 System.out.println("Generated new Judge:");
@@ -153,7 +153,7 @@ public class CompetitionController {
 
                 String password = comp.getJudgePassword(); //todo: set nicer passwords
                 judge.setPassword(password);
-                judge.setJudgePassword(password); //not hashed
+                judge.setJudgePassword(""); //not hashed
                 judge.setActive(1);
 
                 userService.saveJudge(judge);
@@ -180,7 +180,13 @@ public class CompetitionController {
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
 
-        if (comp.getStatus() == Status.FINISHED) {
+        if (comp.getStatus() == Status.ACTIVE) {
+            if (compRepository.getCompetitionsById(id).getJudges().size() > 0) {
+                for (User judge: compRepository.getCompetitionsById(id).getJudges()) {
+                    judge.setActive(1);
+                }
+            }
+        } else if (comp.getStatus() == Status.FINISHED) {
             // userRepository.deleteAll(compRepository.getCompetitionsById(id).getJudges());
             for (User judge: compRepository.getCompetitionsById(id).getJudges()) {
                 judge.setActive(0);

@@ -5,22 +5,9 @@
     <title>Your Competition</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <script type="text/javascript" src="/static/js/competitionOverview.js"></script>
+    <script type="text/javascript" th:src="@{/js/competitionOverview.js}"></script>
 </head>
 <body>
-<script>
-    function displayGymnasts() {
-        if (document.getElementById("GymnastBody").style.display === 'none') {
-            document.getElementById("GymnastBody").style.display = "block";
-            document.getElementById("dontShow").style.display = "none";
-            document.getElementById("show").style.display = "block";
-        } else {
-            document.getElementById("GymnastBody").style.display = "none";
-            document.getElementById("dontShow").style.display = "block";
-            document.getElementById("show").style.display = "none";
-        }
-    }
-</script>
 <style>
     .card-header.gymnast {
         cursor: pointer;
@@ -176,12 +163,12 @@
                         <div th:case="*">
                             <div th:each="judge : ${competition.getJudges()}">
                                 <a class="list-group-item list-group-item-action">
-                                    <span th:text="${judge.getFirstname()}"></span>
-                                    <span>, Login: </span>
+                                    <span style="font-weight: bold" th:text="${judge.getFirstname()}"></span>
+                                    <span>: </span>
                                     <span th:text="${judge.getEmail()}"></span>
-                                    <span>, </span>
-                                    <!--Todo: Hidde password and on click show?! -->
-                                    <span class="badge badge-primary badge-pill" th:text="${judge.getJudgePassword()}"></span>
+                                    <span style="margin-left: 5px"></span>
+                                    <span th:if="${judge.getActive() == 1}" class="badge badge-success" th:text="'Active'"></span>
+                                    <span th:if="${judge.getActive() == 0}" class="badge badge-secondary" th:text="'Inactive'"></span>
                                 </a>
                                 <div></div>
                             </div>
