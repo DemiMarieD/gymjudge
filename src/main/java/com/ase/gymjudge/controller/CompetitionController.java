@@ -6,7 +6,6 @@ import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.ParticipantsRepository;
 import com.ase.gymjudge.repositories.UserRepository;
 import com.ase.gymjudge.services.UserService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -203,9 +202,12 @@ public class CompetitionController {
         Competition comp = compRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + id));
 
-        //todo: fix problem with deleting the judges.
+        //delete the judges first
+        for (User judge : comp.getJudges()){
+            userService.deleteJudge(judge);
+        }
 
-        //removes all categories connected and all participants connected to those!
+        //automatically deletes all categories connected and all participants connected to the competition!
         compRepository.delete(comp);
 
         User user = getLoggedInUser();
