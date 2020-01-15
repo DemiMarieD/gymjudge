@@ -103,7 +103,14 @@ public class CategoryController {
         Category cat = categoryRepository.findById(cat_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
 
-        //todo change: removes all categories connected and all participants connected to those!
+        //remove connection to gymnasts
+        for(Participants p : cat.getParticipants()) {
+            p.setCategory(null);
+            participantsRepository.save(p);
+        }
+        cat.setParticipants(null);
+        categoryRepository.save(cat);
+
         categoryRepository.delete(cat);
 
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
