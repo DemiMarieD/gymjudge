@@ -34,14 +34,14 @@ public class IndexController {
     @EventListener
     public void seed(ContextRefreshedEvent event) {
         List<Role> roles = roleRepository.getAllRoles();
-//
+
         if (roles.size() == 0) {
             Role adminRole = new Role();
             adminRole.setRole("ADMIN");
             roleRepository.save(adminRole);
-            /*Role judgeRole = new Role();
+            Role judgeRole = new Role();
             judgeRole.setRole("JUDGE");
-            roleRepository.save(judgeRole);*/
+            roleRepository.save(judgeRole);
         }else if(roles.size() == 1){
             Role judgeRole = new Role();
             judgeRole.setRole("JUDGE");
@@ -52,17 +52,6 @@ public class IndexController {
             roleRepository.save(userRole);
         }
 
-        // todo: figure out how to drop table and then run this if statement
-        if (roles.size() != 1 || roles.get(0).getRole() != "ADMIN") {
-            // //not possible because of dependencies
-            // roleRepository.deleteAll();
-
-            // System.out.println("add new admin role");
-
-            // Role adminRole = new Role();
-            // adminRole.setRole("ADMIN");
-            // roleRepository.save(adminRole);
-        }
     }
 
     @RequestMapping(value= {"/", "/index"}, method=RequestMethod.GET)

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,18 +39,15 @@ public class CompetitionController {
         return user;
     }
 
-    @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
-    public ModelAndView createNewCompetition(ModelAndView model) {
+    @GetMapping("home/competitions/new")
+    public String createNewCompetition(Model model) {
         Competition competition = new Competition();
 
-        model.addObject("competition", competition);
-        model.setViewName ("home/competitions/new");
-        return model;
+        model.addAttribute("competition", competition);
+        return "home/competitions/new";
     }
     @PostMapping("home/competitions/new")
     public String addCompetition(@Valid Competition competition, BindingResult result, Model model) {
-      //todo: check why using ModelAndView is causing errors in the Post Mapping...
-
         if (result.hasErrors()) {
             return "home/competitions/new";
         }
@@ -71,14 +67,6 @@ public class CompetitionController {
         return "redirect:/home/competitions/view/" + competition.getId();
     }
 
-    //should not be needed anymore
-   /* @GetMapping("home/competitions")
-    public ModelAndView showCompetitions(Competition competition, ModelAndView model) {
-        User user = getLoggedInUser();
-        model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        model.setViewName("home/home");
-        return model;
-    }*/
 
     @GetMapping("home/competitions/edit/{id}")
     public String editCompetitions(@PathVariable("id") int id, Model model) {
@@ -121,12 +109,11 @@ public class CompetitionController {
                 judge.setEmail((a.getDisplayValue() + comp.getId() + "@gymjudge.at").toLowerCase());
                 judge.setFirstname(a.getDisplayValue());
                 judge.setLastname(competition.getName());
-                System.out.println("Generated new Judge:");
-                System.out.println(judge.getEmail());
+               // System.out.println("Generated new Judge:");
+               // System.out.println(judge.getEmail());
 
-                String password = comp.getJudgePassword(); //todo: set nicer passwords
+                String password = comp.getJudgePassword();
                 judge.setPassword(password);
-                judge.setJudgePassword(""); //not hashed
                 judge.setActive(1);
 
                 userService.saveJudge(judge);

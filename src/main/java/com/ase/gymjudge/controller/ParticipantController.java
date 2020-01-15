@@ -27,14 +27,13 @@ public class ParticipantController {
 
 
     @RequestMapping(value = {"/home/competitions/view/gymnasts/new/{comp_id}"}, method = RequestMethod.GET)
-    public ModelAndView addParticipants(@PathVariable("comp_id") int comp_id, ModelAndView model) {
+    public String addParticipants(@PathVariable("comp_id") int comp_id, Model model) {
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
 
-        model.addObject("competition", comp);
-        model.addObject("participant", new Participants());
-        model.setViewName("home/competitions/gymnasts/new");
-        return model;
+        model.addAttribute("competition", comp);
+        model.addAttribute("participant", new Participants());
+        return "home/competitions/gymnasts/new";
     }
 
     @PostMapping("/home/competitions/view/gymnasts/new/{comp_id}")
@@ -62,16 +61,15 @@ public class ParticipantController {
     }
 
     @GetMapping("/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}")
-    public ModelAndView editParticipants(@PathVariable("comp_id") int comp_id, @PathVariable("pat_id") int pat_id, ModelAndView model) {
+    public String editParticipants(@PathVariable("comp_id") int comp_id, @PathVariable("pat_id") int pat_id, Model model) {
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
         Participants pat = participantsRepository.findById(pat_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + pat_id));
 
-        model.addObject("competition", comp);
-        model.addObject("participant", pat);
-        model.setViewName("home/competitions/gymnasts/edit");
-        return model;
+        model.addAttribute("competition", comp);
+        model.addAttribute("participant", pat);
+        return "home/competitions/gymnasts/edit";
     }
 
     @PostMapping("/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}")
