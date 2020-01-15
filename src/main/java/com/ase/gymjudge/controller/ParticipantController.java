@@ -48,7 +48,12 @@ public class ParticipantController {
             model.addAttribute("msg", "Error, not everything is filled out correctly!");
             return "home/competitions/gymnasts/new";
         }
-
+        if(participant.getAge() == 0){
+            model.addAttribute("competition", comp);
+            model.addAttribute("participant", participant);
+            model.addAttribute("msg", "Error, birthday needs to be more than one year in the past!");
+            return "home/competitions/gymnasts/new";
+        }
         //add participant
         participant.setCompetition(comp);
         participantsRepository.save(participant);
@@ -71,16 +76,23 @@ public class ParticipantController {
 
     @PostMapping("/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}")
     public String editParticipant(@Valid Participants participant, @PathVariable("comp_id") int comp_id, @PathVariable("pat_id") int pat_id, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("comp_id", comp_id);
-            model.addAttribute("pat_id", pat_id);
-            return "redirect:home/competitions/gymnasts/edit";
-        }
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
         Participants pat = participantsRepository.findById(pat_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + pat_id));
 
+        if (result.hasErrors()) {
+            model.addAttribute("competition", comp);
+            model.addAttribute("participant", pat);
+            model.addAttribute("msg", "Error, not everything is filled out correctly!");
+            return "home/competitions/gymnasts/new";
+        }
+        if(participant.getAge() == 0){
+            model.addAttribute("competition", comp);
+            model.addAttribute("participant", participant);
+            model.addAttribute("msg", "Error, birthday needs to be more than one year in the past!");
+            return "home/competitions/gymnasts/new";
+        }
         //add participant
         participant.setId(pat_id);
         participant.setCompetition(comp);
