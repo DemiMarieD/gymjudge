@@ -51,27 +51,34 @@ public class CompetitionController {
     @PostMapping("home/competitions/new")
     public String addCompetition(@Valid Competition competition, BindingResult result, Model model) {
       //todo: check why using ModelAndView is causing errors in the Post Mapping...
+
         if (result.hasErrors()) {
             return "home/competitions/new";
         }
+        if(competition.getStartDate().compareTo(competition.getEndDate()) > 0){
+            competition.emptyDates();
+            model.addAttribute("competition", competition);
+            model.addAttribute("msg", "Start date is after end date!");
+            return "home/competitions/new";
+        }
         User user = getLoggedInUser();
-        //todo: check DATES
+
         competition.setAdminID(user.getId());
         compRepository.save(competition);
 
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addAttribute("adminId", user.getId());
-        return "redirect:/home";
+        return "redirect:/home/competitions/view/" + competition.getId();
     }
 
     //should not be needed anymore
-    @GetMapping("home/competitions")
+   /* @GetMapping("home/competitions")
     public ModelAndView showCompetitions(Competition competition, ModelAndView model) {
         User user = getLoggedInUser();
         model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.setViewName("home/home");
         return model;
-    }
+    }*/
 
     @GetMapping("home/competitions/edit/{id}")
     public String editCompetitions(@PathVariable("id") int id, Model model) {
@@ -142,7 +149,12 @@ public class CompetitionController {
             comp.setId(id);
             return "home/competitions/edit";
           }
-
+        if(comp.getStartDate().compareTo(comp.getEndDate()) > 0){
+            comp.emptyDates();
+            model.addAttribute("competition", comp);
+            model.addAttribute("msg", "Start date is after end date!");
+            return "home/competitions/edit";
+        }
         User user = getLoggedInUser();
         comp.setAdminID(user.getId());
 
