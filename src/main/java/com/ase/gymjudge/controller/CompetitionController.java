@@ -39,7 +39,7 @@ public class CompetitionController {
         User user = userService.findByEmail(auth.getName());
         return user;
     }
-//
+
     @RequestMapping(value = { "home/competitions/new" }, method = RequestMethod.GET)
     public ModelAndView createNewCompetition(ModelAndView model) {
         Competition competition = new Competition();
@@ -52,7 +52,6 @@ public class CompetitionController {
     public String addCompetition(@Valid Competition competition, BindingResult result, Model model) {
       //todo: check why using ModelAndView is causing errors in the Post Mapping...
         if (result.hasErrors()) {
-           // model.setViewName ("home/addcompetition");
             return "home/competitions/new";
         }
         User user = getLoggedInUser();
@@ -60,38 +59,6 @@ public class CompetitionController {
         competition.setAdminID(user.getId());
         compRepository.save(competition);
 
-        //creating Judge
-        /*List<Apparatus> apparatuses = competition.getAvailableApparatuses();
-        List<User> judges = new LinkedList<>();
-        for (Apparatus a : apparatuses){
-            User judge = new User();
-            judge.setApparatus(a);
-            judge.setCompetition(competition);
-            judge.setEmail(a.getDisplayValue() + "@" + competition.getName() + ".at");
-            judge.setFirstname(a.getDisplayValue());
-            judge.setLastname(competition.getName());
-
-            String password = "1234"; //todo: set nicer passwords
-            judge.setPassword(password);
-            judge.setJudgePassword(password); //not hashed
-
-            if(competition.getStatus() == Status.ACTIVE){
-                judge.setActive(1);
-            }else{
-                judge.setActive(0); //default not active
-                // todo: set to active when competition edited to active!
-            }
-            userService.saveJudge(judge);
-            judges.add(judge);
-        }
-        competition.setJudges(judges);
-        compRepository.save(competition);*/
-
-        //todo: figure out how to delete them when competition is deleted
-
-       /* model.addObject("competitions", compRepository.getCompetitionsByUserId(user.getId()));
-        model.addObject("adminId", user.getId());*/
-        //model.setViewName ("home/competitions");
         model.addAttribute("competitions", compRepository.getCompetitionsByUserId(user.getId()));
         model.addAttribute("adminId", user.getId());
         return "redirect:/home";
