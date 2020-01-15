@@ -1,55 +1,61 @@
 package com.ase.gymjudge;
 
 
+import com.ase.gymjudge.entities.Competition;
+import com.ase.gymjudge.entities.Status;
+import com.ase.gymjudge.entities.Type;
+import com.ase.gymjudge.repositories.CompetitionRepository;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.test.context.junit4.SpringRunner;
 
-// @SpringBootTest
+import java.text.ParseException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+//@SpringBootTest
 @RunWith(SpringRunner.class)
 @DataJpaTest
-class GymjudgeApplicationTests {
+public class GymjudgeApplicationTests {
 
- /*   @Autowired
-    private TestEntityManager entityManager;
+    //@DataJpaTest
+    //public class CompetitionRepositoryTest {
+        @Autowired
+        private TestEntityManager entityManager;
 
-    @Autowired
-    private PersonRepositoryDEMO personRepositoryDEMO;
+        @Autowired
+        private CompetitionRepository competitionRepository;
 
-    @Test
-    void personTests() {
-        PersonDEMO person = new PersonDEMO();
-        assertThat(person.getFirstName()).isEqualTo("");
-        assertThat(person.getLastName()).isEqualTo("");
+        @Test
+        public void dbTest() {
+            Competition competition = new Competition();
+            competition.setAdminID(0);
+            competition.setType(Type.TURN10);
+            competition.setName("TestComp");
+            competition.setStatus(Status.CREATED);
 
-        person.setFirstName("Frank");
-        person.setLastName("Reich");
+            try {
+                competition.setStartDate("2015-05-23 00:00:00");
+                competition.setEndDate("2015-05-23 00:00:00");
+            } catch (ParseException e) {
+                System.out.println(e);
+            }
 
-        assertThat(person.getFirstName()).isEqualTo("Frank");
-        assertThat(person.getLastName()).isEqualTo("Reich");
-    }
+            entityManager.persist(competition);
+            entityManager.flush();
 
-    @Test
-    void PersonFormTests() {
-        PersonFormDEMO personFormDEMO = new PersonFormDEMO();
-        personFormDEMO.setFirstName("Frank");
-        personFormDEMO.setLastName("Reich");
+            //Competition foundComp = competitionRepository.findById(0)
+                    //.orElseThrow(() -> new IllegalArgumentException("Comp Id not found"));
 
-        assertThat(personFormDEMO.getFirstName()).isEqualTo("Frank");
-        assertThat(personFormDEMO.getLastName()).isEqualTo("Reich");
-    }
+            Competition foundComp = competitionRepository.findAll().iterator().next();
 
-    @Test
-    void dbTest() {
-        PersonDEMO person = new PersonDEMO("Frank", "Reich");
-
-        entityManager.persist(person);
-        entityManager.flush();
-
-        PersonDEMO personFromDB = personRepositoryDEMO.findByFirstName(person.getFirstName());
-
-        assertThat(personFromDB.getFirstName()).isEqualTo(person.getFirstName());
-        assertThat(personFromDB.getLastName()).isEqualTo(person.getLastName());
-    }
-*/
+            assertThat(competition.getId()).isEqualTo(foundComp.getId());
+            assertThat(competition.getAdminID()).isEqualTo(foundComp.getAdminID());
+        }
+    //}
 }
