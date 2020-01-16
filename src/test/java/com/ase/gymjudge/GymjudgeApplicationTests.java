@@ -3,6 +3,7 @@ package com.ase.gymjudge;
 
 import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CompetitionRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,74 +31,35 @@ public class GymjudgeApplicationTests {
     @Autowired
     private CompetitionRepository competitionRepository;
 
-    @Test
-    public void dbTest() {
-        competitionRepository.deleteAll();
-        Competition competition = createCompetition();
+    Competition competition;
+    List<Category> categories;
+    List<Participants> participants;
+    List<Grouping> groups;
+    List<User> judges;
+    Participants participant;
+    User judge;
+    Category ak14;
+    Category ak16;
+    Grouping groupA;
+    Grouping groupB;
+    Role judgeRoll;
+    Score score;
 
-        entityManager.persist(competition);
-        entityManager.flush();
-
-        Competition foundComp = competitionRepository.findAll().iterator().next();
-
-        assertThat(competition.getId()).isEqualTo(foundComp.getId());
-        assertThat(competition.getAdminID()).isEqualTo(foundComp.getAdminID());
-        assertThat(competition.getName()).isEqualTo(foundComp.getName());
-    }
-
-    @Test
-    public void CompetitionTest() {
-        Competition competition = createCompetition();
-        List<Grouping> groupings = new ArrayList<>();
-        Grouping groupA = new Grouping();
-        Grouping groupB = new Grouping();
-
-        groupA.setCompetition(competition);
-        groupB.setCompetition(competition);
-        groupA.setName("Group A");
-        groupA.setName("Group B");
-        groupA.setApparatuses(createTurn10Apparatuses().subList(0,4));
-        groupB.setApparatuses(createTurn10Apparatuses().subList(1,5));
-        groupings.add(groupA);
-        groupings.add(groupB);
-
-        competition.setGroups(groupings);
-        assertThat(competition.getGroups()).isEqualTo(groupings);
-
-        // Test if ApparatusList (shown in Dropdowns,...) is correct depending on Competition Type
-        competition.setType(Type.STUFENWETTKAMPF);
-        assertThat(competition.getAvailableApparatuses()).isEqualTo(createStufeApparatuses());
-        competition.setType(Type.TURN10);
-        assertThat(competition.getAvailableApparatuses()).isEqualTo(createTurn10Apparatuses());
-
-        // Test if ordered Groups for Judge "Boden" really gets groups which are starting in the correct round
-        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).get(0).getApparatuses().get(0))
-                .isEqualTo(Apparatus.PFERD);
-        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).get(1).getApparatuses().get(1))
-                .isEqualTo(Apparatus.PFERD);
-
-        // Test if returned list is always greater or equal to every requested list
-        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).size())
-                .isGreaterThanOrEqualTo(groupA.getApparatuses().size());
-        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).size())
-                .isGreaterThanOrEqualTo(groupB.getApparatuses().size());
-    }
-
-    @Test
-    public void AllGetterSetter() {
-        Competition competition = createCompetition();
-        List<Category> categories = new ArrayList<>();
-        List<Participants> participants = new ArrayList<>();
-        List<Grouping> groups = new ArrayList<>();
-        List<User> judges = new ArrayList<>();
-        Participants participant = new Participants();
-        User judge = new User();
-        Category ak14 = new Category();
-        Category ak16 = new Category();
-        Grouping groupA = new Grouping();
-        Grouping groupB = new Grouping();
-        Role judgeRoll = new Role();
-        Score score = new Score();
+    @Before
+    public void setUpCompetition() {
+        competition = createCompetition();
+        categories = new ArrayList<>();
+        participants = new ArrayList<>();
+        groups = new ArrayList<>();
+        judges = new ArrayList<>();
+        participant = new Participants();
+        judge = new User();
+        ak14 = new Category();
+        ak16 = new Category();
+        groupA = new Grouping();
+        groupB = new Grouping();
+        judgeRoll = new Role();
+        score = new Score();
 
         // Role
         judgeRoll.setId(7);
@@ -181,8 +143,49 @@ public class GymjudgeApplicationTests {
         score.setE4(0);
         score.setN(0);
         score.setParticipants(participant);
+    }
 
-        // Competition Getters
+    @Test
+    public void dbTest() {
+        competitionRepository.deleteAll();
+
+        Competition competition = createCompetition();
+
+        entityManager.persist(competition);
+        entityManager.flush();
+
+        Competition foundComp = competitionRepository.findAll().iterator().next();
+
+        assertThat(competition.getId()).isEqualTo(foundComp.getId());
+        assertThat(competition.getAdminID()).isEqualTo(foundComp.getAdminID());
+        assertThat(competition.getName()).isEqualTo(foundComp.getName());
+    }
+
+    @Test
+    public void competitionTest() {
+        assertThat(competition.getGroups()).isEqualTo(groups);
+
+        // Test if ApparatusList (shown in Dropdowns,...) is correct depending on Competition Type
+        competition.setType(Type.STUFENWETTKAMPF);
+        assertThat(competition.getAvailableApparatuses()).isEqualTo(createStufeApparatuses());
+        competition.setType(Type.TURN10);
+        assertThat(competition.getAvailableApparatuses()).isEqualTo(createTurn10Apparatuses());
+
+        // Test if ordered Groups for Judge "Boden" really gets groups which are starting in the correct round
+        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).get(0).getApparatuses().get(0))
+                .isEqualTo(Apparatus.PFERD);
+        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).get(1).getApparatuses().get(1))
+                .isEqualTo(Apparatus.PFERD);
+
+        // Test if returned list is always greater or equal to every requested list
+        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).size())
+                .isGreaterThanOrEqualTo(groupA.getApparatuses().size());
+        assertThat(competition.getGroupingOrderFor(Apparatus.PFERD).size())
+                .isGreaterThanOrEqualTo(groupB.getApparatuses().size());
+    }
+
+    @Test
+    public void testCompetitionGetters() {
         assertThat(competition.getId()).isEqualTo(1);
         assertThat(competition.getName()).isEqualTo("TestComp");
         assertThat(competition.getAdminID()).isEqualTo(0);
@@ -196,23 +199,29 @@ public class GymjudgeApplicationTests {
         assertThat(competition.getCategories()).isEqualTo(categories);
         assertThat(competition.getGroups()).isEqualTo(groups);
         assertThat(competition.getJudges()).isEqualTo(judges);
+    }
 
-        // Category Getters
+    @Test
+    public void testCategoryGetters() {
         assertThat(ak14.getCompetition()).isEqualTo(competition);
         assertThat(ak14.getDescription()).isEqualTo("AK 14, Unterstufe, m");
         assertThat(ak14.getId()).isEqualTo(4);
         assertThat(ak14.getLabel()).isEqualTo("AK 14");
         assertThat(ak14.getParticipants()).isEqualTo(participants);
+    }
 
-        // Grouping Getters
+    @Test
+    public void testGroupingGetters() {
         assertThat(groupA.getId()).isEqualTo(2);
         assertThat(groupA.getApparatuses()).isEqualTo(createTurn10Apparatuses().subList(0,4));
         assertThat(groupA.getCompetition()).isEqualTo(competition);
         assertThat(groupA.getParticipants()).isEqualTo(participants);
         assertThat(groupA.getGroupApparatuses()).isEqualTo(competition.getAvailableApparatuses());
         assertThat(groupA.getName()).isEqualTo("Group A");
+    }
 
-        // Participants Getters
+    @Test
+    public void testParticipantsGetters() {
         assertThat(participant.getId()).isEqualTo(8);
         assertThat(participant.getCompetition()).isEqualTo(competition);
         assertThat(participant.getCategory()).isEqualTo(ak14);
@@ -224,12 +233,16 @@ public class GymjudgeApplicationTests {
         assertThat(participant.getBirthday().toString()).isEqualTo("Sat Nov 20 00:00:00 CET 2010");
         assertThat(participant.getAge()).isEqualTo(9);
         assertThat(participant.getParticipantsInfo()).isEqualTo("Max, Mustermann  (9)  male");
+    }
 
-        // Role Getters
+    @Test
+    public void testRoleGetters() {
         assertThat(judgeRoll.getId()).isEqualTo(7);
         assertThat(judgeRoll.getRole()).isEqualTo("JUDGE");
+    }
 
-        // Judge Getters
+    @Test
+    public void testJudgeGetters() {
         assertThat(judge.getId()).isEqualTo(6);
         assertThat(judge.getEmail()).isEqualTo("test0@gymjudge.at");
         assertThat(judge.getPassword()).isEqualTo("password");
@@ -241,8 +254,10 @@ public class GymjudgeApplicationTests {
         assertThat(judge.getActive()).isEqualTo(1);
         assertThat(judge.getClub()).isEqualTo("Test");
         assertThat(judge.getJudgePassword()).isEqualTo("password");
+    }
 
-        // Score Getters
+    @Test
+    public void testScoreGetter() {
         assertThat(score.getId()).isEqualTo(9);
         assertThat(score.getStatus()).isEqualTo(1);
         assertThat(score.getApparatus()).isEqualTo(Apparatus.BODEN);
