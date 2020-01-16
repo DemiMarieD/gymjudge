@@ -42,7 +42,7 @@ public class GymjudgeApplicationTests {
 
         assertThat(competition.getId()).isEqualTo(foundComp.getId());
         assertThat(competition.getAdminID()).isEqualTo(foundComp.getAdminID());
-        assertThat(competition.getName()).isEqualTo("error");
+        assertThat(competition.getName()).isEqualTo(foundComp.getName());
     }
 
     @Test
