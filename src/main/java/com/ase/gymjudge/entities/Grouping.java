@@ -55,8 +55,6 @@ public class Grouping {
     }
 
     public List<Apparatus> getApparatuses() {
-        //apparatuses.add(Apparatus.BODEN);
-        //apparatuses.add(Apparatus.SPRUNG);
         return apparatuses;
     }
 
@@ -64,17 +62,17 @@ public class Grouping {
         this.apparatuses = apparatuses;
     }
 
-    public void addApparatus() {
+    /*public void addApparatus() {
         apparatuses.add(Apparatus.BODEN);
-    }
+    }*/
 
-    public List<Integer> getGymnastIDs() {
+    /*public List<Integer> getGymnastIDs() {
         return GymnastIDs;
-    }
+    }*/
 
-    public void setGymnastIDs(List<Integer> gymnastIDs) {
+    /*public void setGymnastIDs(List<Integer> gymnastIDs) {
         GymnastIDs = gymnastIDs;
-    }
+    }*/
 
     public Competition getCompetition() {
         return competition;

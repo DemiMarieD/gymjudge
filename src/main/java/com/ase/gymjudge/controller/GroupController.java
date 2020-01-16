@@ -62,7 +62,6 @@ public class GroupController {
     public String viewGroup(@PathVariable("group_id") int group_id, Model model) {
         Grouping grouping = groupRepository.findById(group_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Group Id: " + group_id));
-        ApparatusesDto apparatusesForm = new ApparatusesDto(grouping.getApparatuses());
 
         model.addAttribute("grouping", grouping);
         //model.addAttribute("apparatusList", apparatusesForm);
