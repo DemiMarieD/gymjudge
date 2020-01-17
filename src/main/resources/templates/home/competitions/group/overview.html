@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Edit Group</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+</head>
+<body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
+<script>
+    function addApparatus() {
+        var list = document.getElementById("dynamic-list");
+        var apparatusesDropdown = document.getElementById("apparatusesDropdown");
+        var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
+        var newLi = document.createElement("li");
+        let enumString = "";
+
+        newLi.setAttribute('name', apparatusName);
+        newLi.appendChild(document.createTextNode(apparatusName));
+        list.appendChild(newLi);
+
+        document.getElementById("apparatuses").value += "," +
+            apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
+
+        enumString = document.getElementById("apparatuses").value;
+        if (enumString.substring(0,1) === ",") {
+            document.getElementById("apparatuses").value = enumString.substring(1, enumString.length);
+        }
+    }
+    function removeApparatus() {
+        var list = document.getElementById("dynamic-list");
+        var apparatusesDropdown = document.getElementById("apparatusesDropdown");
+        var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
+        let enumToRemove = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
+        let subList = document.getElementsByName(apparatusName);
+        let enumString = document.getElementById("apparatuses").value;
+
+        list.removeChild(subList[subList.length - 1]);
+
+        if (enumString.lastIndexOf(enumToRemove) >= 0) {
+            console.log("remove " + enumToRemove);
+            enumString = enumString.substring(0, enumString.lastIndexOf(enumToRemove)) +
+                enumString.substring(enumString.lastIndexOf(enumToRemove) + enumToRemove.length, enumString.length);
+            if (enumString.indexOf(",,") > 0) {
+                console.log("case ,,");
+                enumString = enumString.substring(0, enumString.indexOf(",,")) +
+                    enumString.substring(enumString.indexOf(",,") + 1, enumString.length);
+            } else if (enumString.indexOf(",") === 0) {
+                console.log(", case");
+                enumString = enumString.substring(1, enumString.length);
+            } else if (enumString.lastIndexOf(",") === enumString.length - 1 && enumString.length > 0) {
+                console.log("case ,");
+                enumString = enumString.substring(0, enumString.length - 1);
+            }
+            document.getElementById("apparatuses").value = enumString;
+        }
+    }
+</script>
+<div class="container my-5">
+    <form action="#" th:action="@{/home/groups/view/{group_id}(group_id=${group_id})}" th:object="${grouping}" method="post">
+        <div class="panel panel-default">
+            <div class="page-header">
+                <h2>
+                    <small th:text="${grouping.competition.name}"></small><br/>
+                    Infos for Group <input type="text" th:field="*{name}" th:value="*{name}">
+                    <span>
+                        <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${grouping.getCompetition().getId()})}" class="btn btn-primary float-right">Back</a>
+                    </span>
+                </h2>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h5 class="card-header">Starting order</h5>
+            <div class="card-body">
+                <div>
+                    <input hidden type="text" th:field="*{apparatuses}" th:value="*{apparatuses}">
+                    <input hidden type="text" th:field="*{competition}" th:value="*{competition}">
+                </div>
+                <div>
+                    <label for="apparatusesDropdown" class="col-form-label">Select Apparatus:</label>
+                    <select id="apparatusesDropdown" class="form-control selcls">
+                        <option th:each="apparatus : ${grouping.getGroupApparatuses()}"
+                                th:value="${apparatus}" th:text="${apparatus.displayValue}"></option>
+                    </select>
+                </div>
+                <br/>
+
+                <button type="button" onclick="addApparatus();" class="btn btn-primary" >Add selected Apparatus</button>
+                <button type="button" onclick="removeApparatus();" class="btn btn-primary">Remove selected Apparatus</button>
+
+                <div class="card mt-4">
+                    <h5 class="card-header">Apparatus Order</h5>
+                    <div class="card-body">
+                        <ol id="dynamic-list">
+                            <li th:each="apparatus, itemStat : *{apparatuses}" th:name="${apparatus.displayValue}">
+                                <span th:value="${apparatus.displayValue}" th:text="${apparatus.displayValue}"></span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h5 class="card-header">Gymnasts</h5>
+            <div class="card-body">
+                <div th:switch="${grouping.getParticipants()}">
+                    <h5 th:case="null">No participants yet!</h5>
+                    <div th:case="*">
+                        <div th:each="pat : ${grouping.getParticipants()}" >
+                            <div class="row">
+                                <div class="col">
+                                    <a th:href="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${pat.getCompetition().getId()}, pat_id=${pat.getId()})}"
+                                       class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </div>
+    </form>
+</div>
+</body>

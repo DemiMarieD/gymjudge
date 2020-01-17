@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>Edit Gymnast</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+</head>
+<body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
+<div class="container my-5">
+    <div class="panel panel-default">
+        <div class="page-header">
+            <h2>
+                <small th:text="*{competition.name}"></small><br/>
+                Edit Gymnast <b><span th:text="${participant.firstname} + ' ' + ${participant.lastname}"></span></b>
+                <span>
+                    <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary float-right">Back</a>
+                </span>
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="alert alert-danger" role="alert" th:if="${msg}" th:utext="${msg}">
+            </div>
+        </div>
+    </div>
+    <form action="#" th:action="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${competition.getId()}, pat_id=${participant.getId()})}" th:object="${participant}" method="post">
+        <div class="card mt-4">
+            <h5 class="card-header">General Information</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="firstname" class="col-form-label">First Name</label>
+                        <input type="text" th:field="*{firstname}" class="form-control" id="firstname" placeholder="First Name">
+                        <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastname" class="col-form-label">Last Name</label>
+                        <input type="text" th:field="*{lastname}" class="form-control" id="lastname" placeholder="Last Name">
+                        <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="birthday" class="col-form-label">Birthday</label>
+                        <input type="date" th:field="*{birthday}" class="form-control" id="birthday" placeholder="Birthday">
+                        <span th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="gender" class="col-form-label">Gender</label>
+                        <select id="gender" th:field="*{gender}" class="form-control selcls">
+                            <option th:each="genderOpt : ${T(com.ase.gymjudge.entities.Gender).values()}"
+                                    th:value="${genderOpt}" th:text="${genderOpt.displayValue}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="club" class="col-form-label">Club</label>
+                        <input type="text" th:field="*{club}" class="form-control" id="club" placeholder="Club">
+                        <span th:if="${#fields.hasErrors('club')}" th:errors="*{club}" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <h5 class="card-header">Assign Category and Group</h5>
+            <div class="card-body">
+                <div>
+                    <label for="category" class="col-form-label">Category for Competition "<span th:text="${competition.getName()}"></span>" </label>
+                    <select id="category" th:field="*{category}" class="form-control selcls" >
+                        <option th:each="catOpt : ${competition.getCategories()}"
+                                th:value="${catOpt.id}"  th:text="${catOpt.getLabel()}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="grouping" class="col-form-label">Category for Competition "<span th:text="${competition.getName()}"></span>" </label>
+                    <select id="grouping" th:field="*{grouping}" class="form-control selcls" >
+                        <option th:each="groupOpt : ${competition.getGroups()}"
+                                th:value="${groupOpt.id}"  th:text="${groupOpt.getName()}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Update Gymnast">
+            </div>
+        </div>
+    </form>
+</div>
+</body>

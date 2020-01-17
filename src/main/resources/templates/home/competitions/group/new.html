@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add Group</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+</head>
+<body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
+<script>
+    function addApparatus() {
+        var list = document.getElementById("dynamic-list");
+        var apparatusesDropdown = document.getElementById("apparatusesDropdown");
+        var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
+        var newLi = document.createElement("li");
+        let enumString = "";
+
+        newLi.setAttribute('name', apparatusName);
+        newLi.appendChild(document.createTextNode(apparatusName));
+        list.appendChild(newLi);
+
+        document.getElementById("apparatuses").value += "," +
+            apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
+
+        enumString = document.getElementById("apparatuses").value;
+        if (enumString.substring(0,1) === ",") {
+            document.getElementById("apparatuses").value = enumString.substring(1, enumString.length);
+        }
+    }
+    function removeApparatus() {
+        var list = document.getElementById("dynamic-list");
+        var apparatusesDropdown = document.getElementById("apparatusesDropdown");
+        var apparatusName = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].text;
+        let enumToRemove = apparatusesDropdown.options[apparatusesDropdown.selectedIndex].value;
+        let subList = document.getElementsByName(apparatusName);
+        let enumString = document.getElementById("apparatuses").value;
+
+        list.removeChild(subList[subList.length - 1]);
+
+        if (enumString.lastIndexOf(enumToRemove) >= 0) {
+            console.log("remove " + enumToRemove);
+            enumString = enumString.substring(0, enumString.lastIndexOf(enumToRemove)) +
+                enumString.substring(enumString.lastIndexOf(enumToRemove) + enumToRemove.length, enumString.length);
+            if (enumString.indexOf(",,") > 0) {
+                console.log("case ,,");
+                enumString = enumString.substring(0, enumString.indexOf(",,")) +
+                    enumString.substring(enumString.indexOf(",,") + 1, enumString.length);
+            } else if (enumString.indexOf(",") === 0) {
+                console.log(", case");
+                enumString = enumString.substring(1, enumString.length);
+            } else if (enumString.lastIndexOf(",") === enumString.length - 1 && enumString.length > 0) {
+                console.log("case ,");
+                enumString = enumString.substring(0, enumString.length - 1);
+            }
+            document.getElementById("apparatuses").value = enumString;
+        }
+    }
+</script>
+<div class="container my-5">
+    <form action="#" th:action="@{/home/competitions/view/group/new/{comp_id}(comp_id=${comp_id})}" th:object="${group}" method="post">
+        <div class="panel panel-default">
+            <div class="page-header">
+                <h2>
+                    <small th:text="${group.getCompetition().getName()}"></small><br/>
+                    Create new Group
+                    <span>
+                        <a th:href="@{/home/competitions/view/{comp_id}(comp_id=${group.getCompetition().getId()})}" class="btn btn-primary float-right">Back</a>
+                    </span>
+                </h2>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <h5 class="card-header">New Group</h5>
+            <div class="card-body">
+                <div>
+                    <label for="label" class="col-form-label">Group Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="label" placeholder="Group Name">
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h5 class="card-header">Starting order (can be edited later)</h5>
+            <div class="card-body">
+                <div>
+                    <!--input hidden type="text" th:field="*{name}" th:value="*{name}"-->
+                    <input hidden type="text" th:field="*{apparatuses}" th:value="*{apparatuses}">
+                    <input hidden type="text" th:field="*{competition}" th:value="*{competition}">
+                </div>
+                <div>
+                    <label for="apparatusesDropdown" class="col-form-label">Select Apparatus:</label>
+                    <select id="apparatusesDropdown" class="form-control selcls">
+                        <option th:each="apparatus : ${group.getGroupApparatuses()}"
+                                th:value="${apparatus}" th:text="${apparatus.displayValue}"></option>
+                    </select>
+                </div>
+                <br/>
+
+                <button type="button" class="btn btn-primary" onclick="addApparatus();">Add selected Apparatus</button>
+                <button type="button" class="btn btn-primary" onclick="removeApparatus();">Remove selected Apparatus</button>
+
+                <div class="card mt-5">
+                    <h5 class="card-header">Apparatus Order</h5>
+                    <div class="card-body">
+                        <ol id="dynamic-list">
+                            <li th:each="apparatus, itemStat : *{apparatuses}" th:name="${apparatus.displayValue}">
+                                <span th:value="${apparatus.displayValue}" th:text="${apparatus.displayValue}"></span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <input type="submit" class="btn btn-primary" value="Add Group">
+            </div>
+        </div>
+    </form>
+</div>
+</body>

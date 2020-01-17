@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Your Competition</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <script type="text/javascript" th:src="@{/js/competitionOverview.js}"></script>
+</head>
+<body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="panel panel-default">
+        <div class="panel panel-default">
+            <div class="page-header">
+                <h2>
+                    <small th:text="${competition.name}"></small><br/>
+                    Competition Overview<b><span th:text="*{name}"></span></b>
+                    <span>
+                        <a th:href="@{/home}" class="btn btn-primary float-right">Back</a>
+                        <a th:href="@{/logout}" class="btn btn-primary float-right">Sign out</a>
+                    </span>
+                </h2>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <h5 class="card-header">Basic Infos</h5>
+            <div class="card-body">
+                <p>Start Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
+                <p>End Date: <span th:text="${#dates.format(competition.endDate, 'EEE, dd.mm.yyyy')}"></span></p>
+                <p>Description: <span th:text="${competition.description}"></span></p>
+                <p>Type: <span th:text="${competition.type}"></span></p>
+                <p>Status: <span th:text="${competition.status}"></span></p>
+                <a th:href="@{/home/competitions/edit/{id}(id=*{id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/home/competitions/delete/{id}(id=*{id})}" class="btn btn-primary">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <h5 class="card-header">Categories (<span th:text="${competition.getCategories().size()}"></span>)</h5>
+        <div class="card-body">
+            <div class="panel-body">
+                <div  class="list-group"  th:switch="${competition.getCategories()}">
+                    <h2 th:case="null">No categories yet!</h2>
+                    <div th:case="*">
+                        <div th:each="cat : ${competition.getCategories()}">
+                            <div class="row">
+                                <div class="col">
+                                   <a th:href="@{/home/competitions/view/category/edit/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                        class="list-group-item list-group-item-action">
+                                       <span th:text="${cat.label}"></span>
+                                       <span class="badge badge-primary badge-pill" th:text="${cat.getParticipants().size()}"></span>
+                                   </a>
+                                </div>
+                                <div class="col-1">
+                                   <a th:href="@{/home/competitions/view/category/delete/{comp_id}/{cat_id}(comp_id=${competition.getId()}, cat_id=${cat.getId()})}"
+                                      class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <a th:href="@{/home/competitions/view/category/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Category</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <h5 class="card-header">Groups</h5>
+        <div class="card-body">
+            <div class="panel-body">
+                <div class="list-group" th:switch="${competition.getGroups()}">
+                    <h2 th:case="null">No groups yet!</h2>
+                    <div th:case="*">
+                        <div th:each="group : ${competition.getGroups()}">
+                            <div class="row">
+                                <div class="col">
+                                    <a th:href="@{/home/groups/view/{id}(id=${group.getId()})}" class="list-group-item list-group-item-action">
+                                        <span th:text="${group.name}"></span>
+                                        <span class="badge badge-primary badge-pill" th:text="${group.getParticipants().size()}"></span>
+                                    </a>
+                                </div>
+                                <div class="col-1">
+                                    <a th:href="@{/home/groups/delete/{group_id}(group_id=${group.id})}"
+                                       class="list-group-item list-group-item-action"> <i class="fas fa-trash-alt"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <a th:href="@{/home/competitions/view/group/new/{comp_id}(comp_id=*{id})}" class="btn btn-primary">New Group</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header gymnast" th:onclick="'javascript:displayGymnasts()'">
+            <h5 class="row">
+                <span class="col"> Gymnasts (<span th:text="${competition.getParticipants().size()}"></span>)</span>
+                <a class="col-1" id="dontShow"><i class="fas fa-angle-left float-right"></i></a>
+                <a class="col-1" id="show" style="display: none"><i class="fas fa-angle-down float-right"></i> </a>
+            </h5>
+        </div>
+        <div class="card-body" id="GymnastBody" style="display: none">
+            <div th:switch="${competition.getParticipants()}">
+                <h5 th:case="null">No participants yet!</h5>
+                <div th:case="*">
+                    <div th:each="pat : ${competition.getParticipants()}" >
+                        <div class="row">
+                            <div class="col">
+                                <a th:href="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${competition.getId()}, pat_id=${pat.getId()})}"
+                                   class="list-group-item list-group-item-action" >
+                                    <span th:text="${pat.getFirstname()}"></span>, <span th:text="${pat.getLastname()}"></span>
+                                    <span th:if="${pat.getGender().getDisplayValue() == 'male'}" ><i class="fas fa-mars"></i></span>
+                                    <span th:if="${pat.getGender().getDisplayValue() == 'female'}" ><i class="fas fa-venus"></i></span>
+                                    (age: <span th:text="${pat.getAge()}"></span>)
+                                    <span th:if="${pat.getCategory() == null}" class="badge badge-danger" th:text="'no category'"></span>
+                                    <span th:if="${pat.getGrouping() == null}" class="badge badge-danger" th:text="'no group'"></span>
+                                </a>
+                            </div>
+                            <div class="col-1">
+                                <a th:href="@{/home/competitions/view/gymnasts/delete/{comp_id}/{pat_id}(comp_id=${competition.getId()}, pat_id=${pat.getId()})}"
+                                   class="list-group-item list-group-item-action"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <a th:href="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" class="btn btn-primary">New Gymnast</a>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <h5 class="card-header">Judges</h5>
+        <div class="card-body">
+            <div class="panel-body" th:switch="${competition.getStatus().displayValue}">
+                <div th:case="'Finished'">
+                    <h3>Competition is over!</h3>
+                </div>
+                <div th:case="*">
+                    <div class="list-group" th:switch="${competition.getJudges().size()}">
+                        <div th:case="0">
+                            <form action="#" th:action="@{/home/competitions/view/{id}(id=${id})}" th:object="${competition}" method="post">
+                                <h3>Important:</h3>
+                                <p>Judges can only be created once and are active from that moment, so note the password!</p>
+                                <label for="judgePassword" class="col-form-label">Enter General Judge Password:</label>
+                                <input id ="judgePassword" type="text" th:field="*{judgePassword}">
+
+                                <input type="submit" class="btn btn-primary" value="Generate Judge Logins">
+                            </form>
+                        </div>
+                        <div th:case="*">
+                            <div th:each="judge : ${competition.getJudges()}">
+                                <a class="list-group-item list-group-item-action">
+                                    <span style="font-weight: bold" th:text="${judge.getFirstname()}"></span>
+                                    <span>: </span>
+                                    <span th:text="${judge.getEmail()}"></span>
+                                    <span style="margin-left: 5px"></span>
+                                    <span th:if="${judge.getActive() == 1}" class="badge badge-success" th:text="'Active'"></span>
+                                    <span th:if="${judge.getActive() == 0}" class="badge badge-secondary" th:text="'Inactive'"></span>
+                                </a>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
