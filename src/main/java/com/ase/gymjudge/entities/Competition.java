@@ -212,4 +212,10 @@ public class Competition {
         }
         return tempList;
     }
+
+    public void emptyDates(){
+        startDate = null;
+        endDate = null;
+    }
+
 }

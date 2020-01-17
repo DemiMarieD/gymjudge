@@ -22,6 +22,7 @@
         margin-right: 5px;
     }
 </style>
+
 <div class="container my-5">
     <div class="panel panel-default">
         <div class="panel panel-default">
@@ -41,7 +42,7 @@
             <h5 class="card-header">Basic Infos</h5>
             <div class="card-body">
                 <p>Start Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
-                <p>End Date: <span th:text="${#dates.format(competition.startDate, 'EEE, dd.mm.yyyy')}"></span></p>
+                <p>End Date: <span th:text="${#dates.format(competition.endDate, 'EEE, dd.mm.yyyy')}"></span></p>
                 <p>Description: <span th:text="${competition.description}"></span></p>
                 <p>Type: <span th:text="${competition.type}"></span></p>
                 <p>Status: <span th:text="${competition.status}"></span></p>
@@ -126,7 +127,14 @@
                         <div class="row">
                             <div class="col">
                                 <a th:href="@{/home/competitions/view/gymnasts/edit/{comp_id}/{pat_id}(comp_id=${competition.getId()}, pat_id=${pat.getId()})}"
-                                   class="list-group-item list-group-item-action" th:text="${pat.getParticipantsInfo()}"></a>
+                                   class="list-group-item list-group-item-action" >
+                                    <span th:text="${pat.getFirstname()}"></span>, <span th:text="${pat.getLastname()}"></span>
+                                    <span th:if="${pat.getGender().getDisplayValue() == 'male'}" ><i class="fas fa-mars"></i></span>
+                                    <span th:if="${pat.getGender().getDisplayValue() == 'female'}" ><i class="fas fa-venus"></i></span>
+                                    (age: <span th:text="${pat.getAge()}"></span>)
+                                    <span th:if="${pat.getCategory() == null}" class="badge badge-danger" th:text="'no category'"></span>
+                                    <span th:if="${pat.getGrouping() == null}" class="badge badge-danger" th:text="'no group'"></span>
+                                </a>
                             </div>
                             <div class="col-1">
                                 <a th:href="@{/home/competitions/view/gymnasts/delete/{comp_id}/{pat_id}(comp_id=${competition.getId()}, pat_id=${pat.getId()})}"

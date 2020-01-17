@@ -48,5 +48,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(judge);
     }
 
+    public void deleteJudge(User judge){
+        //remove role
+        judge.setRoles(null);
+        userRepository.save(judge);
+        //delete the user (aka. judge)
+        userRepository.delete(judge);
+    }
 
 }
