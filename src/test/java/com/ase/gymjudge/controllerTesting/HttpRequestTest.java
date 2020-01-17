@@ -100,6 +100,7 @@ public class HttpRequestTest {
                 .build();
     }
 
+    //selenium akzeptanz test besser
 
     @Test
     public void givenAuthRequestOnPrivateService_shouldSucceedWith200() throws Exception {

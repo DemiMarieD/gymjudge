@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@SpringBootTest
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class GymjudgeApplicationTest {
+public class GymjudgeApplicationIT {
     @Autowired
     private TestEntityManager entityManager;
 
