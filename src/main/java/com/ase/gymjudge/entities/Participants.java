@@ -33,11 +33,9 @@ public class Participants {
     @ManyToOne (fetch = FetchType.LAZY)
     private Competition competition;
 
-    @ManyToOne (fetch = FetchType.LAZY) //todo check what to do when deleting
+    @ManyToOne (fetch = FetchType.LAZY)
     private Category category;
 
-    //todo check how to.
-    //@ManyToOne (cascade= CascadeType.ALL)
     @ManyToOne (fetch = FetchType.LAZY)
     private Grouping grouping;
 

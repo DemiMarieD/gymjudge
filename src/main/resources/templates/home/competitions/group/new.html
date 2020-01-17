@@ -118,11 +118,11 @@
                 <div class="card mt-5">
                     <h5 class="card-header">Apparatus Order</h5>
                     <div class="card-body">
-                        <ol id="dynamic-list">
+                       <ol id="dynamic-list">
                             <li th:each="apparatus, itemStat : *{apparatuses}" th:name="${apparatus.displayValue}">
                                 <span th:value="${apparatus.displayValue}" th:text="${apparatus.displayValue}"></span>
                             </li>
-                        </ol>
+                       </ol>
                     </div>
                 </div>
             </div>

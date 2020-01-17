@@ -32,17 +32,16 @@ public class CategoryController {
 
 
     @GetMapping("home/competitions/view/category/new/{comp_id}")
-    public ModelAndView newCategory(@PathVariable("comp_id") int comp_id, ModelAndView model) {
+    public String newCategory(@PathVariable("comp_id") int comp_id, Model model) {
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
 
         Category category = new Category();
         category.setCompetition(comp);
 
-        model.addObject("comp_id", comp_id);
-        model.addObject("category", category);
-        model.setViewName("home/competitions/category/new");
-        return model;
+        model.addAttribute("comp_id", comp_id);
+        model.addAttribute("category", category);
+        return "home/competitions/category/new";
     }
 
     @PostMapping("home/competitions/view/category/new/{comp_id}")
@@ -63,16 +62,15 @@ public class CategoryController {
 
 
     @GetMapping("home/competitions/view/category/edit/{comp_id}/{cat_id}")
-    public ModelAndView editCategory(@PathVariable("comp_id") int comp_id, @PathVariable("cat_id") int cat_id, ModelAndView model) {
+    public String editCategory(@PathVariable("comp_id") int comp_id, @PathVariable("cat_id") int cat_id, Model model) {
         Competition comp = compRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + comp_id));
         Category cat = categoryRepository.findById(cat_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
 
-        model.addObject("comp_id", comp_id);
-        model.addObject("category", cat);
-        model.setViewName("home/competitions/category/edit");
-        return model;
+        model.addAttribute("comp_id", comp_id);
+        model.addAttribute("category", cat);
+        return "home/competitions/category/edit";
     }
 
     @PostMapping("home/competitions/view/category/edit/{comp_id}/{cat_id}")
@@ -103,7 +101,14 @@ public class CategoryController {
         Category cat = categoryRepository.findById(cat_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id:" + cat_id));
 
-        //todo change: removes all categories connected and all participants connected to those!
+        //remove connection to gymnasts
+        for(Participants p : cat.getParticipants()) {
+            p.setCategory(null);
+            participantsRepository.save(p);
+        }
+        cat.setParticipants(null);
+        categoryRepository.save(cat);
+
         categoryRepository.delete(cat);
 
         return "redirect:/home/competitions/view/" + String.valueOf(comp_id);
