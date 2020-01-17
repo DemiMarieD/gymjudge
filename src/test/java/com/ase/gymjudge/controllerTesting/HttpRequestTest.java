@@ -1,4 +1,4 @@
-package com.ase.gymjudge;
+package com.ase.gymjudge.controllerTesting;
 
 import com.ase.gymjudge.entities.Role;
 import com.ase.gymjudge.entities.User;

@@ -1,4 +1,4 @@
-package com.ase.gymjudge;
+package com.ase.gymjudge.controllerTesting;
 
 import com.ase.gymjudge.controller.UserController;
 import com.ase.gymjudge.services.UserService;
