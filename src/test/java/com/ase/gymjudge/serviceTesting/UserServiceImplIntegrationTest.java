@@ -5,7 +5,7 @@ import com.ase.gymjudge.repositories.UserRepository;
 import com.ase.gymjudge.services.UserService;
 import com.ase.gymjudge.services.UserServiceImpl;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

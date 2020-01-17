@@ -4,7 +4,7 @@ package com.ase.gymjudge.entityTesting;
 import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@SpringBootTest
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class GymjudgeApplicationIT {
+public class EntitiesIntegrationTest {
     @Autowired
     private TestEntityManager entityManager;
 
