@@ -1,4 +1,4 @@
-package com.ase.gymjudge.entityTesting;
+package com.ase.gymjudge;
 
 
 import com.ase.gymjudge.entities.*;
