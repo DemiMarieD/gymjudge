@@ -88,10 +88,8 @@ public class UserController {
     }
 
     @RequestMapping(value= {"/access_denied"}, method=RequestMethod.GET)
-    public ModelAndView accessDenied() {
-        ModelAndView model = new ModelAndView();
-        model.setViewName("error/access_denied");
-        return model;
+    public String accessDenied() {
+        return "error/access_denied";
     }
 
     @RequestMapping(value= {"/logout"}, method=RequestMethod.GET)

@@ -6,33 +6,25 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "club")
     private String club;
 
-    @Column(name = "firstname")
     private String firstname;
 
-    @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "active")
     private int active;
 
     //for Judges
-    @Column(name = "apparatus")
     private Apparatus apparatus;
     public Apparatus getApparatus() {
         return apparatus;
@@ -41,14 +33,6 @@ public class User {
         this.apparatus = apparatus;
     }
 
-    @Column(name = "judgePassword")
-    private String judgePassword;
-    public void setJudgePassword(String judgePassword) {
-        this.judgePassword = judgePassword;
-    }
-    public String getJudgePassword() {
-        return judgePassword;
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Competition competition;

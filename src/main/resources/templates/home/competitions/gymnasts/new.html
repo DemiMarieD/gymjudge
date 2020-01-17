@@ -34,7 +34,13 @@
             </h2>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="alert alert-danger" role="alert" th:if="${msg}" th:utext="${msg}">
+            </div>
+        </div>
+    </div>
     <form action="#" th:action="@{/home/competitions/view/gymnasts/new/{comp_id}(comp_id=${competition.getId()})}" th:object="${participant}" method="post">
         <div class="card mt-4">
             <h5 class="card-header">General Information</h5>

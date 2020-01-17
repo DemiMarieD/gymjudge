@@ -24,16 +24,15 @@ public class GroupController {
     private ParticipantsRepository participantsRepository;
 
     @GetMapping("home/competitions/view/group/new/{comp_id}")
-    public ModelAndView deleteGroup(@PathVariable("comp_id") int comp_id, ModelAndView model) {
+    public String newGroup(@PathVariable("comp_id") int comp_id, Model model) {
         Competition competition = competitionRepository.findById(comp_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid competition Id: " + comp_id));
 
         Grouping newGroup = new Grouping();
         newGroup.setCompetition(competition);
-        model.addObject("comp_id", comp_id);
-        model.addObject("group", newGroup);
-        model.setViewName("home/competitions/group/new");
-        return model;
+        model.addAttribute("comp_id", comp_id);
+        model.addAttribute("group", newGroup);
+        return "home/competitions/group/new";
     }
 
     @PostMapping("home/competitions/view/group/new/{comp_id}")
@@ -85,9 +84,15 @@ public class GroupController {
         Grouping grouping = groupRepository.findById(group_id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id: " + group_id));
 
-        //todo change: check connected entities (participants), they are deleted too
+        //remove connection to gymnasts
+        for(Participants p : grouping.getParticipants()) {
+            p.setGrouping(null);
+            participantsRepository.save(p);
+        }
+        grouping.setParticipants(null);
+        groupRepository.save(grouping);
+
         groupRepository.delete(grouping);
-        System.out.println("deleted");
 
         return "redirect:/home/competitions/view/" + String.valueOf(grouping.getCompetition().getId());
     }
