@@ -69,7 +69,7 @@ public class GymjudgeApplicationTest {
         judge.setCompetition(competition);
         judge.setActive(1);
         judge.setId(6);
-        judge.setJudgePassword("password");
+        // judge.setJudgePassword("password");
         judge.setRoles(judgeRoll);
         judge.setApparatus(Apparatus.BODEN);
         judge.setEmail("test0@gymjudge.at");
@@ -253,7 +253,7 @@ public class GymjudgeApplicationTest {
         assertThat(judge.getRoles()).isEqualTo(judgeRoll);
         assertThat(judge.getActive()).isEqualTo(1);
         assertThat(judge.getClub()).isEqualTo("Test");
-        assertThat(judge.getJudgePassword()).isEqualTo("password");
+        // assertThat(judge.getJudgePassword()).isEqualTo("password");
     }
 
     @Test

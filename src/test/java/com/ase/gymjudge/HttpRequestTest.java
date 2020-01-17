@@ -47,4 +47,12 @@ public class HttpRequestTest {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/livescores",
                 String.class)).contains("Not Found");
     }
+
+    @Test
+    @WithMockUser(username = "manuel@test.com", password = "asdf", roles = "ADMIN")
+    public void loginTest() throws Exception {
+        // Admin should be able to access competition overview
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/home/competitions",
+                String.class)).contains("Sign out");
+    }
 }
