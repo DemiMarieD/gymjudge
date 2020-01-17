@@ -10,6 +10,9 @@ addons:
   sonarcloud:
     organization: "asews19"
 
+    branches:
+      - integrationTesting_DD
+
 script:
   - mvn test
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
