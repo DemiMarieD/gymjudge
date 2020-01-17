@@ -1,4 +1,4 @@
-package com.ase.gymjudge;
+package com.ase.gymjudge.serviceTesting;
 
 import com.ase.gymjudge.entities.User;
 import com.ase.gymjudge.repositories.UserRepository;
@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 public class UserServiceImplIntegrationTest {
@@ -32,23 +34,24 @@ public class UserServiceImplIntegrationTest {
         private UserRepository userRepository;
 
         // write test cases here
-     /*   @Before
+        @Before
         public void setUp() {
             User alex = new User();
             alex.setFirstname("alex");
+            alex.setEmail("alex@gmail.com");
 
-            Mockito.when(userRepository.findByName(alex.getName()))
+            Mockito.when(userRepository.findByEmail(alex.getEmail()))
                     .thenReturn(alex);
         }
 
         @Test
         public void whenValidName_thenEmployeeShouldBeFound() {
-            String name = "alex";
-            Employee found = employeeService.getEmployeeByName(name);
+            String name = "alex@gmail.com";
+            User found = userService.findByEmail(name);
 
-            assertThat(found.getName())
+            assertThat(found.getEmail())
                     .isEqualTo(name);
-        } */
+        }
     }
 
 }

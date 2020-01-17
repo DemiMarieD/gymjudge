@@ -1,4 +1,4 @@
-package com.ase.gymjudge;
+package com.ase.gymjudge.repositoryTesting;
 
 import com.ase.gymjudge.entities.User;
 import com.ase.gymjudge.repositories.UserRepository;
