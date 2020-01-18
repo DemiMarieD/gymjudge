@@ -30,9 +30,11 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+//todo only working with jUnit4...
 @RunWith(SpringRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
@@ -46,7 +48,7 @@ public class AdminSitesTest {
 
     private MockMvc mvc;
 
-    //todo not working with beforeEach ...
+    //todo not working with beforeEach...
     @Before
     public void setup() {
         mvc = MockMvcBuilders
@@ -65,12 +67,43 @@ public class AdminSitesTest {
     }
 
     @Test
+    public void signUp_Get() throws Exception {
+        mvc
+                .perform(get("/signup"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void signUp_Post() throws Exception {
+        mvc
+            .perform(post("/signup"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
     @WithMockUser(username = "alex@web.at", authorities = "ADMIN")
-    public void requestHomeUrlWithUser() throws Exception {
+    public void Login_WithUser() throws Exception {
+        mvc
+                .perform(get("/login"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "alex@web.at", authorities = "ADMIN")
+    public void requestHomeUrl_WithUser() throws Exception {
         mvc
                 .perform(get("/home"))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void requestHomeUrl_WithoutUser() throws Exception {
+        mvc
+                .perform(get("/home"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection());
     }
 
 }
