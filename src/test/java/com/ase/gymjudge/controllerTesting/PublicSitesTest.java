@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class HttpRequestTest {
+public class PublicSitesTest {
    @LocalServerPort
     private int port;
 
@@ -69,56 +70,4 @@ public class HttpRequestTest {
                 String.class)).contains("Not Found");
     }
 
-
-    @MockBean
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private WebApplicationContext context;
-
-    private MockMvc mvc;
-
-    @BeforeEach
-    public void setUp() {
-        Role adminRole = new Role();
-        adminRole.setRole("ADMIN");
-
-        User alex = new User();
-        alex.setFirstname("alex");
-        alex.setEmail("alex@gmail.com");
-        alex.setRoles(adminRole);
-        alex.setPassword(bCryptPasswordEncoder.encode("1234"));
-
-        Mockito.when(userRepository.findByEmail(alex.getEmail()))
-                .thenReturn(alex);
-
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
-
-    //todo: selenium akzeptanz test besser
-/*
-    @Test
-    public void givenAuthRequestOnPrivateService_shouldSucceedWith200() throws Exception {
-        RequestBuilder requestBuilder = formLogin().user("alex@gmail.com").password("1234");
-        mvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().isFound());
-              //  .andExpect(cookie().exists("JSESSIONID"));
-      /*  mvc.perform(get("/home").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(username = "alex@gmail.com", password = "1234", roles = "ADMIN")
-    public void loginTest() throws Exception {
-        // Admin should be able to access competition overview
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/home/competitions",
-                String.class)).contains("Sign out");
-    }*/
 }
