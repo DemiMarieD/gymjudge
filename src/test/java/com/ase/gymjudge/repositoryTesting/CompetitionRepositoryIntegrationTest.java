@@ -6,8 +6,9 @@ import com.ase.gymjudge.entities.Type;
 import com.ase.gymjudge.entities.User;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.UserRepository;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @DataJpaTest
 public class CompetitionRepositoryIntegrationTest {
 
@@ -35,7 +36,7 @@ public class CompetitionRepositoryIntegrationTest {
     private Competition comp2 = new Competition();
     private Competition comp3 = new Competition();
 
-    @BeforeEach
+    @Before
     public void makeCompetition () throws ParseException {
         comp.setName("NewComp");
         comp.setAdminID(1);

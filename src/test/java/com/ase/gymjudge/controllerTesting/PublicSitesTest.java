@@ -7,7 +7,7 @@ import com.ase.gymjudge.repositories.UserRepository;
 import com.ase.gymjudge.services.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PublicSitesTest {
    @LocalServerPort
@@ -54,7 +54,7 @@ public class PublicSitesTest {
                 String.class)).contains("Login");
     }
 
-    @Test
+ /*   @Test
     public void userNotLoggedIn() {
         // User should not be able to access competition overview
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/home/competitions",
@@ -68,6 +68,6 @@ public class PublicSitesTest {
         // 404 Error should only occur if an entity is not found
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/livescores",
                 String.class)).contains("Not Found");
-    }
+    }*/
 
 }
