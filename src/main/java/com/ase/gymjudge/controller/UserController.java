@@ -24,7 +24,6 @@ public class UserController {
     @Autowired
     private RoleRepository roleRepository;
 
-    //todo take care of logout
 
     @RequestMapping(value= {"/login"}, method=RequestMethod.GET)
     public ModelAndView login() {

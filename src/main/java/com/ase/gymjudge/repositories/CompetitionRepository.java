@@ -18,10 +18,5 @@ public interface CompetitionRepository extends CrudRepository<Competition, Integ
     @Query(value = "select c from Competition c where c.status like ?1")
     List<Competition> getCompetitionsByStatus(Status status);
 
-    @Query(value = "select c.categories from Competition c where c.status like ?1")
-    List<Category> getCategories(Integer competitionId);
-
-
 }
 
-//
