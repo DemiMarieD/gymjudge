@@ -13,6 +13,7 @@ public class SeleniumWithTestNGLiveTest {
     private String expectedTitle = "Sign in";
 
     //todo: not working because of BeforeSuite, but we will probably not need it...
+
    /*  @BeforeSuite
     public void setUp() {
         seleniumLoginPage = new SeleniumLoginPage();
