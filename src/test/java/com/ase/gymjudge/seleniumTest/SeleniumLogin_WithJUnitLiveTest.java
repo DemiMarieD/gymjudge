@@ -21,7 +21,7 @@ public class SeleniumLogin_WithJUnitLiveTest {
         seleniumLoginPage.closeWindow();
     }
 
-    @Test
+ /*   @Test
     public void whenLoginIsLoaded_thenSignUpLinkIsAvailable() {
         seleniumLoginPage.getLoginPage();
         String actualTitle = seleniumLoginPage.getTitle();
@@ -29,6 +29,6 @@ public class SeleniumLogin_WithJUnitLiveTest {
         assertNotNull(actualTitle);
         assertEquals(expectedTitle, actualTitle);
         assertTrue(seleniumLoginPage.isRegistrationAvailable());
-    }
+    } */
 
 }
