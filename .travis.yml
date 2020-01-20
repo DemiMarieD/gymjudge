@@ -9,13 +9,14 @@ install: true
 addons:
   sonarcloud:
     organization: "asews19"
+  firefox: "49.0.2"
 
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 
-script:
+script: ./gradlew build
   - mvn test
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
