@@ -13,7 +13,7 @@ public class SeleniumWithTestNGLiveTest {
     private String expectedTitle = "Sign in";
 
     //todo: not working because of BeforeSuite, but we will probably not need it...
-    @BeforeSuite
+   /*  @BeforeSuite
     public void setUp() {
         seleniumLoginPage = new SeleniumLoginPage();
     }
@@ -23,7 +23,7 @@ public class SeleniumWithTestNGLiveTest {
         seleniumLoginPage.closeWindow();
     }
 
-   /* @Test
+   @Test
      public void whenLoginIsLoaded_thenAboutEugenIsMentionedOnPage() {
         seleniumLoginPage.getLoginPage();
         String actualTitle = seleniumLoginPage.getTitle();

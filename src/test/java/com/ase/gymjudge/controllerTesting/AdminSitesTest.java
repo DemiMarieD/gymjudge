@@ -5,6 +5,7 @@ import com.ase.gymjudge.entities.User;
 import com.ase.gymjudge.repositories.UserRepository;
 import com.ase.gymjudge.services.UserService;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testng.annotations.BeforeSuite;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
@@ -35,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //todo only working with jUnit4...
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) //need this for the webApplication context
 @ContextConfiguration
 @WebAppConfiguration
 @SpringBootTest
@@ -48,7 +50,7 @@ public class AdminSitesTest {
 
     private MockMvc mvc;
 
-    //todo not working with beforeEach...
+    //todo only working with @before (JUnit4) (no ..Each/All/Class/Suite)
     @Before
     public void setup() {
         mvc = MockMvcBuilders
