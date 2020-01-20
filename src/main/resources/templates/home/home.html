@@ -38,7 +38,14 @@
         <h2 th:case="null">No competition yet!</h2>
         <div th:case="*">
             <div th:each="comp : ${competitions}">
-                <a th:text="${comp.name}" th:href="@{/home/competitions/view/{id}(id=${comp.getId()})}" class="list-group-item list-group-item-action"></a>
+                <a th:href="@{/home/competitions/view/{id}(id=${comp.getId()})}" class="list-group-item list-group-item-action">
+                    <span th:text="${comp.name}" ></span>
+                    <span th:if="${comp.getStatus().getDisplayValue() == 'Active'}" class="badge badge-success" th:text="${comp.getStatus().getDisplayValue()}"></span>
+                    <span th:if="${comp.getStatus().getDisplayValue() == 'Created'}" class="badge badge-info" th:text="${comp.getStatus().getDisplayValue()}"></span>
+                    <span th:if="${comp.getStatus().getDisplayValue() == 'Finished'}" class="badge badge-secondary" th:text="${comp.getStatus().getDisplayValue()}"></span>
+                    <span th:if="${comp.getStatus().getDisplayValue() == 'Closed'}" class="badge badge-danger" th:text="${comp.getStatus().getDisplayValue()}"></span>
+                    <span th:if="${comp.getStatus().getDisplayValue() == 'Open'}" class="badge badge-primary" th:text="${comp.getStatus().getDisplayValue()}"></span>
+                </a>
             </div>
         </div>
     </div>

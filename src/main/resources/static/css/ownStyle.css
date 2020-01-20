@@ -1,0 +1,13 @@
+
+.card-header.gymnast {
+    cursor: pointer;
+}
+small {
+    color: darkgrey;
+}
+.page-header {
+    border-bottom: 1px solid lightgray;
+}
+.btn {
+    margin-right: 5px;
+}

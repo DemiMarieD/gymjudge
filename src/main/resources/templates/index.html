@@ -7,16 +7,45 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 </head>
 <body>
+<style>
+    .card-header.gymnast {
+        cursor: pointer;
+    }
+    small {
+        color: darkgrey;
+    }
+    .page-header {
+        border-bottom: 1px solid lightgray;
+    }
+    .btn {
+        margin-right: 5px;
+    }
+</style>
 <div class="container my-5">
-    <div>
-        <p>Here Link to login as Admin or Judge and list of ongoing competitions with link to live scoring.</p>
-        <p class="my-5">
-            <a th:href="@{/login}" class="btn btn-primary">Login</a>
-        </p>
+    <div class="panel panel-default">
+        <div class="page-header">
+            <h2>
+                <small>Welcome to</small><br/>
+                <b>GymJudge</b>
+                <span>
+                   <a th:href="@{/login}" class="btn btn-primary float-right">Login</a>
+                </span>
+            </h2>
+        </div>
     </div>
+    <br>
     <div>
-        <h3>ACTIVE competitions:</h3>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+        Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
     </div>
+    <br>
+    <br>
+    <br>
+    <div class="page-header">
+        <h3>LIVE Competitions</h3>
+    </div>
+    <br>
     <div class="list-group" th:switch="${competitions}">
         <h2 th:case="null">No competition yet!</h2>
         <div th:case="*">

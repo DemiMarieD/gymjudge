@@ -1,6 +1,7 @@
 package com.ase.gymjudge.controller;
 import javax.validation.Valid;
 
+import com.ase.gymjudge.entities.Role;
 import com.ase.gymjudge.entities.User;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 import com.ase.gymjudge.repositories.RoleRepository;
@@ -14,6 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
 @Controller
 public class UserController {
 
