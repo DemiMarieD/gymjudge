@@ -33,23 +33,26 @@ public class IndexController {
 
     @EventListener
     public void seed(ContextRefreshedEvent event) {
-        List<Role> roles = roleRepository.getAllRoles();
+        boolean noAdmin = true;
+        boolean noJudge = true;
+        for (Role r: roleRepository.getAllRoles()){
+            if(r.getRole().equals("ADMIN")){
+                noAdmin = false;
+            }
+            else if(r.getRole().equals("JUDGE")){
+                noJudge = false;
+            }
+        }
 
-        if (roles.size() == 0) {
+        if (noAdmin) {
             Role adminRole = new Role();
             adminRole.setRole("ADMIN");
             roleRepository.save(adminRole);
+        }
+        if(noJudge){
             Role judgeRole = new Role();
             judgeRole.setRole("JUDGE");
             roleRepository.save(judgeRole);
-        }else if(roles.size() == 1){
-            Role judgeRole = new Role();
-            judgeRole.setRole("JUDGE");
-            roleRepository.save(judgeRole);
-        }else if(roles.size() ==2){
-            Role userRole = new Role();
-            userRole.setRole("USER");
-            roleRepository.save(userRole);
         }
 
     }

@@ -4,8 +4,10 @@ package com.ase.gymjudge.entityTesting;
 import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CompetitionRepository;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,8 +25,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 //@SpringBootTest
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @DataJpaTest
 public class EntitiesIntegrationTest {
     @Autowired
@@ -47,7 +50,7 @@ public class EntitiesIntegrationTest {
     Role judgeRoll;
     Score score;
 
-    @BeforeEach
+    @Before
     public void setUpCompetition() {
         competition = createCompetition();
         categories = new ArrayList<>();

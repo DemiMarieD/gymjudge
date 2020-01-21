@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//todo only working with jUnit4...
 @RunWith(SpringRunner.class) //need this for the webApplication context
 @ContextConfiguration
 @WebAppConfiguration
@@ -50,7 +49,6 @@ public class AdminSitesTest {
 
     private MockMvc mvc;
 
-    //todo only working with @before (JUnit4) (no ..Each/All/Class/Suite)
     @Before
     public void setup() {
         mvc = MockMvcBuilders
@@ -105,6 +103,7 @@ public class AdminSitesTest {
         mvc
                 .perform(get("/home"))
                 .andDo(print())
+                //expect redirect to /login because no user is logged in
                 .andExpect(status().is3xxRedirection());
     }
 

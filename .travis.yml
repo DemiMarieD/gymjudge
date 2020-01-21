@@ -9,6 +9,7 @@ install: true
 addons:
   sonarcloud:
     organization: "asews19"
+  firefox: "49.0.2"
 
 before_script:
   - "export DISPLAY=:99.0"
