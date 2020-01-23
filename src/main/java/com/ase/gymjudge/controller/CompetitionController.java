@@ -1,10 +1,8 @@
 package com.ase.gymjudge.controller;
 
-import com.ase.gymjudge.entities.Apparatus;
-import com.ase.gymjudge.entities.Competition;
-import com.ase.gymjudge.entities.Status;
-import com.ase.gymjudge.entities.User;
+import com.ase.gymjudge.entities.*;
 import com.ase.gymjudge.repositories.CompetitionRepository;
+import com.ase.gymjudge.repositories.ScoreRepository;
 import com.ase.gymjudge.repositories.UserRepository;
 import com.ase.gymjudge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,8 @@ public class CompetitionController {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ScoreRepository scoreRepository;
 
 
     public User getLoggedInUser() {
@@ -159,6 +159,13 @@ public class CompetitionController {
         //delete the judges first
         for (User judge : comp.getJudges()) {
             userService.deleteJudge(judge);
+        }
+
+        for(Participants p : comp.getParticipants()){
+            List<Score> score = scoreRepository.getActiveScoresByParticipantId(p.getId());
+            for (Score s : score){
+                scoreRepository.delete(s);
+            }
         }
 
         //automatically deletes all categories connected and all participants connected to the competition!
