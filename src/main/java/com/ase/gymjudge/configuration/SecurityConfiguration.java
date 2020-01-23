@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/livescores/**").permitAll()
                 .antMatchers("/js/**").permitAll()
+                .antMatchers("/images/**").permitAll()
                 .antMatchers("/home/**").hasAuthority("ADMIN")
                 .antMatchers("/roundsoverview/**").hasAuthority("JUDGE")
                 .anyRequest().authenticated()

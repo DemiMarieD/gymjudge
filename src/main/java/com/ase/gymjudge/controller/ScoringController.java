@@ -148,8 +148,15 @@ public class ScoringController {
         }
 
         if (compRepository.findById(id).isPresent()) {
-            List<Score> scores = scoreRepository.getActiveScoresByCompetitionId(id);
-            String compName = compRepository.findById(id).get().getName();
+            Competition comp = compRepository.findById(id).get();
+
+            ArrayList<Score> scores = new ArrayList<>();
+
+            for (Participants p : comp.getParticipants()) {
+                scores.addAll(scoreRepository.getActiveScoresByParticipantId(p.getId()));
+            }
+
+            String compName = comp.getName();
             model.addAttribute("scores", scores);
             model.addAttribute("compName", compName);
             return "livescores";
@@ -160,7 +167,15 @@ public class ScoringController {
 
     @GetMapping({"/livescores/update-scores/{id}"})
     public String updateScores(@PathVariable("id") int id, Model model) {
-        List<Score> scores = scoreRepository.getActiveScoresByCompetitionId(id);
+        ArrayList<Score> scores = new ArrayList<>();
+        if (compRepository.findById(id).isPresent()) {
+            Competition comp = compRepository.findById(id).get();
+
+            for (Participants p : comp.getParticipants()) {
+                scores.addAll(scoreRepository.getActiveScoresByParticipantId(p.getId()));
+            }
+        }
+
         model.addAttribute("scores", scores);
 
         return "livescores :: #scoring";

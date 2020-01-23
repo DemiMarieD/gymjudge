@@ -13,6 +13,7 @@ $(document).ready(function() {
             let value = $('#status_' + partId).attr('value');
             if (value === undefined) {
                 badge = 'open';
+                return false;
             } else if (value === '0') {
                 badge = 'incomplete';
                 return false;

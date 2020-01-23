@@ -20,6 +20,9 @@
     .btn {
         margin-right: 5px;
     }
+    .homeimage {
+        width: 100%;
+    }
 </style>
 <div class="container my-5">
     <div class="panel panel-default">
@@ -29,31 +32,104 @@
                 <b>GymJudge</b>
                 <span>
                     <a th:href="@{/signup}" class="btn btn-secondary float-right">Register</a>
-                   <a th:href="@{/login}" class="btn btn-primary float-right">Login</a>
+                    <a th:href="@{/login}" class="btn btn-primary float-right">Login</a>
                 </span>
             </h2>
         </div>
     </div>
     <br>
-    <div>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-        Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    <div class="row">
+        <div class="col-md-0 col-lg-1"></div>
+        <div class="col-sm-12 col-md-6 col-lg-5">
+            <h4>Manage your competition with GymJudge</h4>
+            <p>
+                an online scoring Tool for "Turn10" and "Stufe" competitions.
+                You can set up your Competitions with registered Gymnasts, announced Categories and so on.
+                On the competition day judges can enter their results quick and easy into the system.
+            </p>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <img th:src="@{/images/logo.png}" class="homeimage"/>
+        </div>
+        <div class="col-sm-12 col-md-1"></div>
     </div>
-    <br>
-    <br>
-    <br>
     <div class="page-header">
         <h3>LIVE Competitions</h3>
     </div>
     <br>
-    <div class="list-group" th:switch="${competitions}">
-        <h2 th:case="null">No competition yet!</h2>
+    <div class="list-group" th:switch="${competitions.size()}">
+        <h4 th:case="0">Currently no competitions are held!</h4>
         <div th:case="*">
             <div th:each="comp : ${competitions}">
                 <a th:text="${comp.name}" th:href="@{/livescores/{id}(id=${comp.getId()})}" class="list-group-item list-group-item-action"></a>
             </div>
         </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="page-header">
+        <h3>How GymJudge works</h3>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-0 col-lg-1"></div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <img th:src="@{/images/appscreenshots/createcomp.png}" class="homeimage"/>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-5">
+            <br>
+            <h4>Create your Competition</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+        </div>
+        <div class="col-sm-12 col-md-1"></div>
+    </div>
+    <br>
+    <div class="page-header"></div>
+    <br>
+    <div class="row">
+        <div class="col-md-0 col-lg-1"></div>
+        <div class="col-sm-12 col-md-6 col-lg-5">
+            <br>
+            <h4>Judges can easily enter their results</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <img th:src="@{/images/appscreenshots/enterresults.png}" class="homeimage"/>
+        </div>
+        <div class="col-sm-12 col-md-1"></div>
+    </div>
+    <br>
+    <div class="page-header"></div>
+    <br>
+    <div class="row">
+        <div class="col-md-0 col-lg-1"></div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <img th:src="@{/images/appscreenshots/livescoring.png}" class="homeimage"/>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-5">
+            <br>
+            <h4>Visitors can track the competition progress</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua.
+            </p>
+        </div>
+        <div class="col-sm-12 col-md-1"></div>
     </div>
 </div>
 </body>
